@@ -48,6 +48,25 @@ router.get("/get-all-invoices", async (req, res) => {
   }
 });
 
+// Lấy tất cả các phiếu nhập của một cửa hàng
+router.get("/get-all-invoices-shop/:id", async (req, res) => {
+  try {
+    const id = req.params.id;
+
+    // Tìm tất cả các phiếu nhập liên quan đến cửa hàng (shop) cụ thể
+    const invoices = await Invoice.find({ shop: id }).populate("product");
+
+    if (!invoices || invoices.length === 0) {
+      return res.status(404).json({ error: "No invoices found for this shop" });
+    }
+
+    res.status(200).json(invoices);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Server error" });
+  }
+});
+
 // Lấy thông tin chi tiết của một phiếu nhập
 router.get("/get-invoice/:id", async (req, res) => {
   try {

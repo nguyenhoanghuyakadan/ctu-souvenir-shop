@@ -8,6 +8,7 @@ import { CiMoneyBill, CiSettings } from "react-icons/ci";
 import { Link } from "react-router-dom";
 import { BiMessageSquareDetail } from "react-icons/bi";
 import { HiOutlineReceiptRefund } from "react-icons/hi";
+import { TbFileImport, TbFileInvoice } from "react-icons/tb";
 
 const DashboardSideBar = ({ active }) => {
   return (
@@ -78,6 +79,44 @@ const DashboardSideBar = ({ active }) => {
       </div>
 
       <div className="w-full flex items-center p-4">
+        <Link
+          to="/dashboard-invoices"
+          className="w-full flex items-center"
+        >
+          <TbFileInvoice
+            size={30}
+            color={`${active === 13 ? "crimson" : "#555"}`}
+          />
+          <h5
+            className={`text-xl font-normal ${
+              active === 13 ? "text-[crimson] font-bold" : "text-[#555]"
+            }`}
+          >
+            Phiếu nhập
+          </h5>
+        </Link>
+      </div>
+
+      <div className="w-full flex items-center p-4">
+        <Link
+          to="/dashboard-create-invoice"
+          className="w-full flex items-center"
+        >
+          <TbFileImport
+            size={30}
+            color={`${active === 12 ? "crimson" : "#555"}`}
+          />
+          <h5
+            className={`text-xl font-normal ${
+              active === 12 ? "text-[crimson] font-bold" : "text-[#555]"
+            }`}
+          >
+            Thêm phiếu nhập
+          </h5>
+        </Link>
+      </div>
+
+      <div className="w-full flex items-center p-4">
         <Link to="/dashboard-events" className="w-full flex items-center">
           <MdOutlineLocalOffer
             size={30}
@@ -123,7 +162,7 @@ const DashboardSideBar = ({ active }) => {
               active === 7 ? "text-[crimson] font-bold" : "text-[#555]"
             }`}
           >
-           Rút tiền
+            Rút tiền
           </h5>
         </Link>
       </div>
@@ -171,7 +210,7 @@ const DashboardSideBar = ({ active }) => {
               active === 10 ? "text-[crimson] font-bold" : "text-[#555]"
             }`}
           >
-           Hoàn tiền
+            Hoàn tiền
           </h5>
         </Link>
       </div>
@@ -187,7 +226,7 @@ const DashboardSideBar = ({ active }) => {
               active === 11 ? "text-[crimson] font-bold" : "text-[#555]"
             }`}
           >
-            Sửa thông tin 
+            Sửa thông tin
           </h5>
         </Link>
       </div>

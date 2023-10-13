@@ -35,6 +35,19 @@ export const invoiceReducer = createReducer(initialState, {
     state.error = action.payload;
   },
 
+  // Lấy danh sách phiếu nhập của shop
+  getAllInvoicesShopRequest: (state) => {
+    state.isLoading = true;
+  },
+  getAllInvoicesShopSuccess: (state, action) => {
+    state.isLoading = false;
+    state.invoices = action.payload;
+  },
+  getAllInvoicesShopFailed: (state, action) => {
+    state.isLoading = false;
+    state.error = action.payload;
+  },
+
   // Xóa phiếu nhập
   deleteInvoiceRequest: (state) => {
     state.isLoading = true;

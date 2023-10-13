@@ -64,6 +64,7 @@ import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
 import ShopCreateInvoice from "./pages/Shop/ShopCreateInvoice";
 import { getAllInvoices } from "./redux/actions/invoice";
+import ShopAllInvoices from "./pages/Shop/ShopAllInvoices";
 
 const App = () => {
   const [stripeApikey, setStripeApiKey] = useState("");
@@ -77,11 +78,11 @@ const App = () => {
     Store.dispatch(loadSeller());
     Store.dispatch(getAllProducts());
     Store.dispatch(getAllEvents());
-    Store.dispatch(getAllInvoices)
+    Store.dispatch(getAllInvoices());
     getStripeApikey();
   }, []);
 
-  return (  
+  return (
     <BrowserRouter>
       {stripeApikey && (
         <Elements stripe={loadStripe(stripeApikey)}>
@@ -233,6 +234,16 @@ const App = () => {
             </SellerProtectedRoute>
           }
         />
+
+        <Route
+          path="/dashboard-invoices"
+          element={
+            <SellerProtectedRoute>
+              <ShopAllInvoices />
+            </SellerProtectedRoute>
+          }
+        />
+
         <Route
           path="/dashboard-create-event"
           element={

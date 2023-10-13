@@ -24,6 +24,27 @@ export const createInvoice = (newInvoiceData) => async (dispatch) => {
   }
 };
 
+export const getAllInvoicesShop = (shopId) => async (dispatch) => {
+  try {
+    dispatch({
+      type: "getAllInvoicesShopRequest",
+    });
+
+    const { data } = await axios.get(
+      `${server}/invoice/get-all-invoices-shop/${shopId}`
+    );
+    dispatch({
+      type: "getAllInvoicesShopSuccess",
+      payload: data,
+    });
+  } catch (error) {
+    dispatch({
+      type: "getAllInvoicesShopFailed",
+      payload: error.response.data?.message,
+    });
+  }
+};
+
 // Lấy danh sách phiếu nhập
 export const getAllInvoices = () => async (dispatch) => {
   try {
