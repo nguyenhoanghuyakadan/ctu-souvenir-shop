@@ -10,7 +10,12 @@ const CreateInvoice = () => {
   const productsFromServer = useSelector((state) => state.products); // Lấy danh sách sản phẩm từ Redux store
   const dispatch = useDispatch();
 
-  const [products, setProducts] = useState([]);
+  // const [product, setProduct] = useState("");
+  const [selectedProduct, setSelectedProduct] = useState("");
+
+  const [quantity, setQuantity] = useState();
+  const [price, setPrice] = useState();
+
   const [supplier, setSupplier] = useState("");
   const [date, setDate] = useState("");
 
@@ -30,51 +35,77 @@ const CreateInvoice = () => {
     console.log(productsFromServer);
   }, [dispatch, seller._id]);
 
-  const handleProductChange = (e) => {
-    const selectedProducts = Array.from(e.target.selectedOptions).map(
-      (option) => option.value
-    );
-    setProducts(selectedProducts);
+  // const handleProductChange = (e) => {
+  //   console.log(e);
+  //   setProduct(e.target.value);
+  // };
+
+  const handleSelectChange = (event) => {
+    setSelectedProduct(event.target.value);
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
     const newInvoiceData = {
-      products,
+      product: selectedProduct,
+      quantity,
+      price,
       supplier,
-      date,
       shopId: seller._id,
+      date,
     };
+
+    console.log(newInvoiceData);
 
     dispatch(createInvoice(newInvoiceData));
   };
 
   return (
     <div className="w-[90%] 800px:w-[50%] bg-white shadow h-[80vh] rounded-[4px] p-3 overflow-y-scroll">
-      <h5 className="text-[30px] font-Poppins text-center">Tạo phiếu nhập</h5>
+      <h5 className="text-[30px] font-Poppins text-center">Thêm phiếu nhập</h5>
       <form onSubmit={handleSubmit}>
-        <br />
         <div>
           <label className="pb-2">
             Chọn sản phẩm <span className="text-red-500">*</span>
           </label>
           <select
-            multiple
-            className="w-full mt-2 border h-[100px] rounded-[5px]"
+            className="w-full mt-2 border rounded-[5px]"
+            value={selectedProduct}
+            onChange={handleSelectChange}
+          >
+            <option value="">Chọn một tùy chọn</option>
+            {productsFromServer.allProducts.map((p) => (
+              <option key={p._id} value={p._id}>
+                {p.name}
+              </option>
+            ))}
+          </select>
+          <p>
+            ID của sản phẩm:{" "}
+            {selectedProduct === "" ? "Chưa chọn tùy chọn" : selectedProduct}
+          </p>
+        </div>
+
+        {/* <br />
+        <div>
+          <label className="pb-2">
+            Chọn sản phẩm <span className="text-red-500">*</span>
+          </label>
+          <select
+            className="w-full mt-2 border rounded-[5px]"
             onChange={handleProductChange}
+            value={product?.name}
           >
             {Array.isArray(productsFromServer.allProducts) &&
               productsFromServer.allProducts.map((product) => (
                 <option key={product._id} value={product._id}>
                   {product.name}{" "}
-                  {/* Sử dụng tên sản phẩm hoặc trường khác nếu cần */}
                 </option>
               ))}
-
-            {/* Render a list of products here, where each option has a value of the product's ID */}
           </select>
-        </div>
+          <p>Bạn đã chọn: {product}</p>
+        </div> */}
         <br />
         <div>
           <label className="pb-2">
@@ -86,6 +117,32 @@ const CreateInvoice = () => {
             className="mt-2 appearance-none block w-full px-3 h-[35px] border border-gray-300 rounded-[3px] placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
             onChange={(e) => setSupplier(e.target.value)}
             placeholder="Nhập tên nhà cung cấp..."
+          />
+        </div>
+        <br />
+        <div>
+          <label className="pb-2">
+            Số lượng <span className="text-red-500">*</span>
+          </label>
+          <input
+            type="text"
+            value={quantity}
+            className="mt-2 appearance-none block w-full px-3 h-[35px] border border-gray-300 rounded-[3px] placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+            onChange={(e) => setQuantity(e.target.value)}
+            placeholder="Nhập số lượng..."
+          />
+        </div>
+        <br />
+        <div>
+          <label className="pb-2">
+            Giá <span className="text-red-500">*</span>
+          </label>
+          <input
+            type="text"
+            value={price}
+            className="mt-2 appearance-none block w-full px-3 h-[35px] border border-gray-300 rounded-[3px] placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+            onChange={(e) => setPrice(e.target.value)}
+            placeholder="Nhập giá bán ..."
           />
         </div>
         <br />

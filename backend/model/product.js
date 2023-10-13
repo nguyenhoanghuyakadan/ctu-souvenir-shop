@@ -25,8 +25,7 @@ const productSchema = new mongoose.Schema({
   },
   stock: {
     type: Number,
-    default: 0,
-    required: [true, "Please enter your product stock!"],
+    default: 0
   },
   images: [
     {
@@ -40,14 +39,14 @@ const productSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "Invoice",
       },
-      quantity: {
-        type: Number,
-        required: true,
-      },
-      price: {
-        type: Number,
-        required: true,
-      },
+      // quantity: {
+      //   type: Number,
+      //   required: true,
+      // },
+      // price: {
+      //   type: Number,
+      //   required: true,
+      // },
     },
   ],
 
