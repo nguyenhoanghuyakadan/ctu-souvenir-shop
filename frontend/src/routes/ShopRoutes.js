@@ -1,7 +1,7 @@
 import ShopDashboardPage from "../pages/Shop/ShopDashboardPage";
 import ShopCreateProduct from "../pages/Shop/ShopCreateProduct";
 import ShopAllProducts from "../pages/Shop/ShopAllProducts";
-import ShopCreateInvoice from "../pages/Shop/ShopCreateInvoice";
+import ShopCreatePurchaseInvoice from "../pages/Shop/ShopCreatePurchaseInvoice";
 import ShopCreateEvents from "../pages/Shop/ShopCreateEvents";
 import ShopAllEvents from "../pages/Shop/ShopAllEvents";
 import ShopAllCoupouns from "../pages/Shop/ShopAllCoupouns";
@@ -17,7 +17,7 @@ export {
   ShopDashboardPage,
   ShopCreateProduct,
   ShopAllProducts,
-  ShopCreateInvoice,
+  ShopCreatePurchaseInvoice,
   ShopCreateEvents,
   ShopAllEvents,
   ShopAllCoupouns,

@@ -18,7 +18,7 @@ const Events = () => {
                 </div>
               </div>
 
-              <div className="w-full bg-[#f0f6f6] grid h-[55vh] overflow-x-auto hover:overflow-scroll">
+              <div className="w-full grid h-[55vh] overflow-x-auto hover:overflow-scroll">
                 <div className={`${styles.section}`}>
                   <div className="">
                     {" "}

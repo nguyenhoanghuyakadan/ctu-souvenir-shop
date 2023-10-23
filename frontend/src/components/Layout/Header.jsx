@@ -14,11 +14,7 @@ import { backend_url } from "../../server";
 import Cart from "../cart/Cart";
 import Wishlist from "../Wishlist/Wishlist";
 
-import {
-  TbAdjustmentsHorizontal,
-  TbArrowBarLeft,
-  TbSearch,
-} from "react-icons/tb";
+import { TbAdjustmentsHorizontal, TbArrowBarLeft } from "react-icons/tb";
 
 const Header = ({ activeHeading }) => {
   const { isAuthenticated, user } = useSelector((state) => state.user);
@@ -55,7 +51,92 @@ const Header = ({ activeHeading }) => {
 
   return (
     <>
-      <div className="shadow-sm fixed top-0 left-0 z-10 transition hidden items-center justify-between w-full bg-[#efd3c8] h-[70px]">
+      <div className={`${styles.section}`}>
+        <div className="hidden 800px:h-[50px] 800px:py-10 800px:flex items-center justify-between">
+          <div>
+            <Link to="/">
+              <h1 className="text-4xl font-bold block hover:text-blue">
+                CTU Souvenir Shop
+              </h1>
+            </Link>
+          </div>
+          {/* search box */}
+          <div className="w-[50%] relative">
+            <input
+              type="text"
+              placeholder="Search Product..."
+              value={searchTerm}
+              onChange={handleSearchChange}
+              className="h-[40px] w-full px-2 border-blue border-[2px] rounded-md"
+            />
+            <AiOutlineSearch
+              size={30}
+              className="absolute right-2 top-1.5 cursor-pointer"
+            />
+            {searchData && searchData.length !== 0 ? (
+              <div className="absolute bg-slate-50 shadow-sm-2 z-[9] p-4 w-full">
+                {searchData &&
+                  searchData.map((i, index) => {
+                    return (
+                      <Link to={`/product/${i._id}`}>
+                        <div className="w-full flex items-start-py-3">
+                          <img
+                            src={`${backend_url}${i.images[0]}`}
+                            alt=""
+                            className="w-[40px] h-[40px] mr-[10px]"
+                          />
+                          <h1>{i.name}</h1>
+                        </div>
+                      </Link>
+                    );
+                  })}
+              </div>
+            ) : null}
+          </div>
+          <div className="flex items-center flex-col">
+            <div className={`${styles.button}`}>
+              {isSeller ? (
+                <Link to={"/dashboard"}>
+                  <h1 className="text-lg text-black flex items-center">
+                    Quản Lý
+                    <IoIosArrowForward className="ml-1" />
+                  </h1>
+                </Link>
+              ) : (
+                <Link to={"/shop-login"}>
+                  <h1 className="text-lg text-black flex items-center">
+                    {"Đăng nhập vào cửa hàng"}{" "}
+                    <IoIosArrowForward className="ml-1" />
+                  </h1>
+                </Link>
+              )}
+            </div>
+
+            {/* <div className={`${styles.button}`}>
+              <Link to={`${isSeller ? "/dashboard" : "/shop-login"}`}>
+                <h1 className="text-lg text-black flex items-center">
+                  {isSeller ? "Quản lý " : "Đăng nhập"}{" "}
+                  <IoIosArrowForward className="ml-1" />
+                </h1>
+              </Link>
+              {isSeller && isSeller ? null : (
+                <Link to="/shop-create">
+                  <div className={`${styles.button} mt-5`}>
+                    <span className="text-[#fff] font-[Poppins] text-[18px]">
+                      Seller
+                    </span>
+                  </div>
+                </Link>
+              )}
+            </div> */}
+          </div>
+        </div>
+      </div>
+      <div
+        className={`${
+          active === true ? "shadow-sm fixed top-0 left-0 z-10" : null
+        } transition hidden 800px:flex items-center justify-between w-full bg-extra-extra-light-gray h-[70px]`}
+      >
         <div
           className={`${styles.section} relative ${styles.noramlFlex} justify-between`}
         >
@@ -71,7 +152,7 @@ const Header = ({ activeHeading }) => {
                 onClick={() => setOpenWishlist(true)}
               >
                 <AiOutlineHeart size={35} color="#de650a" />
-                <span className="absolute right-0 top-0 rounded-full bg-[#de650a] w-4 h-4 top right p-0 m-0 text-white font-mono text-[12px] leading-tight text-center">
+                <span className="absolute right-0 top-0 rounded-full bg-blue w-4 h-4 top right p-0 m-0 text-white font-mono text-[12px] leading-tight text-center">
                   {wishlist && wishlist.length}
                 </span>
               </div>
@@ -83,7 +164,7 @@ const Header = ({ activeHeading }) => {
                 onClick={() => setOpenCart(true)}
               >
                 <AiOutlineShoppingCart size={35} color="#de650a" />
-                <span className="absolute right-0 top-0 rounded-full bg-[#de650a] w-4 h-4 top right p-0 m-0 text-white font-mono text-[12px] leading-tight text-center">
+                <span className="absolute right-0 top-0 rounded-full bg-blue w-4 h-4 top right p-0 m-0 text-white font-mono text-[12px] leading-tight text-center">
                   {cart && cart.length}
                 </span>
               </div>
@@ -117,9 +198,13 @@ const Header = ({ activeHeading }) => {
           </div>
         </div>
       </div>
+
+      {/* mobile header */}
       <div
-        className={`
-        shadow-sm fixed top-0 left-0 z-10 w-full h-[60px] bg-[#fff] z-50 top-0 left-0 shadow-sm 800px:hidden`}
+        className={`${
+          active === true ? "shadow-sm fixed top-0 left-0 z-10" : null
+        }
+      w-full h-[60px] bg-extra-extra-light-gray z-50 top-0 left-0 shadow-sm 800px:hidden`}
       >
         <div className="w-full flex items-center justify-between">
           <div>
@@ -131,8 +216,8 @@ const Header = ({ activeHeading }) => {
           </div>
           <div>
             <Link to="/">
-              <h1 className="text-4xl font-bold decoration-[#db3f59] hover:decoration-4">
-                CTU
+              <h1 className="text-4xl font-bold hover:text-blue">
+                CTU Souvenir Shop
               </h1>
             </Link>
           </div>
@@ -142,7 +227,7 @@ const Header = ({ activeHeading }) => {
               onClick={() => setOpenCart(true)}
             >
               <AiOutlineShoppingCart size={30} />
-              <span class="absolute right-0 top-0 rounded-full bg-[#db3f59] w-4 h-4 top right p-0 m-0 text-white font-mono text-[12px]  leading-tight text-center">
+              <span class="absolute right-0 top-0 rounded-full bg-blue w-4 h-4 top right p-0 m-0 text-white font-mono text-[12px]  leading-tight text-center">
                 {cart && cart.length}
               </span>
             </div>
@@ -157,9 +242,9 @@ const Header = ({ activeHeading }) => {
         {/* header sidebar */}
         {open && (
           <div
-            className={`fixed w-full bg-[#0000005f] z-20 h-full top-0 left-0`}
+            className={`fixed w-full bg-extra-light-gray z-20 h-full top-0 left-0`}
           >
-            <div className="fixed w-[70%] bg-[#fff] h-screen top-0 left-0 z-10 overflow-y-scroll">
+            <div className="fixed w-[70%] bg-extra-extra-light-gray h-screen top-0 left-0 z-10 overflow-y-scroll">
               <div className="w-full justify-between flex pr-3">
                 <div>
                   <div
@@ -167,7 +252,7 @@ const Header = ({ activeHeading }) => {
                     onClick={() => setOpenWishlist(true) || setOpen(false)}
                   >
                     <AiOutlineHeart size={30} className="mt-5 ml-3" />
-                    <span class="absolute right-0 top-0 rounded-full bg-[#db3f59] w-4 h-4 top right p-0 m-0 text-white font-mono text-[12px]  leading-tight text-center">
+                    <span class="absolute right-0 top-0 rounded-full bg-blue w-4 h-4 top right p-0 m-0 text-white font-mono text-[12px]  leading-tight text-center">
                       {wishlist && wishlist.length}
                     </span>
                   </div>
@@ -183,37 +268,35 @@ const Header = ({ activeHeading }) => {
                 <input
                   type="search"
                   placeholder="Tìm kiếm sản phẩm..."
-                  className="h-[40px] w-full px-2 border-[#3957db] border-[2px] rounded-md"
+                  className="h-[40px] w-full px-2 border-blue border-[2px] rounded-md"
                   value={searchTerm}
                   onChange={handleSearchChange}
                 />
-                {searchData && (
-                  <div className="absolute bg-[#fff] z-10 shadow w-full left-0 p-3">
-                    {searchData.map((i) => {
-                      const d = i.name;
-
-                      const Product_name = d.replace(/\s+/g, "-");
-                      return (
-                        <Link to={`/product/${Product_name}`}>
-                          <div className="flex items-center">
-                            <img
-                              src={i.image_Url[0].url}
-                              alt=""
-                              className="w-[50px] mr-2"
-                            />
-                            <h5>{i.name}</h5>
-                          </div>
-                        </Link>
-                      );
-                    })}
+                {searchData && searchData.length !== 0 ? (
+                  <div className="absolute bg-slate-50 shadow-sm-2 z-[9] p-4 w-full">
+                    {searchData &&
+                      searchData.map((i, index) => {
+                        return (
+                          <Link to={`/product/${i._id}`}>
+                            <div className="w-full flex items-start-py-3">
+                              <img
+                                src={`${backend_url}${i.images[0]}`}
+                                alt=""
+                                className="w-[40px] h-[40px] mr-[10px]"
+                              />
+                              <h1>{i.name}</h1>
+                            </div>
+                          </Link>
+                        );
+                      })}
                   </div>
-                )}
+                ) : null}
               </div>
 
               <Navbar active={activeHeading} />
               <div className={`${styles.button} ml-4 !rounded-[4px]`}>
                 <Link to="/shop-create">
-                  <h1 className="text-[#fff] flex items-center">
+                  <h1 className="text-dark-gray flex items-center hover:text-blue">
                     Seller <IoIosArrowForward className="ml-1" />
                   </h1>
                 </Link>
@@ -229,7 +312,7 @@ const Header = ({ activeHeading }) => {
                       <img
                         src={`${backend_url}${user.avatar}`}
                         alt=""
-                        className="w-[60px] h-[60px] rounded-full border-[3px] border-[#0eae88]"
+                        className="w-[60px] h-[60px] rounded-full border-[3px] border-blue"
                       />
                     </Link>
                   </div>
@@ -237,13 +320,13 @@ const Header = ({ activeHeading }) => {
                   <>
                     <Link
                       to="/login"
-                      className="text-[18px] pr-[10px] text-[#000000b7]"
+                      className="text-[18px] pr-[10px] text-dark-gray hover:text-blue"
                     >
                       Đăng nhập /
                     </Link>
                     <Link
                       to="/sign-up"
-                      className="text-[18px] text-[#000000b7]"
+                      className="text-[18px] text-dark-gray hover:text-blue"
                     >
                       Đăng ký
                     </Link>

@@ -2,15 +2,18 @@ import axios from "axios";
 import { server } from "../../server";
 
 // Tạo phiếu nhập mới
-export const createInvoice = (newInvoiceData) => async (dispatch) => {
+export const createPurchaseInvoice = (newInvoiceData) => async (dispatch) => {
   try {
     dispatch({
       type: "invoiceCreateRequest",
     });
 
     const { data } = await axios.post(
-      `${server}/invoice/create-invoice`,
-      newInvoiceData
+      `${server}/invoice/create-purchase-invoice`,
+      newInvoiceData,
+      {
+        withCredentials: true,
+      }
     );
     dispatch({
       type: "invoiceCreateSuccess",
@@ -31,7 +34,10 @@ export const getAllInvoicesShop = (shopId) => async (dispatch) => {
     });
 
     const { data } = await axios.get(
-      `${server}/invoice/get-all-invoices-shop/${shopId}`
+      `${server}/invoice/get-all-invoices-shop/${shopId}`,
+      {
+        withCredentials: true,
+      }
     );
     dispatch({
       type: "getAllInvoicesShopSuccess",

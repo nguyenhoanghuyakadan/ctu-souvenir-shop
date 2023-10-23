@@ -1,13 +1,14 @@
 const express = require("express");
+const { isSeller, isAuthenticated, isAdmin } = require("../middleware/auth");
 const router = express.Router();
 const Invoice = require("../model/invoice");
 const Product = require("../model/product");
 const Shop = require("../model/shop");
 
-// Tạo phiếu nhập mới
-router.post("/create-invoice", async (req, res) => {
+// Tạo hóa đơn mới (bao gồm cả nhập và bán)
+router.post("/create-purchase-invoice", isSeller, async (req, res) => {
   try {
-    const { product, quantity, price, supplier, shopId } = req.body;
+    const { type, products, shopId, date, supplier } = req.body; // Dữ liệu được gửi từ phía client
 
     // Tìm thông tin cửa hàng dựa trên shopId
     const shop = await Shop.findById(shopId);
@@ -15,82 +16,97 @@ router.post("/create-invoice", async (req, res) => {
       return res.status(404).json({ error: "Shop not found" });
     }
 
-    const newInvoice = new Invoice({
-      product,
-      quantity,
-      price,
-      supplier,
-      shop: shop._id,
-    });
-    await newInvoice.save();
+    const combinedInvoices = [];
+    for (const productData of products) {
+      const { product, quantity, price } = productData;
+      const existingInvoice = combinedInvoices.find(
+        (invoice) =>
+          invoice.type === type &&
+          invoice.shop.toString() === shopId.toString() &&
+          invoice.date.toString() === date.toString() &&
+          invoice.supplier.toString() === supplier.toString()
+      );
 
-    // Cập nhật thông tin sản phẩm và phiếu nhập trong mô hình sản phẩm
-    await Product.findByIdAndUpdate(product, {
-      $push: { invoices: { invoice: newInvoice._id } },
-      $inc: { stock: quantity },
-    });
+      if (existingInvoice) {
+        existingInvoice.products.push({ product, quantity, price });
+      } else {
+        combinedInvoices.push({
+          type,
+          shop: shopId,
+          date,
+          supplier,
+          products: [{ product, quantity, price }],
+        });
+      }
+    }
 
-    res.status(201).json(newInvoice);
+    const createdInvoices = await Invoice.insertMany(combinedInvoices);
+    console.log(createdInvoices);
+    for (const createdInvoice of createdInvoices) {
+      for (const productData of createdInvoice.products) {
+        const { product, quantity, price } = productData;
+        const productDoc = await Product.findById(product);
+        if (
+          productDoc &&
+          typeof productDoc.stock !== "undefined" &&
+          typeof quantity !== "undefined"
+        ) {
+          if (type === "Purchase") {
+            await Product.findByIdAndUpdate(
+              productDoc._id,
+              { $inc: { stock: quantity } },
+              { new: true }
+            );
+          }
+          await Product.findByIdAndUpdate(productDoc._id, {
+            $push: {
+              invoices: { invoice: createdInvoice._id, quantity, price },
+            },
+          });
+        }
+      }
+    }
+
+    res.status(200).json({ message: `${type} invoice successful` });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: "Server error" });
+    res.status(500).json({ error: `An error occurred while ${type} invoice` });
   }
 });
 
-// Lấy danh sách phiếu nhập
-router.get("/get-all-invoices", async (req, res) => {
+// Lấy tất cả hóa đơn của cửa hàng với ID tương ứng
+router.get("/get-all-invoices-shop/:id", isSeller, async (req, res) => {
   try {
-    const invoices = await Invoice.find().populate("product").populate("shop");
+    const shopId = req.params.id;
+
+    // Kiểm tra xem cửa hàng có tồn tại không
+    const shop = await Shop.findById(shopId);
+    if (!shop) {
+      return res.status(404).json({ error: "Shop not found" });
+    }
+
+    // Tìm tất cả các hóa đơn của cửa hàng với ID tương ứng
+    const invoices = await Invoice.find({ shop: shopId }).populate("customer");
+
     res.status(200).json(invoices);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: "Server error" });
+    res.status(500).json({
+      error: "An error occurred while retrieving invoices for the shop",
+    });
   }
 });
 
-// Lấy tất cả các phiếu nhập của một cửa hàng
-router.get("/get-all-invoices-shop/:id", async (req, res) => {
-  try {
-    const id = req.params.id;
+// Các tuyến đường khác giữ nguyên
 
-    // Tìm tất cả các phiếu nhập liên quan đến cửa hàng (shop) cụ thể
-    const invoices = await Invoice.find({ shop: id }).populate("product");
-
-    if (!invoices || invoices.length === 0) {
-      return res.status(404).json({ error: "No invoices found for this shop" });
-    }
-
-    res.status(200).json(invoices);
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "Server error" });
-  }
-});
-
-// Lấy thông tin chi tiết của một phiếu nhập
-router.get("/get-invoice/:id", async (req, res) => {
-  try {
-    const invoice = await Invoice.findById(req.params.id)
-      .populate("product")
-      .populate("shop");
-    if (!invoice) {
-      return res.status(404).json({ error: "Invoice not found" });
-    }
-    res.status(200).json(invoice);
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "Server error" });
-  }
-});
-
-// Cập nhật thông tin phiếu nhập
+// Cập nhật thông tin hóa đơn
 router.put("/invoices/:id", async (req, res) => {
-  // Xử lý cập nhật phiếu nhập ở đây
+  // Xử lý cập nhật hóa đơn ở đây
 });
 
-// Xóa phiếu nhập
+// Xóa hóa đơn
 router.delete("/invoices/:id", async (req, res) => {
-  // Xử lý xóa phiếu nhập ở đây
+  // Xử lý xóa hóa đơn ở đây
 });
 
 module.exports = router;

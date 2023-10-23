@@ -117,7 +117,28 @@ export const navItems = [
   },
 ];
 
-// branding data
+export const suppliersData = [
+  {
+    id: 1,
+    name: "Quà Tặng Ino Vina",
+  },
+  {
+    id: 2,
+    name: "Xưởng Quà Việt",
+  },
+  {
+    id: 3,
+    name: "Quà Tặng Sài Gòn Phú Kim",
+  },
+  {
+    id: 4,
+    name: "Quà Tặng EPVINA",
+  },
+  {
+    id: 5,
+    name: "Quà Tặng Thịnh Đạt",
+  },
+];
 
 // categories data
 export const categoriesData = [
@@ -135,7 +156,6 @@ export const categoriesData = [
   },
 ];
 
-
 export const footerProductLinks = [
   {
     name: "Tất Cả Sản Phẩm",
@@ -144,7 +164,7 @@ export const footerProductLinks = [
   {
     name: "Bán Chạy",
     link: "/best-selling",
-  }
+  },
 ];
 
 export const footercompanyLinks = [
@@ -157,7 +177,7 @@ export const footercompanyLinks = [
 export const footerSupportLinks = [
   {
     name: "FAQ",
-    link: "/faq"
+    link: "/faq",
   },
 ];
 
@@ -168,32 +188,65 @@ export const universitiesData = [
     subTitle: "",
     image_Url:
       "https://scontent.fsgn4-1.fna.fbcdn.net/v/t39.30808-6/341544843_6392228310796947_5201507235602115783_n.jpg?_nc_cat=101&ccb=1-7&_nc_sid=49d041&_nc_ohc=WatJGgXyIr4AX8xaeN4&_nc_ht=scontent.fsgn4-1.fna&oh=00_AfBqbyVuVFBalTmywCWzeohscBRr0qZUPSXugxTl7njbDw&oe=651C6418",
+    description: "ABC",
   },
   {
-    id: 1,
+    id: 2,
     title: "Trường Công Nghệ Thông Tin Và Truyền Thông",
     subTitle: "",
     image_Url:
       "https://events.ctu.edu.vn/images/com_eventbooking/locations/KCNTT.jpg",
+    description: "ABC",
   },
   {
-    id: 1,
+    id: 3,
     title: "Trường Kinh Tế",
     subTitle: "",
     image_Url:
       "https://cse.ctu.edu.vn/images/upload/ktnn/hinhanh/KHOA-KTNN.jpg",
+    description: "ABC",
   },
   {
-    id: 1,
+    id: 4,
     title: "Trường Nông Nghiệp",
     subTitle: "",
     image_Url:
       "https://lh3.googleusercontent.com/-yfEEBI863No/TX9PqY4aZDI/AAAAAAAAI5A/lVHdbyzpdPY/w1200-h630-p-k-no-nu/IMG_3460.JPG",
+    description: "ABC",
   },
   {
-    id: 1,
+    id: 5,
     title: "Trường Thủy Sản",
     subTitle: "",
     image_Url: "https://caf.ctu.edu.vn/images/upload/2023/TruongTS.jpg",
+    description: "ABC",
+  },
+];
+
+export const navBarList = [
+  {
+    id: 1,
+    title: "Trang Chủ",
+    link: "/",
+  },
+  {
+    id: 2,
+    title: "Sản Phẩm",
+    link: "/products",
+  },
+  {
+    id: 3,
+    title: "Bán Chạy",
+    link: "/best-selling",
+  },
+  {
+    id: 4,
+    title: "Sự Kiện",
+    link: "/events",
+  },
+  {
+    id: 5,
+    title: "FAQ",
+    link: "/faq",
   },
 ];

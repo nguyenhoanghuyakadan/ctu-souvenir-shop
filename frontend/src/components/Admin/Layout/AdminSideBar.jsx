@@ -20,7 +20,7 @@ const AdminSideBar = ({ active }) => {
             color={`${active === 1 ? "crimson" : "#555"}`}
           />
           <h5
-            className={`hidden 800px:block pl-2 text-[18px] font-[400] ${
+            className={`text-xl font-normal ${
               active === 1 ? "text-[crimson]" : "text-[#555]"
             }`}
           >
@@ -36,7 +36,7 @@ const AdminSideBar = ({ active }) => {
             color={`${active === 2 ? "crimson" : "#555"}`}
           />
           <h5
-            className={`hidden 800px:block pl-2 text-[18px] font-[400] ${
+            className={`text-xl font-normal ${
               active === 2 ? "text-[crimson]" : "text-[#555]"
             }`}
           >
@@ -52,7 +52,7 @@ const AdminSideBar = ({ active }) => {
             color={`${active === 3 ? "crimson" : "#555"}`}
           />
           <h5
-            className={`hidden 800px:block pl-2 text-[18px] font-[400] ${
+            className={`text-xl font-normal ${
               active === 3 ? "text-[crimson]" : "text-[#555]"
             }`}
           >
@@ -68,7 +68,7 @@ const AdminSideBar = ({ active }) => {
             color={`${active === 4 ? "crimson" : "#555"}`}
           />
           <h5
-            className={`hidden 800px:block pl-2 text-[18px] font-[400] ${
+            className={`text-xl font-normal ${
               active === 4 ? "text-[crimson]" : "text-[#555]"
             }`}
           >
@@ -84,7 +84,7 @@ const AdminSideBar = ({ active }) => {
             color={`${active === 5 ? "crimson" : "#555"}`}
           />
           <h5
-            className={`hidden 800px:block pl-2 text-[18px] font-[400] ${
+            className={`text-xl font-normal ${
               active === 5 ? "text-[crimson]" : "text-[#555]"
             }`}
           >
@@ -100,7 +100,7 @@ const AdminSideBar = ({ active }) => {
             color={`${active === 6 ? "crimson" : "#555"}`}
           />
           <h5
-            className={`hidden 800px:block pl-2 text-[18px] font-[400] ${
+            className={`text-xl font-normal ${
               active === 6 ? "text-[crimson]" : "text-[#555]"
             }`}
           >
@@ -121,7 +121,7 @@ const AdminSideBar = ({ active }) => {
             color={`${active === 7 ? "crimson" : "#555"}`}
           />
           <h5
-            className={`hidden 800px:block pl-2 text-[18px] font-[400] ${
+            className={`text-xl font-normal ${
               active === 7 ? "text-[crimson]" : "text-[#555]"
             }`}
           >
@@ -140,7 +140,7 @@ const AdminSideBar = ({ active }) => {
             color={`${active === 8 ? "crimson" : "#555"}`}
           />
           <h5
-            className={`hidden 800px:block pl-2 text-[18px] font-[400] ${
+            className={`text-xl font-normal ${
               active === 8 ? "text-[crimson]" : "text-[#555]"
             }`}
           >

@@ -1,16 +1,16 @@
 import React from "react";
 import DashboardHeader from "../../components/Shop/Layout/DashboardHeader";
 import Footer from "../../components/Layout/Footer";
-import OrderDetails from "../../components/Shop/OrderDetails";
+import InvoiceDetail from "../../components/Shop/InvoiceDetail";
 
-const ShopOrderDetails = () => {
+const ShopInvoiceDetail = () => {
   return (
     <div>
       <DashboardHeader />
-      <OrderDetails />
+      <InvoiceDetail />
       <Footer />
     </div>
   );
 };
 
-export default ShopOrderDetails;
+export default ShopInvoiceDetail;

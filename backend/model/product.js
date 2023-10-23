@@ -22,10 +22,11 @@ const productSchema = new mongoose.Schema({
   },
   discountPrice: {
     type: Number,
+    default: 0,
   },
   stock: {
     type: Number,
-    default: 0
+    default: 0,
   },
   images: [
     {
@@ -39,14 +40,14 @@ const productSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "Invoice",
       },
-      // quantity: {
-      //   type: Number,
-      //   required: true,
-      // },
-      // price: {
-      //   type: Number,
-      //   required: true,
-      // },
+      quantity: {
+        type: Number,
+        required: true,
+      },
+      price: {
+        type: Number,
+        required: true,
+      },
     },
   ],
 
@@ -88,6 +89,10 @@ const productSchema = new mongoose.Schema({
   createdAt: {
     type: Date,
     default: Date.now(),
+  },
+  isActive: {
+    type: Boolean,
+    default: false,
   },
 });
 

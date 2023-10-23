@@ -4,7 +4,7 @@ import React, { useEffect } from "react";
 import { AiOutlineEye, AiOutlineDelete } from "react-icons/ai";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { getAllInvoicesShop } from "../../redux/actions/invoice"; // Import action for getting invoices
+import { getAllInvoicesShop } from "../../redux/actions/invoice";
 import Loader from "../Layout/Loader";
 import currency from "currency-formatter";
 
@@ -15,53 +15,38 @@ const AllInvoices = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(getAllInvoicesShop(seller._id)); // Fetch invoices for the shop
-    console.log(invoices);
-  }, [dispatch, seller._id]);
+    dispatch(getAllInvoicesShop(seller._id));
+  }, [dispatch]);
+
+  console.log(invoices);
 
   const columns = [
-    { field: "id", headerName: "ID Phiếu", minWidth: 150, flex: 0.7 },
+    { field: "id", headerName: "Số hóa đơn", minWidth: 150, flex: 0.7 },
+    { field: "date", headerName: "Ngày nhập", minWidth: 150, flex: 0.7 },
+    { field: "type", headerName: "Loại hóa đơn", minWidth: 150, flex: 0.7 }, // Add "Loại hóa đơn" column
     {
-      field: "name",
-      headerName: "Sản phẩm",
-      minWidth: 180,
-      flex: 1.4,
-    },
-    {
-      field: "Stock",
-      headerName: "Số lượng",
-      type: "number",
+      field: "view",
+      headerName: "Xem",
+      sortable: false,
       minWidth: 100,
-      flex: 0.6,
-    },
-    {
-      field: "price",
-      headerName: "Giá",
-      minWidth: 100,
-      flex: 0.6,
-    },
-    {
-      field: "supplier",
-      headerName: "Nhà cung cấp",
-      minWidth: 120,
-      flex: 0.7,
+      flex: 0.3,
+      renderCell: (params) => (
+        <Link to={`/invoice/${params.row.id}`}>
+          <Button>
+            <AiOutlineEye />
+          </Button>
+        </Link>
+      ),
     },
   ];
 
-  const rows = [];
-  invoices &&
-    invoices.forEach((item) => {
-      console.log(item.product);
-      rows.push({
+  const rows = invoices
+    ? invoices.map((item) => ({
         id: item._id,
-        name: item.product.name,
-        Stock: item.quantity,
-        price: `${currency.format(item.price, {
-          code: "VND",
-        })}`,
-        supplier: item.supplier,
-      });
-    });
+        date: item.date,
+        type: item.type, // Add "type" field to rows
+      }))
+    : [];
 
   return (
     <>

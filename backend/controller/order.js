@@ -6,6 +6,7 @@ const { isAuthenticated, isSeller, isAdmin } = require("../middleware/auth");
 const Order = require("../model/order");
 const Shop = require("../model/shop");
 const Product = require("../model/product");
+const Invoice = require("../model/invoice");
 
 // create new order
 router.post(
@@ -34,6 +35,7 @@ router.post(
           shippingAddress,
           user,
           totalPrice,
+          shop: shopId,
           paymentInfo,
         });
         orders.push(order);
@@ -96,9 +98,10 @@ router.put(
   catchAsyncErrors(async (req, res, next) => {
     try {
       const order = await Order.findById(req.params.id);
-
       if (!order) {
-        return next(new ErrorHandler("Đơn hàng không tìm thấy với ID này", 400));
+        return next(
+          new ErrorHandler("Đơn hàng không tìm thấy với ID này", 400)
+        );
       }
       if (req.body.status === "Transferred to delivery partner") {
         order.cart.forEach(async (o) => {
@@ -111,8 +114,23 @@ router.put(
       if (req.body.status === "Delivered") {
         order.deliveredAt = Date.now();
         order.paymentInfo.status = "Succeeded";
-        const serviceCharge = order.totalPrice * .10;
+        const serviceCharge = order.totalPrice * 0.1;
         await updateSellerInfo(order.totalPrice - serviceCharge);
+
+        // Tạo một invoice mới
+        const newInvoice = new Invoice({
+          type: "Sale",
+          products: order.cart.map((item) => ({
+            product: item._id,
+            quantity: item.qty,
+            price: item.price,
+          })),
+          shop: order.shop,
+          customer: order.user,
+          date: order.createdAt,
+        });
+
+        await newInvoice.save({ validateBeforeSave: false });
       }
 
       await order.save({ validateBeforeSave: false });
@@ -133,7 +151,7 @@ router.put(
 
       async function updateSellerInfo(amount) {
         const seller = await Shop.findById(req.seller.id);
-        
+
         seller.availableBalance = amount;
 
         await seller.save();
@@ -152,7 +170,9 @@ router.put(
       const order = await Order.findById(req.params.id);
 
       if (!order) {
-        return next(new ErrorHandler("Đơn hàng không tìm thấy với ID này", 400));
+        return next(
+          new ErrorHandler("Đơn hàng không tìm thấy với ID này", 400)
+        );
       }
 
       order.status = req.body.status;
@@ -179,7 +199,9 @@ router.put(
       const order = await Order.findById(req.params.id);
 
       if (!order) {
-        return next(new ErrorHandler("Không tìm thấy đơn đặt hàng với id này", 400));
+        return next(
+          new ErrorHandler("Không tìm thấy đơn đặt hàng với id này", 400)
+        );
       }
 
       order.status = req.body.status;

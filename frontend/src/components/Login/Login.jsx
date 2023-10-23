@@ -25,9 +25,9 @@ const Login = () => {
         { withCredentials: true }
       )
       .then((res) => {
-        toast.success("Login Success!");
+        toast.success("Đăng nhập thành công!");
         navigate("/");
-        window.location.reload(true); 
+        window.location.reload(true);
       })
       .catch((err) => {
         toast.error(err.response.data.message);
@@ -122,20 +122,20 @@ const Login = () => {
             <div>
               <button
                 type="submit"
-                className="group relative w-full h-[40px] flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700"
+                className="group relative w-full h-[40px] flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md bg-blue hover:bg-blue"
               >
                 Submit
               </button>
             </div>
             <div className={`${styles.noramlFlex} w-full`}>
               <h4>Bạn chưa có tài khoản?</h4>
-              <Link to="/sign-up" className="text-blue-600 pl-2">
+              <Link to="/sign-up" className="text-blue pl-2 hover:text-black">
                 Đăng ký tại đây!
               </Link>
             </div>
             <div className={`${styles.noramlFlex} w-full`}>
               <h4>Quay lại trang chủ?</h4>
-              <Link to="/" className="text-blue-600 pl-2">
+              <Link to="/" className="text-blue pl-2 hover:text-black">
                 Trang chủ
               </Link>
             </div>

@@ -129,9 +129,7 @@ const CreateProduct = () => {
         </div>
         <br />
         <div>
-          <label className="pb-2">
-            Giá gốc<span className="text-red-500">*</span>
-          </label>
+          <label className="pb-2">Giá gốc</label>
           <input
             type="number"
             name="price"
@@ -143,7 +141,9 @@ const CreateProduct = () => {
         </div>
         <br />
         <div>
-          <label className="pb-2">Giá khuyến mãi</label>
+          <label className="pb-2">
+            Giá khuyến mãi <span className="text-red-500">*</span>
+          </label>
           <input
             type="number"
             name="price"

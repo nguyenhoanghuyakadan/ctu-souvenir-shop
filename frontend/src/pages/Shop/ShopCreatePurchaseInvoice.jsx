@@ -1,22 +1,22 @@
 import React from "react";
 import DashboardHeader from "../../components/Shop/Layout/DashboardHeader";
 import DashboardSideBar from "../../components/Shop/Layout/DashboardSideBar";
-import CreateInvoice from "../../components/Shop/CreateInvoice";
+import CreatePurchaseInvoice from "../../components/Shop/CreatePurchaseInvoice";
 
-const ShopCreateInvoice = () => {
+const ShopCreatePurchaseInvoice = () => {
   return (
     <div>
       <DashboardHeader />
       <div className="flex items-center justify-between w-full">
-        <div className="w-1/5">
-          <DashboardSideBar active={12} />
+        <div className="w-[330px]">
+          <DashboardSideBar active={13} />
         </div>
         <div className="w-full justify-center flex">
-          <CreateInvoice />
+          <CreatePurchaseInvoice />
         </div>
       </div>
     </div>
   );
 };
 
-export default ShopCreateInvoice;
+export default ShopCreatePurchaseInvoice;

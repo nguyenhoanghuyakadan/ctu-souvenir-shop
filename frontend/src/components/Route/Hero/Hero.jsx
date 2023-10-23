@@ -1,33 +1,61 @@
 import React from "react";
 import { Link } from "react-router-dom";
-// import { useSelector } from "react-redux";
+import styles from "../../../styles/styles";
+import { useSelector } from "react-redux";
 
 const Hero = () => {
-  // const { isSeller } = useSelector((state) => state.seller);
+  const { isSeller } = useSelector((state) => state.seller);
   return (
     <div
-      className="hero min-h-screen"
+      className={`hero relative min-h-[70vh] 800px:min-h-[80vh] w-full bg-no-repeat ${styles.noramlFlex}`}
       style={{
         backgroundImage: "url(https://i.imgur.com/hnZELd5.jpg)",
       }}
     >
-      <div className="hero-overlay bg-opacity-60"></div>
-      <div className="hero-content text-center text-neutral-content">
-        <div className="max-w-md">
-          <h1 className="mb-5 text-5xl font-bold">
-            Chào mừng bạn đến cửa hàng lưu niệm Đại học Cần Thơ!
-          </h1>
-          <p className="mb-5">
-            Tại đây, chúng tôi tự hào giới thiệu những sản phẩm lưu niệm độc
-            đáo, đánh dấu những kỷ niệm tuyệt vời của bạn tại trường. Hãy khám
-            phá và chia sẻ niềm tự hào với chúng tôi.
-          </p>
+      <div
+        className={`${styles.section} hero-content text-neutral-content w-[90%] 800px:w-[60%]`}
+      >
+        <h1
+          className={`text-[35px] leading-[1.2] 800px:text-[60px] text-[#3d3a3a] font-[600] capitalize`}
+        >
+          CTU Souvenir Shop <br />
+        </h1>
+        <p className="pt-5 text-[16px] font-[Poppins] font-[400] text-[#000000ba]">
+          Là dịch vụ thương mại điện tử. Nơi bạn có thể mua những sản phẩm mà
+          mình yêu thích với giá cả hợp lý. <br /> Ngoài ra bạn cũng có thể trở
+          thành một người kinh doanh trên hệ thống của chúng tôi . <br /> Hãy
+          trải nghiệm ngay thôi nào.
+        </p>
+        <div className="flex justify-evenly">
           <Link to="/products">
-            <button className="btn m-4">Mua ngay</button>
+            <div className={`${styles.button} mt-5`}>
+              <span className="text-[#fff] font-[Poppins] text-[18px]">
+                Mua ngay
+              </span>
+            </div>
           </Link>
-          <Link to="/shop-create">
-            <button className="btn m-4">Đăng ký làm người bán</button>
-          </Link>
+          {/* <Link to="/shop-create" >
+            <div className={`${styles.button} mt-5`}>
+                 <span className="text-[#fff] font-[Poppins] text-[18px]">
+                    Seller
+                 </span>
+            </div>
+        </Link> */}
+          {/* <Link to={`${isSeller ? "/dashboard" : "/shop-create"}`}>
+              <h1 className="text-[#fff] flex items-center">
+                {isSeller ? "Go Dashboard" : "Become Seller"}{" "}
+                <IoIosArrowForward className="ml-1" />
+              </h1>
+            </Link> */}
+          {isSeller && isSeller ? null : (
+            <Link to="/shop-create">
+              <div className={`${styles.button} mt-5`}>
+                <span className="text-[#fff] font-[Poppins] text-[18px]">
+                  Seller
+                </span>
+              </div>
+            </Link>
+          )}
         </div>
       </div>
     </div>

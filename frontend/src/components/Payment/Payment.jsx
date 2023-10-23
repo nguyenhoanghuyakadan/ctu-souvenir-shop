@@ -89,7 +89,7 @@ const Payment = () => {
       .then((res) => {
         setOpen(false);
         navigate("/order/success");
-        toast.success("Order successful!");
+        toast.success("Đặt hàng thành công!");
         localStorage.setItem("cartItems", JSON.stringify([]));
         localStorage.setItem("latestOrder", JSON.stringify([]));
         window.location.reload();
@@ -139,7 +139,7 @@ const Payment = () => {
             .then((res) => {
               setOpen(false);
               navigate("/order/success");
-              toast.success("Order successful!");
+              toast.success("Đặt hàng thành công!");
               localStorage.setItem("cartItems", JSON.stringify([]));
               localStorage.setItem("latestOrder", JSON.stringify([]));
               window.location.reload();
@@ -169,7 +169,7 @@ const Payment = () => {
       .then((res) => {
         setOpen(false);
         navigate("/order/success");
-        toast.success("Order successful!");
+        toast.success("Đặt hàng thành công!");
         localStorage.setItem("cartItems", JSON.stringify([]));
         localStorage.setItem("latestOrder", JSON.stringify([]));
         window.location.reload();

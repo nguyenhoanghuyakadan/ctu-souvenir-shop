@@ -1,41 +1,60 @@
 import React from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { categoriesData } from "../../../static/data";
+import { useNavigate } from "react-router-dom";
+import { universitiesData, categoriesData } from "../../../static/data";
+import styles from "../../../styles/styles";
 
 const Categories = () => {
   const navigate = useNavigate();
   return (
-    <div>
-      <div className="m-4">
-        <h1 className="font-bold text-4xl text-center">Danh mục sản phẩm</h1>
-      </div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
-        {categoriesData.map((c) => (
-          <Link to={`/products?category=${c.title}`}>
-            <div
-              key={c.id}
-              className="hero"
-              style={{
-                backgroundImage: `url(${c.image_Url})`,
-              }}
-            >
-              <div className="hero-overlay bg-opacity-60"></div>
-              <div className="hero-content text-center text-neutral-content">
-                <div className="max-w-md">
-                  <h1 className="mb-5 text-5xl font-bold">{c.title}</h1>
-                  {/* <p className="mb-5">
-                Provident cupiditate voluptatem et in. Quaerat fugiat ut
-                assumenda excepturi exercitationem quasi. In deleniti eaque
-                aut repudiandae et a id nisi.
-              </p> */}
-                  {/* <button className="btn btn-primary">Get Started</button> */}
+    <>
+      <div className={`${styles.section} hidden sm:block`}>
+        {/* <div
+          className={`branding my-4 flex justify-between w-full p-3 rounded-md`}
+        >
+          {universitiesData &&
+            universitiesData.map((i, index) => (
+              <div className="flex items-start" key={index}>
+                {i.icon}
+                <div className="px-3">
+                  <h3 className="font-bold text-sm md:text-base">{i.title}</h3>
+                  <p className="text-xs md:text-sm">{i.description}</p>
                 </div>
               </div>
-            </div>
-          </Link>
-        ))}
+            ))}
+        </div> */}
+        <div className={`${styles.heading}`}>
+          <h1>Danh mục sản phẩm</h1>
+        </div>
       </div>
-    </div>
+
+      <div
+        className={`${styles.section} bg-white p-6 rounded-lg mb-12`}
+        id="categories"
+      >
+        <div className="grid grid-cols-1 gap-[5px] md:grid-cols-2 md:gap-[10px] lg:grid-cols-4 lg:gap-[20px] xl:grid-cols-5 xl:gap-[30px]">
+          {categoriesData &&
+            categoriesData.map((i) => {
+              const handleSubmit = (i) => {
+                navigate(`/products?category=${i.title}`);
+              };
+              return (
+                <div
+                  className="w-full h-[100px] flex items-center justify-between cursor-pointer overflow-hidden"
+                  key={i.id}
+                  onClick={() => handleSubmit(i)}
+                >
+                  <h5 className={`text-[18px] leading-[1.3]`}>{i.title}</h5>
+                  <img
+                    src={i.image_Url}
+                    className="w-[120px] object-cover"
+                    alt=""
+                  />
+                </div>
+              );
+            })}
+        </div>
+      </div>
+    </>
   );
 };
 

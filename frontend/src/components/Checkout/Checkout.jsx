@@ -16,6 +16,8 @@ const Checkout = () => {
   const [city, setCity] = useState("");
   const [userInfo, setUserInfo] = useState(false);
   const [address1, setAddress1] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState(null);
+
   const [address2, setAddress2] = useState("");
   const [zipCode, setZipCode] = useState(null);
   const [couponCode, setCouponCode] = useState("");
@@ -28,31 +30,32 @@ const Checkout = () => {
   }, []);
 
   const paymentSubmit = () => {
-   if(address1 === ""|| country === "" || city === ""){
-      toast.error("Vui lòng chọn địa chỉ giao hàng!")
-   } else{
-    const shippingAddress = {
-      address1,
-      // address2,
-      // zipCode,
-      country,
-      city,
-    };
+    if (address1 === "" || country === "" || city === "") {
+      toast.error("Vui lòng chọn địa chỉ giao hàng!");
+    } else {
+      const shippingAddress = {
+        address1,
+        phoneNumber,
+        // address2,
+        // zipCode,
+        country,
+        city,
+      };
 
-    const orderData = {
-      cart,
-      totalPrice,
-      subTotalPrice,
-      shipping,
-      discountPrice,
-      shippingAddress,
-      user,
+      const orderData = {
+        cart,
+        totalPrice,
+        subTotalPrice,
+        shipping,
+        discountPrice,
+        shippingAddress,
+        user,
+      };
+
+      // update local storage with the updated orders array
+      localStorage.setItem("latestOrder", JSON.stringify(orderData));
+      navigate("/payment");
     }
-
-    // update local storage with the updated orders array
-    localStorage.setItem("latestOrder", JSON.stringify(orderData));
-    navigate("/payment");
-   }
   };
 
   const subTotalPrice = cart.reduce(
@@ -60,7 +63,7 @@ const Checkout = () => {
     0
   );
 
-  // shipping cost variable
+  // this is shipping cost variable
   const shipping = subTotalPrice * 0.02;
 
   const handleSubmit = async (e) => {
@@ -117,6 +120,8 @@ const Checkout = () => {
             setUserInfo={setUserInfo}
             address1={address1}
             setAddress1={setAddress1}
+            phoneNumber={phoneNumber}
+            setPhoneNumber={setPhoneNumber}
             // address2={address2}
             setAddress2={setAddress2}
             // zipCode={zipCode}
@@ -142,7 +147,7 @@ const Checkout = () => {
         <h5 className="text-white">Thanh toán</h5>
       </div>
     </div>
-  );  
+  );
 };
 
 const ShippingInfo = ({
@@ -155,6 +160,8 @@ const ShippingInfo = ({
   setUserInfo,
   address1,
   setAddress1,
+  phoneNumber,
+  setPhoneNumber,
   // address2,
   // setAddress2,
   // zipCode,
@@ -192,7 +199,8 @@ const ShippingInfo = ({
             <input
               type="number"
               required
-              value={user && user.phoneNumber}
+              value={phoneNumber}
+              onChange={(e) => setPhoneNumber(e.target.value)}
               className={`${styles.input} !w-[95%]`}
             />
           </div>
@@ -206,8 +214,8 @@ const ShippingInfo = ({
               className={`${styles.input}`}
             />
           </div> */}
-           <div className="w-[50%]">
-           <label className="block pb-2">Tỉnh, thành phố:</label>
+          <div className="w-[50%]">
+            <label className="block pb-2">Tỉnh, thành phố:</label>
             <select
               className="w-[95%] border h-[40px] rounded-[5px]"
               value={city}
@@ -224,7 +232,6 @@ const ShippingInfo = ({
                 ))}
             </select>
           </div>
-          
         </div>
 
         <div className="w-full flex pb-3">
@@ -295,7 +302,8 @@ const ShippingInfo = ({
         className="text-[18px] cursor-pointer inline-block"
         onClick={() => setUserInfo(!userInfo)}
       >
-        Chọn địa chỉ mà bạn đã lưu: <h5 className="text-[#027df0fd]">(Nhấn vào đây để chọn)</h5> 
+        Chọn địa chỉ mà bạn đã lưu:{" "}
+        <h5 className="text-[#027df0fd]">(Nhấn vào đây để chọn)</h5>
       </h5>
       {userInfo && (
         <div>
@@ -336,22 +344,37 @@ const CartData = ({
     <div className="w-full bg-[#fff] rounded-md p-5 pb-8">
       <div className="flex justify-between">
         <h3 className="text-[16px] font-[400] text-[#000000a4]">Tổng tiền:</h3>
-        <h5 className="text-[18px] font-[600]">{currency.format(subTotalPrice, { code: "VND" })}</h5>
+        <h5 className="text-[18px] font-[600]">
+          {currency.format(subTotalPrice, { code: "VND" })}
+        </h5>
       </div>
       <br />
       <div className="flex justify-between">
-        <h3 className="text-[16px] font-[400] text-[#000000a4]">Phí giao hàng:</h3>
-        <h5 className="text-[18px] font-[600]">{currency.format(shipping.toFixed(2), { code: "VND" })}</h5>
-      </div>  
+        <h3 className="text-[16px] font-[400] text-[#000000a4]">
+          Phí giao hàng:
+        </h3>
+        <h5 className="text-[18px] font-[600]">
+          {currency.format(shipping.toFixed(2), { code: "VND" })}
+        </h5>
+      </div>
       <br />
       <div className="flex justify-between border-b pb-3">
         <h3 className="text-[16px] font-[400] text-[#000000a4]">Voucher:</h3>
         <h5 className="text-[18px] font-[600]">
-          -{discountPercentenge ? "" + `${currency.format(discountPercentenge.toString(), { code: "VND" })}` : null}
+          -
+          {discountPercentenge
+            ? "" +
+              `${currency.format(discountPercentenge.toString(), {
+                code: "VND",
+              })}`
+            : null}
         </h5>
       </div>
       <h3 className="text-[16px] font-[400] text-[#000000a4]">Tổng cộng:</h3>
-      <h5 className="text-[18px] font-[600] text-end pt-3"> {currency.format(totalPrice, { code: "VND" })}</h5>
+      <h5 className="text-[18px] font-[600] text-end pt-3">
+        {" "}
+        {currency.format(totalPrice, { code: "VND" })}
+      </h5>
       <br />
       <form onSubmit={handleSubmit}>
         <input

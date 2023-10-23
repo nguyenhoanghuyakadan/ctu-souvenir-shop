@@ -17,7 +17,7 @@ import { useSelector } from "react-redux";
 
 const ProfileSidebar = ({ setActive, active }) => {
   const navigate = useNavigate();
- const {user} = useSelector((state) => state.user);
+  const { user } = useSelector((state) => state.user);
   const logoutHandler = () => {
     axios
       .get(`${server}/user/logout`, { withCredentials: true })
@@ -42,7 +42,7 @@ const ProfileSidebar = ({ setActive, active }) => {
             active === 1 ? "text-[red]" : ""
           } 800px:block hidden`}
         >
-         Trang cá nhân
+          Trang cá nhân
         </span>
       </div>
       <div
@@ -55,7 +55,7 @@ const ProfileSidebar = ({ setActive, active }) => {
             active === 2 ? "text-[red]" : ""
           } 800px:block hidden`}
         >
-         Đơn đặt hàng
+          Đơn đặt hàng
         </span>
       </div>
       <div

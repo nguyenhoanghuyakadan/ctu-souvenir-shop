@@ -62,9 +62,10 @@ import axios from "axios";
 import { server } from "./server";
 import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
-import ShopCreateInvoice from "./pages/Shop/ShopCreateInvoice";
+import ShopCreatePurchaseInvoice from "./pages/Shop/ShopCreatePurchaseInvoice";
 import { getAllInvoices } from "./redux/actions/invoice";
 import ShopAllInvoices from "./pages/Shop/ShopAllInvoices";
+import ShopInvoiceDetail from "./pages/Shop/ShopInvoiceDetail";
 
 const App = () => {
   const [stripeApikey, setStripeApiKey] = useState("");
@@ -194,10 +195,10 @@ const App = () => {
           }
         />
         <Route
-          path="/dashboard-create-invoice"
+          path="/dashboard-create-purchase-invoice"
           element={
             <SellerProtectedRoute>
-              <ShopCreateInvoice />
+              <ShopCreatePurchaseInvoice />
             </SellerProtectedRoute>
           }
         />
@@ -219,6 +220,15 @@ const App = () => {
         />
 
         <Route
+          path="/invoice/:id"
+          element={
+            <SellerProtectedRoute>
+              <ShopInvoiceDetail />
+            </SellerProtectedRoute>
+          }
+        />
+
+        <Route
           path="/order/:id"
           element={
             <SellerProtectedRoute>
@@ -226,6 +236,16 @@ const App = () => {
             </SellerProtectedRoute>
           }
         />
+
+        <Route
+          path="/order/:id"
+          element={
+            <SellerProtectedRoute>
+              <ShopOrderDetails />
+            </SellerProtectedRoute>
+          }
+        />
+
         <Route
           path="/dashboard-products"
           element={
@@ -344,7 +364,7 @@ const App = () => {
       </Routes>
       <ToastContainer
         position="bottom-center"
-        autoClose={5000}
+        autoClose={10000}
         hideProgressBar={false}
         newestOnTop={false}
         closeOnClick
@@ -352,7 +372,7 @@ const App = () => {
         pauseOnFocusLoss
         draggable
         pauseOnHover
-        theme="dark"
+        theme="white"
       />
     </BrowserRouter>
   );
