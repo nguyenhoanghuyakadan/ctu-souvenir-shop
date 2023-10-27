@@ -1,12 +1,11 @@
 import { Button } from "@material-ui/core";
 import { DataGrid } from "@material-ui/data-grid";
 import React, { useEffect } from "react";
-import { AiOutlineEye, AiOutlineDelete } from "react-icons/ai";
+import { AiOutlineEye } from "react-icons/ai";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { getAllInvoicesShop } from "../../redux/actions/invoice";
 import Loader from "../Layout/Loader";
-import currency from "currency-formatter";
 
 const AllInvoices = () => {
   const { invoices, isLoading } = useSelector((state) => state.invoices);
@@ -18,12 +17,16 @@ const AllInvoices = () => {
     dispatch(getAllInvoicesShop(seller._id));
   }, [dispatch]);
 
-  console.log(invoices);
-
   const columns = [
-    { field: "id", headerName: "Số hóa đơn", minWidth: 150, flex: 0.7 },
+    { field: "id", hide: true },
     { field: "date", headerName: "Ngày nhập", minWidth: 150, flex: 0.7 },
-    { field: "type", headerName: "Loại hóa đơn", minWidth: 150, flex: 0.7 }, // Add "Loại hóa đơn" column
+    {
+      field: "invoiceNumber",
+      headerName: "Số hóa đơn",
+      minWidth: 150,
+      flex: 0.7,
+    },
+    { field: "type", headerName: "Loại hóa đơn", minWidth: 150, flex: 0.7 },
     {
       field: "view",
       headerName: "Xem",
@@ -43,8 +46,9 @@ const AllInvoices = () => {
   const rows = invoices
     ? invoices.map((item) => ({
         id: item._id,
+        invoiceNumber: item.invoiceNumber,
         date: item.date,
-        type: item.type, // Add "type" field to rows
+        type: item.type,
       }))
     : [];
 

@@ -112,7 +112,6 @@ const ProductDetails = ({ data }) => {
     }
   };
 
-
   return (
     <div className="bg-white">
       {data ? (
@@ -150,111 +149,68 @@ const ProductDetails = ({ data }) => {
               </div>
               <div className="w-full 800px:w-[50%] pt-5">
                 <h1 className={`${styles.productTitle}`}>{data.name}</h1>
-                <div className="flex">
-                <p>Tag: #<i className="text-[#242e8a] mr-4 ">{data.tags}</i></p>
-                <p>Thể loại: <i className="text-[#8a2424] ">{data.category}</i></p>
+                <div>
+                  Thể loại: <i className="text-error">{data.category}</i>
                 </div>
-                
-                 <span className="font-[500] text-[17px] text-[#f1055c]">
-              {data?.sold_out} đã bán
-            </span>
-                <div className="flex pt-3">
-                  <h4 className={`${styles.productDiscountPrice} mt-5 !text-3xl font-bol `}>
-                    {`${currency.format(data.discountPrice, { code: "VND" })}`}
-                  </h4>
-                  <h3 className={`${styles.price}`}>
-                    {data.originalPrice
-                      ? `${currency.format(data.originalPrice, {
-                          code: "VND",
-                        })}`
-                      : null}
-                  </h3>
+
+                <span className="font-bold text-success">
+                  {data?.sold_out} đã bán
+                </span>
+                <div className="text-xl font-bold">
+                  {currency.format(data.originalPrice, { code: "VND" })}
                 </div>
 
                 <div className="flex items-center mt-12 justify-between pr-3">
-                  {/* <div>
-                    <button
-                      className="bg-gradient-to-r from-teal-400 to-teal-500 text-white font-bold rounded-1 px-4 py-2 shadow-lg hover:opacity-75 transition duration-300 ease-in-out"
-                      onClick={decrementCount}
-                    >
-                      -
-                    </button>
-                    <span className="bg-gray-200 text-gray-800 font-medium px-6 py-[11px]">
-                      {count}
-                    </span>
-                    <button
-                      className="bg-gradient-to-r from-teal-400 to-teal-500 text-white font-bold rounded-1 px-4 py-2 shadow-lg hover:opacity-75 transition duration-300 ease-in-out"
-                      onClick={incrementCount}
-                    >
-                      +
-                    </button>
-                  </div> */}
-                  {/* <div>
-                    {click ? (
-                      <AiFillHeart
-                        size={30}
-                        className="cursor-pointer"
-                        onClick={() => removeFromWishlistHandler(data)}
-                        color={click ? "red" : "#333"}
-                        title="Remove from wishlist"
-                      />
-                    ) : (
-                      <AiOutlineHeart
-                        size={30}
-                        className="cursor-pointer"
-                        onClick={() => addToWishlistHandler(data)}
-                        color={click ? "red" : "#333"}
-                        title="Add to wishlist"
-                      />
-                    )}
-                  </div> */}
                   <div className="counter flex items-center text-2xl justify-start">
-                 
-                    <div className="ml-5 shadow-md flex">
-                      <div className="bg-[#0b9780] text-white w-10 flex items-center justify-center rounded-l-lg cursor-pointer"
-                      onClick={decrementCount}>
+                    <div className="shadow-md flex">
+                      <div
+                        className="bg-success text-white w-10 flex items-center justify-center rounded-l-lg cursor-pointer"
+                        onClick={decrementCount}
+                      >
                         -
                       </div>
                       <div className="w-9 flex items-center justify-center border-[1px] border-[#8a4af3]">
-                      {count}
+                        {count}
                       </div>
-                      <div className="bg-[#0b9780] text-white w-10 flex items-center justify-center rounded-r-lg cursor-pointer"
-                      onClick={incrementCount}>
+                      <div
+                        className="bg-success text-white w-10 flex items-center justify-center rounded-r-lg cursor-pointer"
+                        onClick={incrementCount}
+                      >
                         +
                       </div>
                     </div>
                   </div>
                 </div>
                 <div className="flex items-center pt-8">
-                  {" "}
                   <div
-                    className={`${styles.button} !mt-6 !rounded !h-11 flex items-center mr-7`}
+                    className="btn btn-info"
                     onClick={() => addToCartHandler(data._id)}
                   >
-                    <span className="text-white flex items-center">
-                      Thêm vào giỏ <AiOutlineShoppingCart className="ml-1" />
+                    <span className="flex items-center font-bold">
+                      Thêm vào giỏ <AiOutlineShoppingCart size={24} />
                     </span>
                   </div>
-                  <div className="!mt-3 !h-11 flex items-center ">
-                    {click ? (<>
-                      <AiFillHeart
-                        size={40}
-                        className="cursor-pointer"
-                        onClick={() => removeFromWishlistHandler(data)}
-                        color={click ? "red" : "#333"}
-                        title="Xóa khỏi mục yêu thích"
-                      />
-                      <span className="text-xl font-semibold">Đã thích </span>
+                  <div className="flex items-center ">
+                    {click ? (
+                      <>
+                        <AiFillHeart
+                          size={40}
+                          className="cursor-pointer"
+                          onClick={() => removeFromWishlistHandler(data)}
+                          color={click ? "red" : "#333"}
+                          title="Xóa khỏi mục yêu thích"
+                        />
+                        <span className="text-xl font-semibold">Đã thích </span>
                       </>
-                    ) : (<>
-                      <AiOutlineHeart
-                        size={40}
-                        className="cursor-pointer"
-                        onClick={() => addToWishlistHandler(data)}
-                        color={click ? "red" : "#333"}
-                        title="Thêm vào mục yêu thích"
-                      />
-                      
+                    ) : (
+                      <>
+                        <AiOutlineHeart
+                          size={40}
+                          className="cursor-pointer"
+                          onClick={() => addToWishlistHandler(data)}
+                          color={click ? "red" : "#333"}
+                          title="Thêm vào mục yêu thích"
+                        />
                       </>
                     )}
                   </div>
@@ -337,7 +293,7 @@ const ProductDetailsInfo = ({
             }
             onClick={() => setActive(2)}
           >
-            Đánh giá 
+            Đánh giá
           </h5>
           {active === 2 ? (
             <div className={`${styles.active_indicator}`} />
@@ -350,7 +306,7 @@ const ProductDetailsInfo = ({
             }
             onClick={() => setActive(3)}
           >
-           Cửa hàng
+            Cửa hàng
           </h5>
           {active === 3 ? (
             <div className={`${styles.active_indicator}`} />
@@ -377,11 +333,15 @@ const ProductDetailsInfo = ({
                 />
                 <div className="pl-2">
                   <div className="w-full flex items-center">
-                    <h1 className="font-[500] text-xl mr-3">{item.user.name}</h1>
+                    <h1 className="font-[500] text-xl mr-3">
+                      {item.user.name}
+                    </h1>
                     <Ratings rating={data?.ratings} />
                   </div>
-                  <div className="items-center py-3 p-2 ml-2"> <p className="font-[500] text-base">{item.comment}</p></div>
-                 
+                  <div className="items-center py-3 p-2 ml-2">
+                    {" "}
+                    <p className="font-[500] text-base">{item.comment}</p>
+                  </div>
                 </div>
               </div>
             ))}

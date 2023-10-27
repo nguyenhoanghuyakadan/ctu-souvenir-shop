@@ -92,7 +92,6 @@ const InvoiceDetail = () => {
                       ?.discountPrice}
                 </td>
                 <td className="text-right text-gray-700">
-                  $
                   {product.quantity *
                     products.find((p) => p._id === product.product)
                       ?.discountPrice}
@@ -102,7 +101,7 @@ const InvoiceDetail = () => {
         </tbody>
         <tfoot>
           <tr>
-            <td className="text-left font-bold text-gray-700">Total</td>
+            <td className="text-left font-bold text-gray-700">Tổng</td>
             <td className="text-center font-bold text-gray-700"></td>
             <td className="text-center font-bold text-gray-700"></td>
             <td className="text-right font-bold text-gray-700">

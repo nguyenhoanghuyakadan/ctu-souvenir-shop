@@ -14,7 +14,7 @@ const DashboardHeader = () => {
       <div>
       <Link to="/">
              
-              <h1 className="text-[33px] font-bold underline decoration-[#db3f59] hover:decoration-4">CTU Souvenir Shop</h1>
+              <h1 className="text-[33px] font-bold underline decoration-blue hover:decoration-4">CTU Souvenir Shop</h1>
             </Link>
       </div>
       <div className="flex items-center">

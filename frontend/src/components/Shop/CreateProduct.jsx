@@ -16,10 +16,7 @@ const CreateProduct = () => {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [category, setCategory] = useState("");
-  const [tags, setTags] = useState("");
   const [originalPrice, setOriginalPrice] = useState();
-  const [discountPrice, setDiscountPrice] = useState();
-  // const [stock, setStock] = useState();
 
   useEffect(() => {
     if (error) {
@@ -52,10 +49,7 @@ const CreateProduct = () => {
     newForm.append("name", name);
     newForm.append("description", description);
     newForm.append("category", category);
-    newForm.append("tags", tags);
     newForm.append("originalPrice", originalPrice);
-    newForm.append("discountPrice", discountPrice);
-    // newForm.append("stock", stock);
     newForm.append("shopId", seller._id);
     dispatch(createProduct(newForm));
   };
@@ -117,18 +111,6 @@ const CreateProduct = () => {
         </div>
         <br />
         <div>
-          <label className="pb-2">Tags</label>
-          <input
-            type="text"
-            name="tags"
-            value={tags}
-            className="mt-2 appearance-none block w-full px-3 h-[35px] border border-gray-300 rounded-[3px] placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-            onChange={(e) => setTags(e.target.value)}
-            placeholder="Thêm tag cho sản phẩm..."
-          />
-        </div>
-        <br />
-        <div>
           <label className="pb-2">Giá gốc</label>
           <input
             type="number"
@@ -136,37 +118,9 @@ const CreateProduct = () => {
             value={originalPrice}
             className="mt-2 appearance-none block w-full px-3 h-[35px] border border-gray-300 rounded-[3px] placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
             onChange={(e) => setOriginalPrice(e.target.value)}
-            placeholder="Thêm giá gốc của sản phẩm (Gía chưa áp dụng khuyến mãi)!"
+            placeholder="Thêm giá gốc của sản phẩm"
           />
         </div>
-        <br />
-        <div>
-          <label className="pb-2">
-            Giá khuyến mãi <span className="text-red-500">*</span>
-          </label>
-          <input
-            type="number"
-            name="price"
-            value={discountPrice}
-            className="mt-2 appearance-none block w-full px-3 h-[35px] border border-gray-300 rounded-[3px] placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-            onChange={(e) => setDiscountPrice(e.target.value)}
-            placeholder="Giá sản phẩm sau khi áp dụng khuyễn mãi..."
-          />
-        </div>
-        {/* <br />
-        <div>
-          <label className="pb-2">
-            Số lượng sản phẩm <span className="text-red-500">*</span>
-          </label>
-          <input
-            type="number"
-            name="price"
-            value={stock}
-            className="mt-2 appearance-none block w-full px-3 h-[35px] border border-gray-300 rounded-[3px] placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-            onChange={(e) => setStock(e.target.value)}
-            placeholder="Thêm số lượng sản phẩm..."
-          />
-        </div> */}
         <br />
         <div>
           <label className="pb-2">

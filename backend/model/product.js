@@ -13,16 +13,9 @@ const productSchema = new mongoose.Schema({
     type: String,
     required: [true, "Please enter your product category!"],
   },
-  tags: {
-    type: String,
-  },
   originalPrice: {
     type: Number,
     required: [true, "Please enter your product price!"],
-  },
-  discountPrice: {
-    type: Number,
-    default: 0,
   },
   stock: {
     type: Number,

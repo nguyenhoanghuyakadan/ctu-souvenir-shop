@@ -35,9 +35,7 @@ const Faq = () => {
             className="flex items-center justify-between w-full"
             onClick={() => toggleTab(2)}
           >
-            <span className="text-lg font-medium text-gray-900">
-              Video hướng dẫn setup Website?
-            </span>
+            <span className="text-lg font-medium text-gray-900"></span>
             {activeTab === 2 ? (
               <svg
                 className="h-6 w-6 text-gray-500"
@@ -70,9 +68,7 @@ const Faq = () => {
           </button>
           {activeTab === 2 && (
             <div className="mt-4">
-              <p className="text-base text-gray-500">
-                Mình sẽ sớm cập nhật sớm nhất có thể. Vui lòng chờ thêm 1 khoảng thời gian nữa thôi nhé.
-              </p>
+              <p className="text-base text-gray-500"></p>
             </div>
           )}
         </div>
@@ -82,9 +78,7 @@ const Faq = () => {
             className="flex items-center justify-between w-full"
             onClick={() => toggleTab(3)}
           >
-            <span className="text-lg font-medium text-gray-900">
-             Tôi có thể liên hệ với bạn bằng cách nào?
-            </span>
+            <span className="text-lg font-medium text-gray-900"></span>
             {activeTab === 3 ? (
               <svg
                 className="h-6 w-6 text-gray-500"
@@ -117,9 +111,7 @@ const Faq = () => {
           </button>
           {activeTab === 3 && (
             <div className="mt-4">
-              <p className="text-base text-gray-500">
-                Bạn có thể liên hệ với tôi qua Email:<b>Army24062000@gmail</b> nếu có vướng mắc hay điều gì muốn nói nhé.
-              </p>
+              <p className="text-base text-gray-500"></p>
             </div>
           )}
         </div>

@@ -1,27 +1,47 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-
+import axios from "axios";
 import { createPurchaseInvoice } from "../../redux/actions/invoice";
 import { getAllProductsShop } from "../../redux/actions/product";
 import { toast } from "react-toastify";
-
 import { suppliersData } from "../../static/data";
+import { server } from "../../server";
 
 const CreatePurchaseInvoice = () => {
-  const { seller } = useSelector((state) => state.seller);
+  const [date, setDate] = useState("");
+  const [invoiceNumber, setInvoiceNumber] = useState("");
+  const [supplier, setSupplier] = useState("");
+  const [products, setProducts] = useState([
+    { id: 1, product: "", quantity: "", price: "" },
+  ]);
+
+  const [rowsToDelete, setRowsToDelete] = useState([]);
+  const [isDeleteButtonVisible, setIsDeleteButtonVisible] = useState(false);
+
   const { success, error } = useSelector((state) => state.invoices);
-  const productsFromServer = useSelector((state) => state.products); // Lấy danh sách sản phẩm từ Redux store
+  const { seller } = useSelector((state) => state.seller);
+  const productsFromServer = useSelector((state) => state.products);
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const [formData, setFormData] = useState({
-    type: "Purchase",
-    products: [], // Sử dụng products thay vì item
-    shopId: seller._id, // Thêm field shopId
-    date: "", // Thêm field date
-    product: "",
-    supplier: "",
-  });
+
+  const getNextInvoiceNumber = async () => {
+    try {
+      const response = await axios.get(
+        `${server}/invoice/get-next-invoice-number/${seller._id}`,
+        { withCredentials: true }
+      );
+      if (response.data && response.data.nextInvoiceNumber) {
+        setInvoiceNumber(response.data.nextInvoiceNumber); // Cập nhật state với số hóa đơn mới nhất
+      }
+    } catch (error) {
+      console.error("Lỗi khi lấy số hóa đơn từ API:", error);
+    }
+  };
+
+  useEffect(() => {
+    getNextInvoiceNumber();
+  }, []);
 
   useEffect(() => {
     if (error) {
@@ -38,81 +58,86 @@ const CreatePurchaseInvoice = () => {
     dispatch(getAllProductsShop(seller._id)); // Thay seller._id bằng ID cần truy vấn
   }, [dispatch, seller._id]);
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value,
+  useEffect(() => {
+    setIsDeleteButtonVisible(products.length > 1);
+  }, [products]);
+
+  const handleAddRow = () => {
+    const newId = products[products.length - 1].id + 1;
+    setProducts([
+      ...products,
+      { id: newId, product: "", quantity: "", price: "" },
+    ]);
+  };
+
+  const handleDeleteRow = (id) => {
+    const updatedProducts = products.filter((product) => product.id !== id);
+    setProducts(updatedProducts);
+    setRowsToDelete([...rowsToDelete, id]);
+  };
+
+  const handleInputChange = (id, field, value) => {
+    const updatedProducts = products.map((product) => {
+      if (product.id === id) {
+        return { ...product, [field]: value };
+      }
+      return product;
     });
+    setProducts(updatedProducts);
   };
 
-  const handleAddProduct = () => {
-    const { product, quantity, price } = formData;
-    if (product && quantity && price) {
-      const productData = { product, quantity, price };
-      setFormData({
-        ...formData,
-        products: [...formData.products, productData],
-      });
-    }
-    console.log(formData);
+  const handleDateChange = (value) => {
+    setDate(value);
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    dispatch(createPurchaseInvoice(formData));
-    console.log(formData)
+  const handleInvoiceNumberChange = (value) => {
+    setInvoiceNumber(value);
+  };
+
+  const handleSupplierChange = (value) => {
+    setSupplier(value);
+  };
+
+  const handleSave = () => {
+    const dataToSend = {
+      type: "Purchase",
+      invoiceNumber,
+      shopId: seller._id,
+      date,
+      supplier,
+      products,
+    };
+    console.log("Dữ liệu được gửi lên server:", dataToSend);
+
+    dispatch(createPurchaseInvoice(dataToSend));
   };
 
   return (
-    <div className="p-4">
-      <h1 className="text-2xl font-semibold">Thêm phiếu nhập</h1>
-      <form onSubmit={handleSubmit} className="mt-4 p-4 bg-gray-100 rounded-lg">
-        <label>Sản phẩm</label>
-        <select
-          name="product"
-          value={formData.product}
-          onChange={handleInputChange}
-          className="w-full p-2 border border-gray-300 rounded mb-4"
-        >
-          <option value="">-- Chọn một mục --</option>
-          {productsFromServer.allProducts.map((product) => (
-            <option key={product._id} value={product._id}>
-              {product.name}
-            </option>
-          ))}
-        </select>
-        <label>Số lượng</label>
+    <div className="container mx-auto p-4">
+      <div className="mb-4">
+        <label className="text-lg">Ngày nhập:</label>
         <input
-          type="number"
-          name="quantity"
-          value={formData.quantity}
-          onChange={handleInputChange}
-          placeholder="Quantity"
-          className="w-full p-2 border border-gray-300 rounded mb-4"
+          type="date"
+          className="w-full p-2 border rounded"
+          value={date}
+          onChange={(e) => handleDateChange(e.target.value)}
         />
-        <label>Giá</label>
+      </div>
+      <div className="mb-4">
+        <label className="text-lg">Số hóa đơn:</label>
         <input
-          type="number"
-          name="price"
-          value={formData.price}
-          onChange={handleInputChange}
-          placeholder="Price"
-          className="w-full p-2 border border-gray-300 rounded mb-4"
+          type="text"
+          className="w-full p-2 border rounded"
+          value={invoiceNumber}
+          onChange={(e) => handleInvoiceNumberChange(e.target.value)}
         />
-        <button
-          type="button"
-          onClick={handleAddProduct}
-          className="bg-blue text-white px-4 py-2 rounded hover:bg-blue-600 mb-4"
-        >
-          Thêm sản phẩm
-        </button>
-        <label className="block">Nhà cung cấp</label>
+      </div>
+      <div className="mb-4">
+        <label className="text-lg">Nhà cung cấp:</label>
         <select
-          name="supplier"
-          value={formData.supplier}
-          onChange={handleInputChange}
-          className="w-full p-2 border border-gray-300 rounded mb-4"
+          className="w-full p-2 border rounded"
+          value={supplier}
+          onChange={(e) => handleSupplierChange(e.target.value)}
         >
           <option value="">-- Chọn một mục --</option>
           {suppliersData.map((supplier) => (
@@ -121,46 +146,83 @@ const CreatePurchaseInvoice = () => {
             </option>
           ))}
         </select>
-        <label className="block">Ngày nhập</label>
-        <input
-          type="date"
-          name="date"
-          value={formData.date}
-          onChange={handleInputChange}
-          placeholder="Date"
-          className="w-full p-2 border border-gray-300 rounded mb-4"
-        />
-        <button
-          type="submit"
-          className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
-        >
-          Tạo phiếu nhập
-        </button>
-      </form>
-      <table className="mt-4 w-full">
+      </div>
+      <table className="w-full border-collapse mb-4">
         <thead>
-          <tr className="bg-gray-200">
-            <th className="p-2">Sản phẩm</th>
+          <tr>
+            <th className="p-2">STT</th>
+            <th className="p-2">Tên sản phẩm</th>
             <th className="p-2">Số lượng</th>
             <th className="p-2">Giá</th>
           </tr>
         </thead>
         <tbody>
-          {formData.products.map((productData, index) => (
-            <tr key={index} className="border-t">
+          {products.map((product) => (
+            <tr key={product.id}>
+              <td className="p-2">{product.id}</td>
               <td className="p-2">
-                {
-                  productsFromServer.allProducts.find(
-                    (product) => product._id === productData.product
-                  )?.name
-                }
+                <select
+                  value={product.name}
+                  onChange={(e) =>
+                    handleInputChange(product.id, "product", e.target.value)
+                  }
+                  className="w-full p-2 border rounded"
+                >
+                  <option value="">Chọn sản phẩm</option>
+                  {productsFromServer.allProducts.map((product, index) => (
+                    <option key={index} value={product._id}>
+                      {product.name}
+                    </option>
+                  ))}
+                </select>
               </td>
-              <td className="p-2 text-center">{productData.quantity}</td>
-              <td className="p-2 text-center">{productData.price}</td>
+              <td className="p-2">
+                <input
+                  type="text"
+                  value={product.quantity}
+                  onChange={(e) =>
+                    handleInputChange(product.id, "quantity", e.target.value)
+                  }
+                  className="w-full p-2 border rounded"
+                />
+              </td>
+              <td className="p-2">
+                <input
+                  type="text"
+                  value={product.price}
+                  onChange={(e) =>
+                    handleInputChange(product.id, "price", e.target.value)
+                  }
+                  className="w-full p-2 border rounded"
+                />
+              </td>
             </tr>
           ))}
         </tbody>
       </table>
+      <div className="text-center">
+        <button onClick={handleAddRow} className="btn btn-info mb-4 text-white">
+          Thêm dòng
+        </button>
+      </div>
+      <div className="text-center">
+        {isDeleteButtonVisible && (
+          <button
+            onClick={() => handleDeleteRow(products[products.length - 1].id)}
+            className="btn btn-error mb-4 text-white"
+          >
+            Xóa dòng
+          </button>
+        )}
+      </div>
+      <div className="text-right">
+        <button
+          onClick={handleSave}
+          className="btn btn-success mb-4 text-white"
+        >
+          Lưu
+        </button>
+      </div>
     </div>
   );
 };

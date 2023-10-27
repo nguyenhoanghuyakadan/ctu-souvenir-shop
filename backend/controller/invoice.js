@@ -8,7 +8,7 @@ const Shop = require("../model/shop");
 // Tạo hóa đơn mới (bao gồm cả nhập và bán)
 router.post("/create-purchase-invoice", isSeller, async (req, res) => {
   try {
-    const { type, products, shopId, date, supplier } = req.body; // Dữ liệu được gửi từ phía client
+    const { type, invoiceNumber, products, shopId, date, supplier } = req.body; // Dữ liệu được gửi từ phía client
 
     // Tìm thông tin cửa hàng dựa trên shopId
     const shop = await Shop.findById(shopId);
@@ -22,6 +22,7 @@ router.post("/create-purchase-invoice", isSeller, async (req, res) => {
       const existingInvoice = combinedInvoices.find(
         (invoice) =>
           invoice.type === type &&
+          invoice.invoiceNumber.toString() === invoiceNumber.toString() &&
           invoice.shop.toString() === shopId.toString() &&
           invoice.date.toString() === date.toString() &&
           invoice.supplier.toString() === supplier.toString()
@@ -32,6 +33,7 @@ router.post("/create-purchase-invoice", isSeller, async (req, res) => {
       } else {
         combinedInvoices.push({
           type,
+          invoiceNumber,
           shop: shopId,
           date,
           supplier,
@@ -97,7 +99,37 @@ router.get("/get-all-invoices-shop/:id", isSeller, async (req, res) => {
   }
 });
 
-// Các tuyến đường khác giữ nguyên
+// Lấy số hóa đơn lớn nhất + 1 cho cửa hàng cụ thể
+router.get("/get-next-invoice-number/:shopId",isSeller, async (req, res) => {
+  try {
+    const shopId = req.params.shopId;
+
+    // Tìm thông tin cửa hàng dựa trên shopId
+    const shop = await Shop.findById(shopId);
+    if (!shop) {
+      return res.status(404).json({ error: "Shop not found" });
+    }
+
+    // Tìm hóa đơn có số lớn nhất dựa trên shopId
+    const lastInvoice = await Invoice.findOne({ shop: shopId })
+      .sort({ invoiceNumber: -1 })
+      .limit(1);
+
+    let nextInvoiceNumber = "00000001"; // Mặc định, nếu không có hóa đơn nào.
+
+    if (lastInvoice && !isNaN(lastInvoice.invoiceNumber)) {
+      const lastNumber = parseInt(lastInvoice.invoiceNumber, 10) + 1;
+      nextInvoiceNumber = lastNumber.toString().padStart(8, "0");
+    }
+
+    res.status(200).json({ nextInvoiceNumber });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      error: "An error occurred while getting the next invoice number",
+    });
+  }
+});
 
 // Cập nhật thông tin hóa đơn
 router.put("/invoices/:id", async (req, res) => {

@@ -117,6 +117,27 @@ export const navItems = [
   },
 ];
 
+export const heroesData = [
+  {
+    id: 1,
+    image_Url: "https://i.imgur.com/nTCqXV8.jpg",
+    description:
+      "Chào mừng bạn đến với cửa hàng lưu niệm Đại học Cần Thơ - nơi bạn có thể khám phá và chọn lựa những sản phẩm độc đáo và ý nghĩa. Với một loạt các sản phẩm độc quyền như móc khóa, lịch, áo thun và nhiều hơn nữa, chúng tôi mang đến cho bạn những kỷ niệm đáng nhớ và sự tự hào về trường Đại học Cần Thơ. Hãy khám phá ngay hôm nay!",
+  },
+  {
+    id: 2,
+    image_Url: "https://i.imgur.com/C1fqVTj.jpg",
+    description:
+      "Khám phá thế giới của những kỷ niệm đáng nhớ tại Đại học Cần Thơ với các sản phẩm lưu niệm độc đáo. Tạo ra những khoảnh khắc không thể quên với móc khóa, lịch, áo thun và nhiều sản phẩm khác, dựa trên tình yêu và niềm tự hào dành cho trường Đại học Cần Thơ.",
+  },
+  {
+    id: 3,
+    image_Url: "https://i.imgur.com/zz3G2ib.png",
+    description:
+      "Mang đẳng cấp và tinh thần Đại học Cần Thơ vào cuộc sống hàng ngày với các sản phẩm lưu niệm tại cửa hàng của chúng tôi. Tạo ra sự kết nối và kỷ niệm đáng nhớ với những vật phẩm độc quyền như móc khóa, lịch, áo thun, và nhiều sản phẩm khác, đánh dấu những ngày tháng đáng nhớ tại trường Đại học Cần Thơ.",
+  },
+];
+
 export const suppliersData = [
   {
     id: 1,

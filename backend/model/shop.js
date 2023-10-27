@@ -38,7 +38,6 @@ const shopSchema = new mongoose.Schema({
   },
   zipCode: {
     type: Number,
-    
   },
   withdrawMethod: {
     type: Object,

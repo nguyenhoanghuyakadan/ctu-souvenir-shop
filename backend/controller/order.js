@@ -117,6 +117,7 @@ router.put(
         const serviceCharge = order.totalPrice * 0.1;
         await updateSellerInfo(order.totalPrice - serviceCharge);
 
+        console.log(order);
         // Tạo một invoice mới
         const newInvoice = new Invoice({
           type: "Sale",
