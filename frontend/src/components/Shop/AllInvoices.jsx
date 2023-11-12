@@ -47,7 +47,7 @@ const AllInvoices = () => {
     ? invoices.map((item) => ({
         id: item._id,
         invoiceNumber: item.invoiceNumber,
-        date: item.date,
+        date: item.date.slice(0,10),
         type: item.type,
       }))
     : [];

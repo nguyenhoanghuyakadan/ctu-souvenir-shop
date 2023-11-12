@@ -19,6 +19,7 @@ const UserOrderDetails = () => {
   const [comment, setComment] = useState("");
   const [selectedItem, setSelectedItem] = useState(null);
   const [rating, setRating] = useState(1);
+  const [conversations, setConversations] = useState([]);
 
   const { id } = useParams();
 
@@ -26,8 +27,35 @@ const UserOrderDetails = () => {
     dispatch(getAllOrdersOfUser(user._id));
   }, [dispatch]);
 
+  useEffect(() => {
+    const getConversation = async () => {
+      try {
+        const resonse = await axios.get(
+          `${server}/conversation/get-all-conversation-user/${user?._id}`,
+          {
+            withCredentials: true,
+          }
+        );
+
+        setConversations(resonse.data.conversations);
+      } catch (error) {
+        // console.log(error);
+      }
+    };
+    getConversation();
+  }, [user]);
+
+  console.log(conversations);
+  console.log(user);
+  const conversation = conversations.find((conversation) => {
+    return conversation.members.includes(user._id);
+  });
+
+  // Bây giờ bạn có biến conversation chứa cuộc trò chuyện mà user tham gia
+
+  console.log(conversation);
+
   const data = orders && orders.find((item) => item._id === id);
-  console.log(data);
   const reviewHandler = async (e) => {
     await axios
       .put(
@@ -100,17 +128,17 @@ const UserOrderDetails = () => {
               <div className="w-full">
                 <h5 className="pl-3 text-[20px]">{item.name}</h5>
                 <h5 className="pl-3 text-[20px] text-[#00000091]">
-                  {currency.format(item.discountPrice, { code: "VND" })} x{" "}
+                  {currency.format(item.originalPrice, { code: "VND" })} x{" "}
                   {item.qty}
                 </h5>
               </div>
               {!item.isReviewed && data?.status === "Delivered" ? (
-                <div
-                  className={`${styles.button} text-[#fff]`}
+                <button
+                  className="btn btn-info text-white font-bold"
                   onClick={() => setOpen(true) || setSelectedItem(item)}
                 >
                   Đánh giá SP
-                </div>
+                </button>
               ) : null}
             </div>
           );
@@ -140,7 +168,7 @@ const UserOrderDetails = () => {
               <div>
                 <div className="pl-3 text-[20px]">{selectedItem?.name}</div>
                 <h4 className="pl-3 text-[20px]">
-                  {currency.format(selectedItem?.discountPrice, {
+                  {currency.format(selectedItem?.originalPrice, {
                     code: "VND",
                   })}{" "}
                   x {selectedItem?.qty}
@@ -195,12 +223,12 @@ const UserOrderDetails = () => {
                 className="mt-2 w-[95%] border p-2 outline-none"
               ></textarea>
             </div>
-            <div
-              className={`${styles.button} text-white text-[20px] ml-3`}
+            <button
+              className="btn btn-success text-white font-bold ml-3"
               onClick={rating > 1 ? reviewHandler : null}
             >
               Gửi
-            </div>
+            </button>
           </div>
         </div>
       )}
@@ -243,12 +271,6 @@ const UserOrderDetails = () => {
           )}
         </div>
       </div>
-      <br />
-      <Link to="/">
-        <div className={`${styles.button} text-white`}>Gửi tin nhắn</div>
-      </Link>
-      <br />
-      <br />
     </div>
   );
 };

@@ -25,6 +25,21 @@ const CreatePurchaseInvoice = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
+  const formatDateToISOString = (inputDate) => {
+    // Tạo một đối tượng Date từ ngày đầu vào
+    const inputDateObj = new Date(inputDate);
+
+    // Kiểm tra nếu ngày đầu vào là hợp lệ
+    if (!isNaN(inputDateObj.getTime())) {
+      // Chuyển đổi ngày thành chuỗi ISO 8601
+      const isoString = inputDateObj.toISOString();
+      return isoString;
+    } else {
+      // Trả về null nếu ngày không hợp lệ
+      return null;
+    }
+  };
+
   const getNextInvoiceNumber = async () => {
     try {
       const response = await axios.get(
@@ -99,11 +114,13 @@ const CreatePurchaseInvoice = () => {
   };
 
   const handleSave = () => {
+    const isoDate = formatDateToISOString(date);
+
     const dataToSend = {
       type: "Purchase",
       invoiceNumber,
       shopId: seller._id,
-      date,
+      date: isoDate,
       supplier,
       products,
     };

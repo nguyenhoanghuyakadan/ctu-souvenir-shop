@@ -22,7 +22,7 @@ const InvoiceDetail = () => {
   const totalAmount = data
     ? data.products.reduce((total, product) => {
         const productPrice =
-          products.find((p) => p._id === product.product)?.discountPrice || 0;
+          products.find((p) => p._id === product.product)?.originalPrice || 0;
         return total + product.quantity * productPrice;
       }, 0)
     : 0;
@@ -34,35 +34,25 @@ const InvoiceDetail = () => {
         {data && data.type === "Sale" && seller && seller.name}
       </h1>
       <hr className="mb-2" />
-      <div className="flex justify-between mb-6">
-        <h1 className="text-lg font-bold">
-          {data && data.type === "Purchase" && "Hóa Đơn Nhập Hàng"}
-          {data && data.type === "Sale" && "Hóa Đơn Bán Hàng"}
-        </h1>
+      <div className="flex flex-col justify-between mb-6">
+        <h1 className="text-lg font-bold text-center">Hóa Đơn Bán Hàng</h1>
         <div className="text-gray-700">
-          <div>Ngày nhập: {data && data.date}</div>
-          <div>Số hóa đơn: {data && data._id}</div>
+          <div>Ngày nhập: {data && data.date.slice(0, 10)}</div>
+          <div>Số hóa đơn: {data && data.invoiceNumber}</div>
+          {data && data.type === "Purchase" && seller && (
+            <>
+              <div>Khách hàng: {seller.name}</div>
+              <div>Địa chỉ: {seller.address}</div>
+              <div>Điện thoại: {seller.phoneNumber}</div>
+            </>
+          )}
+          {data && data.type === "Sale" && (
+            <>
+              <div>Khách hàng: {data.customer.name}</div>
+              <div>Email: {data.customer.email}</div>
+            </>
+          )}
         </div>
-      </div>
-      <div className="mb-8">
-        <h2 className="text-lg font-bold mb-4">Người nhận hóa đơn:</h2>
-        {data && data.type === "Purchase" && seller && (
-          <>
-            <div className="text-gray-700 mb-2">{seller.name}</div>
-            <div className="text-gray-700 mb-2">{seller.address}</div>
-            <div className="text-gray-700 mb-2">{seller.phoneNumber}</div>
-            <div className="text-gray-700">{seller.email}</div>
-          </>
-        )}
-        {data && data.type === "Sale" && (
-          <>
-            <div className="text-gray-700 mb-2">{data.customer.name}</div>
-            <div className="text-gray-700 mb-2">
-              {data.customer.phoneNumber}
-            </div>
-            <div className="text-gray-700">{data.customer.email}</div>
-          </>
-        )}
       </div>
       <table className="w-full mb-8">
         <thead>
@@ -89,12 +79,12 @@ const InvoiceDetail = () => {
                   {products &&
                     products.find((p) => p._id === product.product) &&
                     products.find((p) => p._id === product.product)
-                      ?.discountPrice}
+                      ?.originalPrice}
                 </td>
                 <td className="text-right text-gray-700">
                   {product.quantity *
                     products.find((p) => p._id === product.product)
-                      ?.discountPrice}
+                      ?.originalPrice}
                 </td>
               </tr>
             ))}
@@ -105,7 +95,7 @@ const InvoiceDetail = () => {
             <td className="text-center font-bold text-gray-700"></td>
             <td className="text-center font-bold text-gray-700"></td>
             <td className="text-right font-bold text-gray-700">
-              ${totalAmount.toFixed(2)}
+              {totalAmount.toFixed(2)}
             </td>
           </tr>
         </tfoot>

@@ -116,15 +116,13 @@ router.put(
         order.paymentInfo.status = "Succeeded";
         const serviceCharge = order.totalPrice * 0.1;
         await updateSellerInfo(order.totalPrice - serviceCharge);
-
-        console.log(order);
         // Tạo một invoice mới
         const newInvoice = new Invoice({
           type: "Sale",
           products: order.cart.map((item) => ({
             product: item._id,
             quantity: item.qty,
-            price: item.price,
+            price: item.originalPrice,
           })),
           shop: order.shop,
           customer: order.user,

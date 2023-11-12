@@ -22,7 +22,7 @@ import { addTocart } from "../../../redux/actions/cart";
 import { toast } from "react-toastify";
 import Ratings from "../../Products/Ratings";
 
-const ProductCard = ({ data, isEvent }) => {
+const ProductCard = ({ data }) => {
   const { wishlist } = useSelector((state) => state.wishlist);
   const { cart } = useSelector((state) => state.cart);
   const [click, setClick] = useState(false);
@@ -66,13 +66,7 @@ const ProductCard = ({ data, isEvent }) => {
     <>
       <div className="w-full h-[370px] bg-white rounded-lg shadow-sm p-3 relative cursor-pointer">
         <div className="flex justify-end"></div>
-        <Link
-          to={`${
-            isEvent === true
-              ? `/product/${data._id}?isEvent=true`
-              : `/product/${data._id}`
-          }`}
-        >
+        <Link to={`/product/${data._id}`}>
           <img
             src={`${backend_url}${data.images && data.images[0]}`}
             alt=""
@@ -87,13 +81,7 @@ const ProductCard = ({ data, isEvent }) => {
               : data.shop.name}
           </h5>
         </Link>
-        <Link
-          to={`${
-            isEvent === true
-              ? `/product/${data._id}?isEvent=true`
-              : `/product/${data._id}`
-          }`}
-        >
+        <Link to={`/product/${data._id}`}>
           <h4 className="pb-3 font-[500]">
             {data.name.length > 35 ? data.name.slice(0, 27) + "..." : data.name}
           </h4>
@@ -103,7 +91,9 @@ const ProductCard = ({ data, isEvent }) => {
           </div>
 
           <div className="py-2 flex items-center justify-between">
-            <div className="text-xl font-bold">{currency.format(data.originalPrice, { code: "VND" })}</div>
+            <div className="text-xl font-bold">
+              {currency.format(data.originalPrice, { code: "VND" })}
+            </div>
             <span className="font-bold text-success">
               {data?.sold_out} đã bán
             </span>

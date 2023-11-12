@@ -75,7 +75,7 @@ const Wishlist = ({ setOpenWishlist }) => {
 
 const CartSingle = ({ data,removeFromWishlistHandler,addToCartHandler }) => {
   const [value, setValue] = useState(1);
-  const totalPrice = data.discountPrice * value;
+  const totalPrice = data.originalPrice * value;
 
   return (
     <div className="border-b p-4">

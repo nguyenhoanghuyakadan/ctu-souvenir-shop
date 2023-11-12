@@ -78,7 +78,7 @@ const AllProducts = () => {
       row.push({
         id: item._id,
         name: item.name,
-        price: `${currency.format(item.discountPrice, {
+        price: `${currency.format(item.originalPrice, {
           code: "VND",
         })}`,
         Stock: item.stock,

@@ -6,15 +6,12 @@ import styles from "../../styles/styles";
 import ProductCard from "../Route/ProductCard/ProductCard";
 import { backend_url } from "../../server";
 import Ratings from "../Products/Ratings";
-import { getAllEventsShop } from "../../redux/actions/event";
 
 import Lottie from "react-lottie";
 import animationData from "../../Assests/animations/searchNotFound.json";
-import animationData2 from "../../Assests/animations/notHaveEvent.json";
 
 const ShopProfileData = ({ isOwner }) => {
   const { products } = useSelector((state) => state.products);
-  const { events } = useSelector((state) => state.events);
   const { id } = useParams();
   const dispatch = useDispatch();
 
@@ -27,18 +24,9 @@ const ShopProfileData = ({ isOwner }) => {
       preserveAspectRatio: "xMidYMid slice",
     },
   };
-  const notHaveEvent = {
-    loop: false,
-    autoplay: true,
-    animationData: animationData2,
-    rendererSettings: {
-      preserveAspectRatio: "xMidYMid slice",
-    },
-  };
 
   useEffect(() => {
     dispatch(getAllProductsShop(id));
-    dispatch(getAllEventsShop(id));
   }, [dispatch]);
 
   const [active, setActive] = useState(1);
@@ -102,31 +90,7 @@ const ShopProfileData = ({ isOwner }) => {
         </div>
       )}
 
-      {active === 2 && (
-        <div className="w-full">
-          <div className="grid grid-cols-1 gap-[20px] md:grid-cols-2 md:gap-[25px] lg:grid-cols-3 lg:gap-[25px] xl:grid-cols-4 xl:gap-[20px] mb-12 border-0">
-            {events &&
-              events.map((i, index) => (
-                <ProductCard
-                  data={i}
-                  key={index}
-                  isShop={true}
-                  isEvent={true}
-                />
-              ))}
-          </div>
-          {events && events.length === 0 && (
-            <div>
-            <Lottie options={notHaveEvent} width={300} height={300} />
-            <h5 className="text-center mb-14 text-[25px] text-[#000000a1]">
-              Chưa có sự kiện nào đang diễn ra 🥲
-            </h5>
-            <br />
-            <br />
-          </div>
-          )}
-        </div>
-      )}
+  
 
       {active === 3 && (
         <div className="w-full">

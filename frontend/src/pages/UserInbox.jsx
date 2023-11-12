@@ -2,7 +2,6 @@ import React, { useEffect, useRef, useState } from "react";
 import Header from "../components/Layout/Header";
 import { useSelector } from "react-redux";
 import socketIO from "socket.io-client";
-import { format } from "timeago.js";
 import { backend_url, server } from "../server";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
@@ -205,12 +204,10 @@ const UserInbox = () => {
 
   return (
     <div className="w-full">
-     
       {!open && (
         <>
-        
-          <h1 className="text-center text-[30px] py-3 font-Poppins">
-           Tất cả tin nhắn
+          <h1 className="text-center text-4xl font-bold my-4">
+            Tất cả tin nhắn
           </h1>
           {/* All messages list */}
           {conversations &&
@@ -248,40 +245,38 @@ const UserInbox = () => {
       )} */}
       {open && (
         <div className="flex items-start ">
-        <div className="w-[80px] 800px:w-[330px]">
-        {conversations &&
-            conversations.map((item, index) => (
-              <MessageList
-                data={item}
-                key={index}
-                index={index}
-                setOpen={setOpen}
-                setCurrentChat={setCurrentChat}
-                me={user?._id}
-                setUserData={setUserData}
-                userData={userData}
-                online={onlineCheck(item)}
-                setActiveStatus={setActiveStatus}
-              />
-            ))}
+          <div className="w-[80px] 800px:w-[330px]">
+            {conversations &&
+              conversations.map((item, index) => (
+                <MessageList
+                  data={item}
+                  key={index}
+                  index={index}
+                  setOpen={setOpen}
+                  setCurrentChat={setCurrentChat}
+                  me={user?._id}
+                  setUserData={setUserData}
+                  userData={userData}
+                  online={onlineCheck(item)}
+                  setActiveStatus={setActiveStatus}
+                />
+              ))}
+          </div>
+          <div className="w-full bg-[#dadadaee] rounded-md">
+            <SellerInbox
+              setOpen={setOpen}
+              newMessage={newMessage}
+              setNewMessage={setNewMessage}
+              sendMessageHandler={sendMessageHandler}
+              messages={messages}
+              sellerId={user._id}
+              userData={userData}
+              activeStatus={activeStatus}
+              scrollRef={scrollRef}
+              handleImageUpload={handleImageUpload}
+            />
+          </div>
         </div>
-        <div className="w-full bg-[#dadadaee] rounded-md">
-        <SellerInbox
-          setOpen={setOpen}
-          newMessage={newMessage}
-          setNewMessage={setNewMessage}
-          sendMessageHandler={sendMessageHandler}
-          messages={messages}
-          sellerId={user._id}
-          userData={userData}
-          activeStatus={activeStatus}
-          scrollRef={scrollRef}
-          handleImageUpload={handleImageUpload}
-        />
-        </div>
-       
-      </div>
-        
       )}
     </div>
   );
@@ -350,7 +345,7 @@ const MessageList = ({
         <p className="text-[16px] text-[#030303cc]">
           {data?.lastMessageId !== userData?._id
             ? "Bạn:"
-            : userData?.name.split(" ")[0] + ": "}{" "}
+            : userData?.name && userData?.name.split(" ")[0] + ": "}{" "}
           {data?.lastMessage}
         </p>
       </div>
@@ -426,7 +421,7 @@ const SellerInbox = ({
                   </div>
 
                   <p className="text-[12px] text-[#000000d3] pt-1">
-                    {format(item.createdAt)}
+                    {item.createdAt}
                   </p>
                 </div>
               )}

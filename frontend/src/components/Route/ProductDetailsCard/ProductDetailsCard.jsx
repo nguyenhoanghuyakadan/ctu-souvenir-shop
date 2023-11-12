@@ -128,7 +128,6 @@ const ProductDetailsCard = ({ setOpen, data }) => {
                   </Link>
                 </div> */}
                 <div class="flex flex-row justify-center mt-4">
-                
                   <div class="relative flex flex-row md:flex-row md:space-x-5 space-y-3 md:space-y-0 rounded-xl shadow-lg p-3 max-w-xs md:max-w-3xl mx-auto border border-white bg-[#ffeee8]">
                     <div class="w-full md:w-1/3 bg-[#ffeee8] grid place-items-center">
                       <img
@@ -164,12 +163,12 @@ const ProductDetailsCard = ({ setOpen, data }) => {
                         </div>
                       </div>
                       <Link to={`/shop/preview/${data.shop._id}`}>
-                      <h3 class="font-black text-gray-800 md:text-2xl text-xl">
-                        {data.shop.name}
-                      </h3>
+                        <h3 class="font-black text-gray-800 md:text-2xl text-xl">
+                          {data.shop.name}
+                        </h3>
                       </Link>
-                     
-                        {/* <div
+
+                      {/* <div
                           className={`${styles.button} bg-[#000] mt-4 rounded-[4px] h-11`}
                           onClick={handleMessageSubmit}
                         >
@@ -177,7 +176,6 @@ const ProductDetailsCard = ({ setOpen, data }) => {
                             Gửi tin nhắn <AiOutlineMessage className="ml-1" />
                           </span>
                         </div> */}
-                     
                     </div>
                   </div>
                 </div>
@@ -191,16 +189,9 @@ const ProductDetailsCard = ({ setOpen, data }) => {
                 </h1>
 
                 <div className="flex pt-3 px-5">
-                  <h4 className={`${styles.productDiscountPrice} text-2xl`}>
-                    {currency.format(data.discountPrice, { code: "VND" })}
-                  </h4>
-                  <h3 className={`${styles.price}`}>
-                    {data.originalPrice
-                      ? `${currency.format(data.originalPrice, {
-                          code: "VND",
-                        })}`
-                      : null}
-                  </h3>
+                  <div className="text-xl font-bold">
+                    {currency.format(data.originalPrice, { code: "VND" })}
+                  </div>
                 </div>
                 {
                   /* <p className="py-2 text-[18px] leading-8 pb-10 px-5 whitespace-pre-line">
