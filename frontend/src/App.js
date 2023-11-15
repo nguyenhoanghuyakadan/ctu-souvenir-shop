@@ -59,6 +59,7 @@ import ShopCreatePurchaseInvoice from "./pages/Shop/ShopCreatePurchaseInvoice";
 import { getAllInvoices } from "./redux/actions/invoice";
 import ShopAllInvoices from "./pages/Shop/ShopAllInvoices";
 import ShopInvoiceDetail from "./pages/Shop/ShopInvoiceDetail";
+import ShopAnalytics from "./pages/Shop/ShopAnalytics.jsx";
 
 const App = () => {
   useEffect(() => {
@@ -242,7 +243,6 @@ const App = () => {
           }
         />
 
-        
         <Route
           path="/dashboard-coupouns"
           element={
@@ -251,6 +251,16 @@ const App = () => {
             </SellerProtectedRoute>
           }
         />
+
+        <Route
+          path="/dashboard-analytics"
+          element={
+            <SellerProtectedRoute>
+              <ShopAnalytics />
+            </SellerProtectedRoute>
+          }
+        />
+
         <Route
           path="/dashboard-withdraw-money"
           element={
