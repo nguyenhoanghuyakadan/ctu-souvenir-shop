@@ -10,9 +10,8 @@ import {
   AiOutlineLogout,
 } from "react-icons/ai";
 import { FiPackage, FiShoppingBag } from "react-icons/fi";
-import { MdOutlineLocalOffer } from "react-icons/md";
+import { IoAnalytics } from "react-icons/io5";
 import { RxDashboard } from "react-icons/rx";
-import { VscNewFile } from "react-icons/vsc";
 import { CiMoneyBill, CiSettings } from "react-icons/ci";
 import { Link } from "react-router-dom";
 import { BiMessageSquareDetail } from "react-icons/bi";
@@ -202,6 +201,22 @@ const DashboardSideBar = ({ active }) => {
             }`}
           >
             Hoàn tiền
+          </h5>
+        </Link>
+      </div>
+
+      <div className="w-full flex items-center p-4">
+        <Link to="/dashboard-analytics" className="w-full flex items-center">
+          <IoAnalytics
+            size={30}
+            color={`${active === 10 ? "crimson" : "#555"}`}
+          />
+          <h5
+            className={`hidden 800px:block pl-2 text-[18px] font-[400] ${
+              active === 14 ? "text-[crimson] font-bold" : "text-[#555]"
+            }`}
+          >
+            Phân tích
           </h5>
         </Link>
       </div>

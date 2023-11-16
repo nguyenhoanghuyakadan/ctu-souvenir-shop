@@ -35,6 +35,10 @@ router.get("/invoices-two-months", async (req, res) => {
       return res.status(404).json({ message: "Cửa hàng không tồn tại." });
     }
 
+    const soldProduct = {};
+
+    const purchasedProduct = {};
+
     const invoices1 = await Invoice.find({
       type: "Sale",
       date: { $gte: startDate1, $lte: endDate1 },
@@ -47,8 +51,96 @@ router.get("/invoices-two-months", async (req, res) => {
       shop: shopId, // Lọc hóa đơn theo shopId
     });
 
+    const purchaseInvoices1 = await Invoice.find({
+      type: "Purchase",
+      date: { $gte: startDate1, $lte: endDate1 },
+      shop: shopId, // Lọc hóa đơn theo shopId
+    });
+
+    const purchaseInvoices2 = await Invoice.find({
+      type: "Purchase",
+      date: { $gte: startDate2, $lte: endDate2 },
+      shop: shopId, // Lọc hóa đơn theo shopId
+    });
+
+    // Vòng lặp qua danh sách invoices tháng 1
+    invoices1.forEach((invoice) => {
+      invoice.products.forEach((product) => {
+        // Kiểm tra xem sản phẩm đã tồn tại trong object soldProduct chưa
+        if (soldProduct[product.product._id]) {
+          // Nếu rồi thì cộng dồn số lượng
+          soldProduct[product.product._id].quantity1 += product.quantity;
+        } else {
+          // Nếu chưa thì khởi tạo object với số lượng ban đầu
+          soldProduct[product.product._id] = {
+            product: product.product._id,
+            quantity1: product.quantity,
+            quantity2: 0,
+          };
+        }
+      });
+    });
+
+    // Tương tự với danh sách invoices tháng 2
+    invoices2.forEach((invoice) => {
+      invoice.products.forEach((product) => {
+        if (soldProduct[product.product._id]) {
+          soldProduct[product.product._id].quantity2 += product.quantity;
+        } else {
+          soldProduct[product.product._id] = {
+            product: product.product._id,
+            quantity1: 0,
+            quantity2: product.quantity,
+          };
+        }
+      });
+    });
+
+    // Cuối cùng chuyển object soldProduct sang array để trả về
+    const soldProductCount = Object.values(soldProduct);
+
+    // Vòng lặp qua danh sách invoices tháng 1
+    purchaseInvoices1.forEach((invoice) => {
+      invoice.products.forEach((product) => {
+        // Kiểm tra xem sản phẩm đã tồn tại trong object purchasedProduct chưa
+        if (purchasedProduct[product.product._id]) {
+          // Nếu rồi thì cộng dồn số lượng
+          purchasedProduct[product.product._id].quantity1 += product.quantity;
+        } else {
+          // Nếu chưa thì khởi tạo object với số lượng ban đầu
+          purchasedProduct[product.product._id] = {
+            product: product.product._id,
+            quantity1: product.quantity,
+            quantity2: 0,
+          };
+        }
+      });
+    });
+
+    // Tương tự với danh sách invoices tháng 2
+    purchaseInvoices2.forEach((invoice) => {
+      invoice.products.forEach((product) => {
+        if (purchasedProduct[product.product._id]) {
+          purchasedProduct[product.product._id].quantity2 += product.quantity;
+        } else {
+          purchasedProduct[product.product._id] = {
+            product: product.product._id,
+            quantity1: 0,
+            quantity2: product.quantity,
+          };
+        }
+      });
+    });
+
+    const purchasedProductCount = Object.values(purchasedProduct);
+
     const invoicesWithTotalValue1 = calculateTotalValue(invoices1);
     const invoicesWithTotalValue2 = calculateTotalValue(invoices2);
+
+    const purchaseInvoicesWithTotalValue1 =
+      calculateTotalValue(purchaseInvoices1);
+    const purchaseInvoicesWithTotalValue2 =
+      calculateTotalValue(purchaseInvoices2);
 
     const totalValue1 = invoicesWithTotalValue1.reduce((total, invoice) => {
       return total + invoice.totalValue;
@@ -57,6 +149,20 @@ router.get("/invoices-two-months", async (req, res) => {
     const totalValue2 = invoicesWithTotalValue2.reduce((total, invoice) => {
       return total + invoice.totalValue;
     }, 0);
+
+    const totalPurchaseValue1 = purchaseInvoicesWithTotalValue1.reduce(
+      (total, invoice) => {
+        return total + invoice.totalValue;
+      },
+      0
+    );
+
+    const totalPurchaseValue2 = purchaseInvoicesWithTotalValue2.reduce(
+      (total, invoice) => {
+        return total + invoice.totalValue;
+      },
+      0
+    );
 
     // Tính toán số ngày trong tháng dựa trên thời gian đầu vào
     const daysInMonth1 = new Date(
@@ -97,7 +203,11 @@ router.get("/invoices-two-months", async (req, res) => {
       invoices2: invoicesWithTotalValue2,
       totalValue1,
       totalValue2,
+      totalPurchaseValue1,
+      totalPurchaseValue2,
       dailyRevenueData, // Thêm dữ liệu doanh thu từng ngày
+      soldProductCount,
+      purchasedProductCount,
     });
   } catch (error) {
     res.status(500).json({ message: "Lỗi server." });

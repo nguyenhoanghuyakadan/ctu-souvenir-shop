@@ -12,14 +12,15 @@ const DashboardHeader = () => {
   return (
     <div className="w-full h-[80px] bg-white shadow sticky top-0 left-0 z-30 flex items-center justify-between px-4">
       <div>
-      <Link to="/">
-             
-              <h1 className="text-[33px] font-bold underline decoration-blue hover:decoration-4">CTU Souvenir Shop</h1>
-            </Link>
+        <Link to="/">
+          <h1 className="font-bold text-4xl text-info font-bold">
+            QUẢN LÝ BÁN HÀNG
+          </h1>
+        </Link>
       </div>
       <div className="flex items-center">
         <div className="flex items-center mr-4">
-          <Link to="/dashboard/cupouns" className="800px:block hidden">
+          <Link to="/dashboard/coupouns" className="800px:block hidden">
             <AiOutlineGift
               color="#555"
               size={30}
