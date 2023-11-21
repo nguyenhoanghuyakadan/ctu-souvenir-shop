@@ -23,69 +23,81 @@ const AllSellers = () => {
 
   const handleDelete = async (id) => {
     await axios
-    .delete(`${server}/shop/delete-seller/${id}`, { withCredentials: true })
-    .then((res) => {
-      toast.success(res.data.message);
-    });
+      .delete(`${server}/shop/delete-seller/${id}`, { withCredentials: true })
+      .then((res) => {
+        toast.success(res.data.message);
+      });
 
-  dispatch(getAllSellers());
+    dispatch(getAllSellers());
   };
 
   const columns = [
-    { field: "id", headerName: "ID người bán", minWidth: 150, flex: 0.7 },
+    {
+      field: "id",
+      headerName: "ID người bán",
+      headerAlign: "left",
+      align: "left",
+      flex: 2,
+    },
 
     {
       field: "name",
       headerName: "tên cửa hàng",
-      minWidth: 130,
-      flex: 0.7,
+      headerAlign: "left",
+      align: "left",
+      flex: 2,
     },
     {
       field: "email",
       headerName: "Email",
       type: "text",
-      minWidth: 130,
-      flex: 0.7,
+      headerAlign: "left",
+      align: "left",
+      flex: 2,
     },
     {
       field: "address",
       headerName: "Địa chỉ cửa hàng",
       type: "text",
-      minWidth: 130,
-      flex: 0.7,
+      headerAlign: "left",
+      align: "left",
+      flex: 2,
     },
 
     {
       field: "joinedAt",
       headerName: "Tham gia",
       type: "text",
-      minWidth: 130,
-      flex: 0.8,
+      headerAlign: "left",
+      align: "left",
+      flex: 1,
     },
     {
-        field: "  ",
-        flex: 1,
-        minWidth: 150,
-        headerName: "Xem ",
-        type: "number",
-        sortable: false,
-        renderCell: (params) => {
-          return (
-            <>
+      field: "  ",
+      flex: 0.75,
+      headerName: "Xem",
+      headerAlign: "left",
+      align: "left",
+      type: "number",
+      sortable: false,
+      renderCell: (params) => {
+        return (
+          <>
             <Link to={`/shop/preview/${params.id}`}>
-            <Button>
+              <Button>
                 <AiOutlineEye size={20} />
               </Button>
             </Link>
-            </>
-          );
-        },
+          </>
+        );
       },
+    },
     {
       field: " ",
-      flex: 1,
-      minWidth: 150,
-      headerName: "Xóa cửa hàng",
+      flex: 0.75,
+      headerName: "Xóa",
+      headerAlign: "left",
+      align: "left",
       type: "number",
       sortable: false,
       renderCell: (params) => {
@@ -102,7 +114,7 @@ const AllSellers = () => {
 
   const row = [];
   sellers &&
-  sellers.forEach((item) => {
+    sellers.forEach((item) => {
       row.push({
         id: item._id,
         name: item?.name,
@@ -113,9 +125,9 @@ const AllSellers = () => {
     });
 
   return (
-    <div className="w-full flex justify-center pt-5">
+    <div className="w-full flex justify-center my-4">
       <div className="w-[97%]">
-        <h3 className="text-[22px] font-Poppins pb-2">Tất cả người bán</h3>
+        <h3 className="text-xl font-bold my-2 uppercase">Tất cả người bán</h3>
         <div className="w-full min-h-[45vh] bg-white rounded">
           <DataGrid
             rows={row}
@@ -131,22 +143,22 @@ const AllSellers = () => {
               <div className="w-full flex justify-end cursor-pointer">
                 <RxCross1 size={25} onClick={() => setOpen(false)} />
               </div>
-              <h3 className="text-[25px] text-center py-5 font-Poppins text-[#000000cb]">
+              <h3 className="text-xl font-bold text-center uppercase m-4">
                 Bạn có chắc chắn xóa người bán này?
               </h3>
               <div className="w-full flex items-center justify-center">
-                <div
-                  className={`${styles.button} text-white text-[18px] !h-[42px] mr-4`}
+                <button
                   onClick={() => setOpen(false)}
+                  className="btn btn-error font-bold text-white uppercase m-2"
                 >
                   Hủy bỏ
-                </div>
-                <div
-                  className={`${styles.button} text-white text-[18px] !h-[42px] ml-4`}
-                  onClick={() =>  setOpen(false) || handleDelete(userId)}
+                </button>
+                <button
+                  onClick={() => setOpen(false) || handleDelete(userId)}
+                  className="btn btn-success font-bold text-white uppercase m-2"
                 >
                   Xác nhận
-                </div>
+                </button>
               </div>
             </div>
           </div>

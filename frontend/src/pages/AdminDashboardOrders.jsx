@@ -17,13 +17,11 @@ const AdminDashboardOrders = () => {
   }, []);
 
   const columns = [
-    { field: "id", headerName: "ID đơn hàng", minWidth: 150, flex: 0.7 },
-
+    { field: "id", headerName: "ID Đơn hàng", flex: 2 },
     {
       field: "status",
       headerName: "Trạng thái",
-      minWidth: 130,
-      flex: 0.7,
+      flex: 1,
       cellClassName: (params) => {
         return params.getValue(params.id, "status") === "Delivered"
           ? "greenColor"
@@ -34,24 +32,27 @@ const AdminDashboardOrders = () => {
       field: "itemsQty",
       headerName: "Số lượng",
       type: "number",
-      minWidth: 130,
-      flex: 0.7,
+      headerAlign: "left",
+      align: "left",
+      flex: 1,
     },
 
     {
       field: "total",
       headerName: "Tổng cộng",
       type: "number",
-      minWidth: 130,
-      flex: 0.8,
+      headerAlign: "left",
+      align: "left",
+      flex: 1,
     },
     {
-        field: "createdAt",
-        headerName: "Thời gian",
-        type: "number",
-        minWidth: 130,
-        flex: 0.8,
-      },
+      field: "createdAt",
+      headerName: "Thời gian",
+      type: "number",
+      headerAlign: "left",
+      align: "left",
+      flex: 1,
+    },
   ];
 
   const row = [];
@@ -60,9 +61,9 @@ const AdminDashboardOrders = () => {
       row.push({
         id: item._id,
         itemsQty: item?.cart?.reduce((acc, item) => acc + item.qty, 0),
-        total: item?.totalPrice + " $",
+        total: item?.totalPrice + " VND",
         status: item?.status,
-        createdAt: item?.createdAt.slice(0,10),
+        createdAt: item?.createdAt.slice(0, 10),
       });
     });
   return (
@@ -74,8 +75,11 @@ const AdminDashboardOrders = () => {
             <AdminSideBar active={2} />
           </div>
 
-          <div className="w-full min-h-[45vh] pt-5 rounded flex justify-center">
-            <div className="w-[97%] flex justify-center">
+          <div className="w-full min-h-[45vh] rounded flex justify-center my-4">
+            <div className="w-[97%] flex flex-col justify-center">
+              <h3 className="text-xl font-bold my-2 uppercase">
+                Tất cả đơn hàng
+              </h3>
               <DataGrid
                 rows={row}
                 columns={columns}

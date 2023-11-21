@@ -27,7 +27,7 @@ const CreateProduct = () => {
       navigate("/dashboard");
       window.location.reload();
     }
-  }, [dispatch, error, success]);
+  }, [dispatch]);
 
   const handleImageChange = (e) => {
     e.preventDefault();
@@ -35,8 +35,6 @@ const CreateProduct = () => {
     let files = Array.from(e.target.files);
     setImages((prevImages) => [...prevImages, ...files]);
   };
-
-  console.log(images);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -52,11 +50,14 @@ const CreateProduct = () => {
     newForm.append("originalPrice", originalPrice);
     newForm.append("shopId", seller._id);
     dispatch(createProduct(newForm));
+    toast.success("Sản phẩm đã được tạo thành công!");
+    navigate(`/dashboard-products`);
+    window.location.reload();
   };
 
   return (
-    <div className="w-[90%] 800px:w-[50%] bg-white  shadow h-[80vh] rounded-[4px] p-3 overflow-y-scroll">
-      <h5 className="text-[30px] font-Poppins text-center">Thêm sản phẩm</h5>
+    <div className="w-[90%] 800px:w-[50%] bg-white shadow rounded-[4px] p-3">
+      <h5 className="font-bold text-xl text-center text-info uppercase">Thêm sản phẩm</h5>
       {/* create product form */}
       <form onSubmit={handleSubmit}>
         <br />

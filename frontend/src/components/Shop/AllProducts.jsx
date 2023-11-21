@@ -1,71 +1,137 @@
 import { Button } from "@material-ui/core";
 import { DataGrid } from "@material-ui/data-grid";
-import React, { useEffect } from "react";
-import { AiOutlineDelete, AiOutlineEye } from "react-icons/ai";
+import React, { useEffect, useState } from "react";
+import { FaFilePen, FaLink, FaTrash, FaEye } from "react-icons/fa6";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { getAllProductsShop } from "../../redux/actions/product";
 import { deleteProduct } from "../../redux/actions/product";
+import { updateProduct } from "../../redux/actions/product";
 import Loader from "../Layout/Loader";
 import currency from "currency-formatter";
+import { toast } from "react-toastify";
 
 const AllProducts = () => {
-  const { products, isLoading } = useSelector((state) => state.products);
+  const { products, isLoading, success, error } = useSelector(
+    (state) => state.products
+  );
   const { seller } = useSelector((state) => state.seller);
 
+  const [selectedProduct, setSelectedProduct] = useState(null);
+  const [updateData, setUpdateData] = useState({
+    originalPrice: null,
+    isActive: null,
+    shopId: seller._id,
+  });
+
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   useEffect(() => {
     dispatch(getAllProductsShop(seller._id));
   }, [dispatch]);
+
+  const handleChangeCheckbox = (e) => {
+    setUpdateData({
+      ...updateData,
+      isActive: e.target.checked,
+    });
+  };
 
   const handleDelete = (id) => {
     dispatch(deleteProduct(id));
     window.location.reload();
   };
 
+  const handleUpdate = () => {
+    dispatch(updateProduct(selectedProduct._id, updateData));
+    setSelectedProduct(null);
+    toast.success("Sản phẩm đã được cập nhật thành công!");
+    navigate(`/product/${selectedProduct._id}`);
+    window.location.reload();
+  };
+
   const columns = [
-    { field: "id", headerName: "ID SP", minWidth: 150, flex: 0.7 },
+    { field: "id", headerName: "ID SP", hide: true },
     {
       field: "name",
       headerName: "Tên sản phẩm",
-      minWidth: 180,
-      flex: 1.4,
+      flex: 2,
     },
     {
       field: "price",
       headerName: "Giá",
-      minWidth: 100,
-      flex: 0.6,
+      flex: 1,
     },
     {
-      field: "Stock",
+      field: "stock",
       headerName: "Số lượng",
       type: "number",
-      minWidth: 80,
-      flex: 0.5,
+      headerAlign: "left",
+      align: "left",
+      flex: 1,
     },
 
     {
       field: "sold",
       headerName: "Đã bán",
       type: "number",
-      minWidth: 130,
-      flex: 0.6,
+      headerAlign: "left",
+      align: "left",
+      flex: 1,
     },
     {
-      field: "Xem",
-      flex: 0.8,
-      minWidth: 100,
-      headerName: "",
+      field: "update",
+      flex: 1,
+      headerName: "Sửa",
+      headerAlign: "left",
+      align: "left",
+      sortable: false,
+      renderCell: (params) => {
+        return (
+          <>
+            <Button
+              onClick={() =>
+                setSelectedProduct(products.find((p) => p._id === params.id))
+              }
+            >
+              <FaFilePen size={20} />
+            </Button>
+          </>
+        );
+      },
+    },
+    {
+      field: "delete",
+      flex: 1,
+      headerName: "Xóa",
       type: "number",
+      headerAlign: "left",
+      align: "left",
+      sortable: false,
+      renderCell: (params) => {
+        return (
+          <>
+            <Button onClick={() => handleDelete(params.id)}>
+              <FaTrash size={20} />
+            </Button>
+          </>
+        );
+      },
+    },
+    {
+      field: "detail",
+      headerName: "Chi tiết",
+      flex: 1,
+      headerAlign: "left",
+      align: "left",
       sortable: false,
       renderCell: (params) => {
         return (
           <>
             <Link to={`/product/${params.id}`}>
               <Button>
-                <AiOutlineEye size={20} />
+                <FaLink size={20} />
               </Button>
             </Link>
           </>
@@ -73,20 +139,14 @@ const AllProducts = () => {
       },
     },
     {
-      field: "Xóa",
-      flex: 0.8,
-      minWidth: 120,
-      headerName: "",
-      type: "number",
+      field: "isActive",
+      headerName: "Active",
+      flex: 1,
+      headerAlign: "left",
+      align: "left",
       sortable: false,
       renderCell: (params) => {
-        return (
-          <>
-            <Button onClick={() => handleDelete(params.id)}>
-              <AiOutlineDelete size={20} />
-            </Button>
-          </>
-        );
+        return <>{params.row.isActive ? <FaEye size={20} /> : null}</>;
       },
     },
   ];
@@ -98,11 +158,12 @@ const AllProducts = () => {
       row.push({
         id: item._id,
         name: item.name,
-        price:`${currency.format(item.originalPrice, {
+        price: `${currency.format(item.originalPrice, {
           code: "VND",
         })}`,
-        Stock: item.stock,
+        stock: item.stock,
         sold: item?.sold_out,
+        isActive: item.isActive,
       });
     });
 
@@ -111,7 +172,7 @@ const AllProducts = () => {
       {isLoading ? (
         <Loader />
       ) : (
-        <div className="w-full mx-8 pt-1 mt-10 bg-white">
+        <div className="w-full bg-white">
           <DataGrid
             rows={row}
             columns={columns}
@@ -119,6 +180,61 @@ const AllProducts = () => {
             disableSelectionOnClick
             autoHeight
           />
+
+          {selectedProduct && (
+            <div className="fixed top-0 left-0 w-full h-full bg-gray-700 bg-opacity-50 flex items-center justify-center z-[9999]">
+              <div className="bg-white p-4 rounded-md">
+                <h2 className="text-xl font-bold uppercase text-center">
+                  Cập nhật sản phẩm
+                </h2>
+                <div className="my-4">
+                  <label htmlFor="productPrice" className="font-bold">
+                    Giá:
+                  </label>
+                  <input
+                    type="number"
+                    id="productPrice"
+                    value={updateData.originalPrice}
+                    onChange={(e) =>
+                      setUpdateData({
+                        ...updateData,
+                        originalPrice: e.target.value,
+                      })
+                    }
+                    className="input input-bordered input-warning w-full max-w block"
+                    placeholder={selectedProduct.originalPrice}
+                  />
+                </div>
+                <div className="my-4">
+                  {/* Thêm input checkbox và kết nối với hàm handleChangeCheckbox */}
+                  <label htmlFor="isActive" className="font-bold">
+                    Trạng thái:
+                  </label>
+                  <input
+                    type="checkbox"
+                    id="isActive"
+                    checked={updateData.isActive}
+                    onChange={handleChangeCheckbox}
+                    className="checkbox checkbox-success block"
+                  />
+                </div>
+                <div className="mt-4 flex justify-between">
+                  <button
+                    onClick={handleUpdate}
+                    className="btn btn-success font-bold text-white uppercase"
+                  >
+                    Cập nhật
+                  </button>
+                  <button
+                    onClick={() => setSelectedProduct(null)}
+                    className="btn btn-error font-bold text-white uppercase"
+                  >
+                    Hủy
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       )}
     </>

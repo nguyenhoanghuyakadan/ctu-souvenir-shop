@@ -16,16 +16,19 @@ const InvoiceDetail = () => {
   }, [dispatch]);
 
   const data = invoices && invoices.find((item) => item._id === id);
-  console.log(data);
-  console.log(products);
 
-  const totalAmount = data
-    ? data.products.reduce((total, product) => {
-        const productPrice =
-          products.find((p) => p._id === product.product)?.originalPrice || 0;
-        return total + product.quantity * productPrice;
-      }, 0)
-    : 0;
+  console.log(data);
+
+  const totalAmount =
+    data &&
+    Array.isArray(data.products) &&
+    data.products.reduce((total, product) => {
+      const productPrice =
+        products.find((p) => p._id === product.product)?.originalPrice || 0;
+      return total + product.quantity * productPrice;
+    }, 0);
+
+  // const totalAmount = [];
 
   return (
     <div className="bg-white border rounded-lg shadow-lg px-6 py-8 max-w-md mx-auto my-8">
@@ -95,7 +98,7 @@ const InvoiceDetail = () => {
             <td className="text-center font-bold text-gray-700"></td>
             <td className="text-center font-bold text-gray-700"></td>
             <td className="text-right font-bold text-gray-700">
-              {totalAmount.toFixed(2)}
+              {data && totalAmount.toFixed(2)}
             </td>
           </tr>
         </tfoot>

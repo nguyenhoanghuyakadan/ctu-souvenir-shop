@@ -1,6 +1,11 @@
 import React, { useEffect, useState } from "react";
 import styles from "../../styles/styles";
-import { BsFillBagFill } from "react-icons/bs";
+import {
+  FaBagShopping,
+  FaCashRegister,
+  FaUserAstronaut,
+  FaDna,
+} from "react-icons/fa6";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllOrdersOfShop } from "../../redux/actions/order";
@@ -23,6 +28,12 @@ const OrderDetails = () => {
   }, [dispatch]);
 
   const data = orders && orders.find((item) => item._id === id);
+
+  const totalPriceWithoutShippingFee =
+    data && data.cart
+      ? data.cart.reduce((sum, item) => sum + item.originalPrice * item.qty, 0)
+      : 0;
+
   const orderUpdateHandler = async (e) => {
     await axios
       .put(
@@ -34,7 +45,7 @@ const OrderDetails = () => {
       )
       .then((res) => {
         toast.success("Order updated!");
-        navigate("/dashboard-orders");
+        window.location.reload();
       })
       .catch((error) => {
         toast.error(error.response.data.message);
@@ -63,41 +74,40 @@ const OrderDetails = () => {
     <div className={`py-4 min-h-screen ${styles.section}`}>
       <div className="w-full flex items-center justify-between">
         <div className="flex items-center">
-          <BsFillBagFill size={30} color="crimson" />
-          <h1 className="pl-2 text-[25px]">Chi tiết đơn hàng</h1>
+          <FaBagShopping size={30} />
+          <h1 className="mx-2 font-bold text-accent text-xl uppercase">
+            Chi tiết đơn hàng
+          </h1>
         </div>
         <Link to="/dashboard-orders">
-          <div
-            className={`${styles.button} !bg-[#fce1e6] !rounded-[4px] text-[#e94560] font-[600] !h-[45px] text-[18px]`}
-          >
+          <button className="btn btn-error uppercase text-white font-bold">
             Quay lại
-          </div>
+          </button>
         </Link>
       </div>
 
-      <div className="w-full flex items-center justify-between pt-6">
-        <h5 className="text-[#00000084]">
-          ID đơn hàng: <span>#{data?._id?.slice(0, 8)}</span>
+      <div className="w-full flex items-center justify-between my-4">
+        <h5>
+          <span className="uppercase">ID đơn hàng: </span>
+          <span className="font-bold">{data?._id}</span>
         </h5>
-        <h5 className="text-[#00000084]">
-          Thời gian: <span>{data?.createdAt?.slice(0, 10)}</span>
+        <h5>
+          <span className="uppercase">Thời gian: </span>
+          <span className="font-bold">{data?.createdAt?.slice(0, 10)}</span>
         </h5>
       </div>
 
-      {/* order items */}
-      <br />
-      <br />
       {data &&
         data?.cart.map((item, index) => (
-          <div className="w-full flex items-start mb-5">
+          <div className="w-full flex items-start my-4">
             <img
               src={`${backend_url}/${item.images[0]}`}
               alt=""
-              className="w-[80x] h-[80px]"
+              className="w-24 rounded"
             />
-            <div className="w-full">
-              <h5 className="pl-3 text-[20px]">{item.name}</h5>
-              <h5 className="pl-3 text-[20px] text-[#00000091]">
+            <div className="w-full mx-2">
+              <h5 className="font-bold text-xl">{item.name}</h5>
+              <h5 className="text-xl">
                 {currency.format(item.originalPrice, { code: "VND" })} x{" "}
                 {item.qty}
               </h5>
@@ -105,54 +115,78 @@ const OrderDetails = () => {
           </div>
         ))}
 
-      <div className="border-t w-full text-right">
-        <h5 className="pt-3 text-[18px]">
-          Tổng tiền:{" "}
-          <strong>
-            {data
-              ? `${currency.format(data.totalPrice, { code: "VND" })}`
-              : null}{" "}
-          </strong>
+      <div className="border-t w-full text-right flex flex-col py-4">
+        <h5>
+          <span className="uppercase font-bold">Phí giao hàng: </span>
+          <span className="font-bold text-accent">
+            {data &&
+              `${currency.format(
+                data.totalPrice - totalPriceWithoutShippingFee,
+                { code: "VND" }
+              )}`}
+          </span>
+        </h5>
+        <h5>
+          <span className="uppercase font-bold">Tổng tiền: </span>
+          <span className="font-bold  text-accent">
+            {data && `${currency.format(data.totalPrice, { code: "VND" })}`}
+          </span>
         </h5>
       </div>
-      <br />
-      <br />
-      <div className="w-full 800px:flex items-center">
-        <div className="w-full 800px:w-[60%]">
-          <h4 className="pt-3 text-[20px] font-[600]">Thông tin giao hàng:</h4>
-          <h4 className="pt-3 text-[20px]">
-            Tên khách hàng: {data?.user?.name}
+      <div className="w-full 800px:flex">
+        <div className="w-full">
+          <div className="my-4 flex">
+            <FaUserAstronaut size={30} />
+            <span className="font-bold text-xl uppercase text-accent mx-2">
+              Thông tin khách hàng
+            </span>
+          </div>
+          <h4 className="text-lg">
+            <span className="uppercase">Tên khách hàng:</span>{" "}
+            <span className="font-bold">{data?.user?.name}</span>
           </h4>
-          <h4 className="pt-3 text-[20px]">
-            Địa chỉ: {data?.shippingAddress.address1},{" "}
-            {data?.shippingAddress.city}
+          <h4 className="text-lg">
+            <span className="uppercase">Địa chỉ:</span>{" "}
+            <span className="font-bold">{data?.shippingAddress.address1}</span>
           </h4>
           {/* <h4 className=" text-[20px]">{data?.shippingAddress.country}</h4> */}
           {/* <h4 className=" text-[20px]">{data?.shippingAddress.city}</h4> */}
-          <h4 className=" text-[20px]">
-            {" "}
-            Số điện thoại: +(84) {data?.shippingAddress?.phoneNumber}
+          <h4 className="text-lg">
+            <span className="uppercase">Số điện thoại:</span>{" "}
+            <span className="font-bold">
+              {data?.shippingAddress?.phoneNumber}
+            </span>
           </h4>
         </div>
-        <div className="w-full 800px:w-[40%]">
-          <h4 className="pt-3 text-[20px]">Thông tin thanh toán:</h4>
-          <h4>
-            Trạng thái:{" "}
-            {data?.paymentInfo?.status
-              ? data?.paymentInfo?.status
-              : "Chưa thanh toán"}
+        <div className="w-full">
+          <div className="my-4 flex">
+            <FaCashRegister size={30} />
+            <span className="font-bold text-xl uppercase text-accent mx-2">
+              Thông tin đơn hàng
+            </span>
+          </div>
+          <h4 className="text-lg">
+            <span className="uppercase">Trạng thái:</span>{" "}
+            <span className="font-bold">
+              {data?.paymentInfo?.status
+                ? data?.paymentInfo?.status
+                : "Chưa thanh toán"}
+            </span>
           </h4>
         </div>
       </div>
-      <br />
-      <br />
-      <h4 className="pt-3 text-[20px] font-[600]">Trạng thái đơn hàng:</h4>
+      <div className="my-4 flex">
+        <FaDna size={30} />
+        <span className="font-bold text-xl uppercase text-accent mx-2">
+          Trạng thái đơn hàng
+        </span>
+      </div>
       {data?.status !== "Processing refund" &&
         data?.status !== "Refund Success" && (
           <select
             value={status}
             onChange={(e) => setStatus(e.target.value)}
-            className="w-[200px] mt-2 border h-[35px] rounded-[5px]"
+            className="select select-accent w-full max-w-xs"
           >
             {[
               "Processing",
@@ -198,8 +232,8 @@ const OrderDetails = () => {
         </select>
       ) : null}
 
-      <div
-        className={`${styles.button} mt-5 !bg-[#0454ffee] !rounded-[4px] text-[#ffffff] font-[600] !h-[45px] text-[18px]`}
+      <button
+        className="btn btn-accent font-bold text-white uppercase mx-2"
         onClick={
           data?.status !== "Processing refund"
             ? orderUpdateHandler
@@ -207,7 +241,7 @@ const OrderDetails = () => {
         }
       >
         Cập nhật
-      </div>
+      </button>
     </div>
   );
 };

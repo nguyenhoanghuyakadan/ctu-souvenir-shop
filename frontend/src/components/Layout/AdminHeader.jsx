@@ -14,8 +14,8 @@ const AdminHeader = () => {
     <div className="w-full h-[80px] bg-white shadow sticky top-0 left-0 z-30 flex items-center justify-between px-4">
       <div>
         <Link to="/">
-          <h1 className="text-[33px] font-bold underline decoration-[#db3f59] hover:decoration-4">
-            CTU Souvenir Shop
+          <h1 className="font-bold text-4xl text-info font-bold uppercase">
+            Quản lý hệ thống
           </h1>
         </Link>
       </div>

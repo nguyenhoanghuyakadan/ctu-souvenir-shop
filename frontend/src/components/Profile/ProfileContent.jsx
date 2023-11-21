@@ -66,8 +66,8 @@ const ProfileContent = ({ active }) => {
         withCredentials: true,
       })
       .then((response) => {
-         dispatch(loadUser());
-         toast.success("Avatar đã được cập nhật thành công!");
+        dispatch(loadUser());
+        toast.success("Avatar đã được cập nhật thành công!");
       })
       .catch((error) => {
         toast.error(error);
@@ -81,12 +81,12 @@ const ProfileContent = ({ active }) => {
         <>
           <div className="flex justify-center w-full">
             <div className="relative">
-              <img
-                src={`${backend_url}${user?.avatar}`}
-                className="w-[150px] h-[150px] rounded-full object-cover border-[3px] border-[#3ad132]"
-                alt=""
-              />
-              <div className="w-[30px] h-[30px] bg-[#E3E9EE] rounded-full flex items-center justify-center cursor-pointer absolute bottom-[5px] right-[5px]">
+              <div className="avatar">
+                <div className="w-48 rounded-full">
+                  <img src={`${backend_url}${user?.avatar}`} />
+                </div>
+              </div>
+              <div className="w-[48px] h-[48px] bg-neutral-content rounded-full flex items-center justify-center cursor-pointer absolute bottom-[5px] right-[5px]">
                 <input
                   type="file"
                   id="image"
@@ -94,31 +94,35 @@ const ProfileContent = ({ active }) => {
                   onChange={handleImage}
                 />
                 <label htmlFor="image">
-                  <AiOutlineCamera />
+                  <AiOutlineCamera size={24} />
                 </label>
               </div>
             </div>
           </div>
           <br />
           <br />
-          <div className="w-full px-5">
+          <div className="w-full">
             <form onSubmit={handleSubmit} aria-required={true}>
-              <div className="w-full 800px:flex block pb-3">
-                <div className=" w-[100%] 800px:w-[50%]">
-                  <label className="block pb-2">Họ và tên (Tên người nhận)</label>
+              <div className="w-full 800px:flex block my-2">
+                <div className="w-full 800px:mx-2">
+                  <label className="block my-2 font-bold uppercase">
+                    Họ và tên
+                  </label>
                   <input
                     type="text"
-                    className={`${styles.input} !w-[95%] mb-4 800px:mb-0`}
+                    className="input input-bordered input-accent w-full"
                     required
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                   />
                 </div>
-                <div className=" w-[100%] 800px:w-[50%]">
-                  <label className="block pb-2">Email</label>
+                <div className="w-full 800px:mx-2">
+                  <label className="block my-2 font-bold uppercase">
+                    Email
+                  </label>
                   <input
                     type="text"
-                    className={`${styles.input} !w-[95%] mb-1 800px:mb-0`}
+                    className="input input-bordered input-accent w-full"
                     required
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
@@ -126,13 +130,15 @@ const ProfileContent = ({ active }) => {
                 </div>
               </div>
 
-              <div className="w-full 800px:flex block pb-3">
-                <div className=" w-[100%] 800px:w-[50%]">
-                  <label className="block pb-2">Số điện thoại: (+84)</label>
-                
+              <div className="w-full 800px:flex block my-2">
+                <div className="w-full 800px:mx-2">
+                  <label className="block my-2 font-bold uppercase">
+                    Số điện thoại: (+84)
+                  </label>
+
                   <input
                     type="number"
-                    className={`${styles.input} !w-[95%] mb-4 800px:mb-0`}
+                    className="input input-bordered input-accent w-full"
                     required
                     placeholder="+84"
                     value={phoneNumber}
@@ -140,23 +146,25 @@ const ProfileContent = ({ active }) => {
                   />
                 </div>
 
-                <div className=" w-[100%] 800px:w-[50%]">
-                  <label className="block pb-2">Nhập mật khẩu để thay đổi thông tin </label>
+                <div className="w-full 800px:mx-2">
+                  <label className="block my-2 font-bold uppercase">
+                    Nhập mật khẩu để thay đổi thông tin{" "}
+                  </label>
                   <input
                     type="password"
-                    className={`${styles.input} !w-[95%] mb-4 800px:mb-0`}
+                    className="input input-bordered input-accent w-full"
                     required
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                   />
                 </div>
               </div>
-              <input
-                className={`w-[250px] h-[40px] border border-[#fd3e25] text-center text-[#eeeeee] font-bold rounded-[8px] mt-8 bg-[#2374e1] cursor-pointer`}
-                required
-                value="Cập nhật"
+              <button
                 type="submit"
-              />
+                className="btn btn-accent text-white font-bold uppercase m-2"
+              >
+                Cập nhật
+              </button>
             </form>
           </div>
         </>
@@ -189,13 +197,6 @@ const ProfileContent = ({ active }) => {
           <ChangePassword />
         </div>
       )}
-
-      {/*  user Address */}
-      {active === 7 && (
-        <div>
-          <Address />
-        </div>
-      )}
     </div>
   );
 };
@@ -210,13 +211,12 @@ const AllOrders = () => {
   }, []);
 
   const columns = [
-    { field: "id", headerName: "ID", minWidth: 150, flex: 0.7 },
+    { field: "id", headerName: "ID Đơn hàng", flex: 2 },
 
     {
       field: "status",
       headerName: "Trạng thái",
-      minWidth: 130,
-      flex: 0.7,
+      flex: 1,
       cellClassName: (params) => {
         return params.getValue(params.id, "status") === "Delivered"
           ? "greenColor"
@@ -227,24 +227,27 @@ const AllOrders = () => {
       field: "itemsQty",
       headerName: "Số lượng",
       type: "number",
-      minWidth: 130,
-      flex: 0.7,
+      headerAlign: "left",
+      align: "left",
+      flex: 1,
     },
 
     {
       field: "total",
       headerName: "Tổng cộng",
       type: "number",
-      minWidth: 130,
-      flex: 0.8,
+      headerAlign: "left",
+      align: "left",
+      flex: 1,
     },
 
     {
       field: " ",
       flex: 1,
-      minWidth: 150,
-      headerName: "",
+      headerName: "Chi tiết",
       type: "number",
+      headerAlign: "left",
+      align: "left",
       sortable: false,
       renderCell: (params) => {
         return (
@@ -267,7 +270,7 @@ const AllOrders = () => {
       row.push({
         id: item._id,
         itemsQty: item.cart.length,
-        total:  `${currency.format(item.totalPrice, { code: "VND" })}`,
+        total: `${currency.format(item.totalPrice, { code: "VND" })}`,
         status: item.status,
       });
     });
@@ -294,16 +297,16 @@ const AllRefundOrders = () => {
     dispatch(getAllOrdersOfUser(user._id));
   }, []);
 
-  const eligibleOrders = orders && orders.filter((item) => item.status === "Processing refund");
+  const eligibleOrders =
+    orders && orders.filter((item) => item.status === "Processing refund");
 
   const columns = [
-    { field: "id", headerName: "ID", minWidth: 150, flex: 0.7 },
+    { field: "id", headerName: "ID Đơn hàng", flex: 2 },
 
     {
       field: "status",
       headerName: "Trạng thái",
-      minWidth: 130,
-      flex: 0.7,
+      flex: 1,
       cellClassName: (params) => {
         return params.getValue(params.id, "status") === "Delivered"
           ? "greenColor"
@@ -314,23 +317,26 @@ const AllRefundOrders = () => {
       field: "itemsQty",
       headerName: "Số lượng",
       type: "number",
-      minWidth: 130,
-      flex: 0.7,
+      headerAlign: "left",
+      align: "left",
+      flex: 1,
     },
 
     {
       field: "total",
       headerName: "Tổng cộng",
       type: "number",
-      minWidth: 130,
-      flex: 0.8,
+      headerAlign: "left",
+      align: "left",
+      flex: 1,
     },
 
     {
       field: " ",
       flex: 1,
-      minWidth: 150,
-      headerName: "",
+      headerAlign: "left",
+      align: "left",
+      headerName: "Chi tiết",
       type: "number",
       sortable: false,
       renderCell: (params) => {
@@ -350,12 +356,12 @@ const AllRefundOrders = () => {
   const row = [];
 
   eligibleOrders &&
-   eligibleOrders.forEach((item) => {
+    eligibleOrders.forEach((item) => {
       row.push({
         id: item._id,
         itemsQty: item.cart.length,
         // total: "US$ " + item.totalPrice,
-        total:`${currency.format(item.totalPrice, { code: "VND" })}`,
+        total: `${currency.format(item.totalPrice, { code: "VND" })}`,
         status: item.status,
       });
     });
@@ -383,13 +389,12 @@ const TrackOrder = () => {
   }, []);
 
   const columns = [
-    { field: "id", headerName: "ID", minWidth: 150, flex: 0.7 },
+    { field: "id", headerName: "ID", flex: 2 },
 
     {
       field: "status",
       headerName: "Trạng thái",
-      minWidth: 130,
-      flex: 0.7,
+      flex: 1,
       cellClassName: (params) => {
         return params.getValue(params.id, "status") === "Delivered"
           ? "greenColor"
@@ -400,22 +405,25 @@ const TrackOrder = () => {
       field: "itemsQty",
       headerName: "Số lượng",
       type: "number",
-      minWidth: 130,
-      flex: 0.7,
+      headerAlign: "left",
+      align: "left",
+      flex: 1,
     },
 
     {
       field: "total",
       headerName: "Tổng cộng",
       type: "number",
-      minWidth: 130,
-      flex: 0.8,
+      headerAlign: "left",
+      align: "left",
+      flex: 1,
     },
 
     {
-      field: " ",
+      field: "Chi tiết",
       flex: 1,
-      minWidth: 150,
+      headerAlign: "left",
+      align: "left",
       headerName: "",
       type: "number",
       sortable: false,
@@ -441,7 +449,7 @@ const TrackOrder = () => {
         id: item._id,
         itemsQty: item.cart.length,
         // total: "US$ " + item.totalPrice,
-        total:`${currency.format(item.totalPrice, { code: "VND" })}`,
+        total: `${currency.format(item.totalPrice, { code: "VND" })}`,
         status: item.status,
       });
     });
@@ -484,8 +492,8 @@ const ChangePassword = () => {
       });
   };
   return (
-    <div className="w-full px-5">
-      <h1 className="block text-[25px] text-center font-[600] text-[#000000ba] pb-2">
+    <div className="w-full">
+      <h1 className="block text-xl text-center font-bold text-accent uppercase my-4">
         Đổi mật khẩu
       </h1>
       <div className="w-full">
@@ -494,41 +502,47 @@ const ChangePassword = () => {
           onSubmit={passwordChangeHandler}
           className="flex flex-col items-center"
         >
-          <div className=" w-[100%] 800px:w-[50%] mt-5">
-            <label className="block pb-2">Nhập mật khẩu cũ</label>
+          <div className="w-full 800px:w-[50%]">
+            <label className="block mb-2 font-bold uppercase">
+              Nhập mật khẩu cũ
+            </label>
             <input
               type="password"
-              className={`${styles.input} !w-[95%] mb-4 800px:mb-0`}
+              className="input input-bordered input-accent w-full"
               required
               value={oldPassword}
               onChange={(e) => setOldPassword(e.target.value)}
             />
           </div>
-          <div className=" w-[100%] 800px:w-[50%] mt-2">
-            <label className="block pb-2">Nhật mật khẩu mới</label>
+          <div className="w-full 800px:w-[50%] my-2">
+            <label className="block mb-2 font-bold uppercase">
+              Nhật mật khẩu mới
+            </label>
             <input
               type="password"
-              className={`${styles.input} !w-[95%] mb-4 800px:mb-0`}
+              className="input input-bordered input-accent w-full"
               required
               value={newPassword}
               onChange={(e) => setNewPassword(e.target.value)}
             />
           </div>
-          <div className=" w-[100%] 800px:w-[50%] mt-2">
-            <label className="block pb-2">Nhập lại mật khẩu mới</label>
+          <div className="w-full 800px:w-[50%] my-2">
+            <label className="block mb-2 font-bold uppercase">
+              Nhập lại mật khẩu mới
+            </label>
             <input
               type="password"
-              className={`${styles.input} !w-[95%] mb-4 800px:mb-0`}
+              className="input input-bordered input-accent w-full"
               required
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
             />
-            <input
-              className={`w-[95%] h-[40px] border border-[#3a24db] text-center text-[#3a24db] rounded-[3px] mt-8 cursor-pointer`}
-              required
-              value="Update"
+            <button
               type="submit"
-            />
+              className="btn btn-accent font-bold text-white uppercase my-2"
+            >
+              Cập nhật
+            </button>
           </div>
         </form>
       </div>
@@ -536,246 +550,4 @@ const ChangePassword = () => {
   );
 };
 
-const Address = () => {
-  const [open, setOpen] = useState(false);
-  const [country, setCountry] = useState("VN");
-  const [city, setCity] = useState("");
-  const [zipCode, setZipCode] = useState();
-  const [address1, setAddress1] = useState("");
-  const [address2, setAddress2] = useState("");
-  const [addressType, setAddressType] = useState("");
-  const { user } = useSelector((state) => state.user);
-  const dispatch = useDispatch();
-
-  const addressTypeData = [
-    {
-      name: "Mặc định",
-    },
-    {
-      name: "Nhà, nơi thường trú",
-    },
-    {
-      name: "Văn phòng, nơi làm việc",
-    },
-  ];
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    if (addressType === "" || country === "" || city === "") {
-      toast.error("Vui lòng điền vào tất cả các mục!");
-    } else {
-      dispatch(
-        updatUserAddress(
-          country,
-          city,
-          address1,
-          // address2,
-          // zipCode,
-          addressType
-        )
-      );
-      setOpen(false);
-      setCountry("");
-      setCity("");
-      setAddress1("");
-      // setAddress2("");
-      // setZipCode(null);
-      setAddressType("");
-    }
-  };
-
-  const handleDelete = (item) => {
-    const id = item._id;
-    dispatch(deleteUserAddress(id));
-  };
-
-  return (
-    <div className="w-full px-5">
-      {open && (
-        <div className="fixed w-full h-screen bg-[#0000004b] top-0 left-0 flex items-center justify-center ">
-          <div className="w-[35%] h-[80vh] bg-white rounded shadow relative overflow-y-scroll">
-            <div className="w-full flex justify-end p-3">
-              <RxCross1
-                size={30}
-                className="cursor-pointer"
-                onClick={() => setOpen(false)}
-              />
-            </div>
-            <h1 className="text-center text-[25px] font-Poppins">
-             Thêm địa chỉ
-            </h1>
-            <div className="w-full">
-              <form aria-required onSubmit={handleSubmit} className="w-full">
-                <div className="w-full block p-4">
-                  <div className="w-full pb-2">
-                    <label className="block pb-2">Khu vực:</label>
-                    <select
-                      name=""
-                      id=""
-                      value={country}
-                      onChange={(e) => setCountry(e.target.value)}
-                      className="w-[95%] border h-[40px] rounded-[5px]"
-                    >
-                      <option value="" className="block border pb-2">
-                        chọn khu vực
-                      </option>
-                      {Country &&
-                        Country.getAllCountries().map((item) => (
-                          <option
-                            className="block pb-2"
-                            key={item.isoCode}
-                            value={item.isoCode}
-                          >
-                            {item.name}
-                          </option>
-                        ))}
-                    </select>
-                  </div>
-
-                  <div className="w-full pb-2">
-                    <label className="block pb-2">Thành phố, tỉnh thành:</label>
-                    <select
-                      name=""
-                      id=""
-                      value={city}
-                      onChange={(e) => setCity(e.target.value)}
-                      className="w-[95%] border h-[40px] rounded-[5px]"
-                    >
-                      <option value="" className="block border pb-2">
-                        chọn thành phố, tỉnh thành
-                      </option>
-                      {State &&
-                        State.getStatesOfCountry(country).map((item) => (
-                          <option
-                            className="block pb-2"
-                            key={item.isoCode}
-                            value={item.isoCode}
-                          >
-                            {item.name}
-                          </option>
-                        ))}
-                    </select>
-                  </div>
-
-                  <div className="w-full pb-2">
-                    <label className="block pb-2">Địa chỉ 1 (Điền đầy đủ: số nhà, tên đường, phường, xóm, huyện, xã, phường thành phố)</label>
-                    <input
-                      type="address"
-                      className={`${styles.input}`}
-                      required
-                      value={address1}
-                      onChange={(e) => setAddress1(e.target.value)}
-                    />
-                  </div>
-                  {/* <div className="w-full pb-2">
-                    <label className="block pb-2">Địa chỉ dự phòng (Điền đầy đủ: số nhà, tên đường, phường, xóm, huyện, xã, phường thành phố)</label>
-                    <input
-                      type="address"
-                      className={`${styles.input}`}
-                      required
-                      value={address2}
-                      onChange={(e) => setAddress2(e.target.value)}
-                    />
-                  </div> */}
-
-                  {/* <div className="w-full pb-2">
-                    <label className="block pb-2">Zip Code</label>
-                    <input
-                      type="number"
-                      className={`${styles.input}`}
-                      required
-                      value={zipCode}
-                      onChange={(e) => setZipCode(e.target.value)}
-                    />
-                  </div> */}
-
-                  <div className="w-full pb-2">
-                    <label className="block pb-2">Loại địa chỉ</label>
-                    <select
-                      name=""
-                      id=""
-                      value={addressType}
-                      onChange={(e) => setAddressType(e.target.value)}
-                      className="w-[95%] border h-[40px] rounded-[5px]"
-                    >
-                      <option value="" className="block border pb-2">
-                       Chọn loại địa chỉ 
-                      </option>
-                      {addressTypeData &&
-                        addressTypeData.map((item) => (
-                          <option
-                            className="block pb-2"
-                            key={item.name}
-                            value={item.name}
-                          >
-                            {item.name}
-                          </option>
-                        ))}
-                    </select>
-                  </div>
-
-                  <div className=" w-full pb-2">
-                    <input
-                      type="submit"
-                      className={`${styles.input} mt-5 cursor-pointer`}
-                      required
-                      readOnly
-                    />
-                  </div>
-                </div>
-              </form>
-            </div>
-          </div>
-        </div>
-      )}
-      <div className="flex w-full items-center justify-between">
-        <h1 className="text-[25px] font-[600] text-[#000000ba] pb-2">
-          Địa chỉ của tôi
-        </h1>
-        <div
-          className={`${styles.button} !rounded-md`}
-          onClick={() => setOpen(true)}
-        >
-          <span className="text-[#fff]">Thêm địa chỉ mới</span>
-        </div>
-      </div>
-      <br />
-      {user &&
-        user.addresses.map((item, index) => (
-          <div
-            className="w-full bg-white h-min 800px:h-[70px] rounded-[4px] flex items-center px-3 shadow justify-between pr-10 mb-5"
-            key={index}
-          >
-            <div className="flex items-center">
-              <h5 className="pl-5 font-[600]">{item.addressType}</h5>
-            </div>
-            <div className="pl-8 flex items-center">
-              <h6 className="text-[12px] 800px:text-[unset]">
-                {item.address1}
-              </h6>
-            </div>
-            <div className="pl-8 flex items-center">
-              <h6 className="text-[12px] 800px:text-[unset]">
-                {user && user.phoneNumber}
-              </h6>
-            </div>
-            <div className="min-w-[10%] flex items-center justify-between pl-8">
-              <AiOutlineDelete
-                size={25}
-                className="cursor-pointer"
-                onClick={() => handleDelete(item)}
-              />
-            </div>
-          </div>
-        ))}
-
-      {user && user.addresses.length === 0 && (
-        <h5 className="text-center pt-8 text-[18px]">
-          Bạn chưa cập nhật địa chỉ nào!!!
-        </h5>
-      )}
-    </div>
-  );
-};
 export default ProfileContent;

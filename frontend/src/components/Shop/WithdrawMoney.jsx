@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { getAllOrdersOfShop } from "../../redux/actions/order";
 import styles from "../../styles/styles";
 import { RxCross1 } from "react-icons/rx";
@@ -15,7 +16,7 @@ const WithdrawMoney = () => {
   const dispatch = useDispatch();
   const { seller } = useSelector((state) => state.seller);
   const [paymentMethod, setPaymentMethod] = useState(false);
-  const [withdrawAmount, setWithdrawAmount] = useState(50000);
+  const [withdrawAmount, setWithdrawAmount] = useState();
   const [bankInfo, setBankInfo] = useState({
     bankName: "",
     // bankCountry: "",
@@ -24,6 +25,9 @@ const WithdrawMoney = () => {
     bankHolderName: "",
     bankAddress: "",
   });
+  const navigate = useNavigate();
+
+  const availableBalance = seller?.availableBalance.toFixed(2);
 
   useEffect(() => {
     dispatch(getAllOrdersOfShop(seller._id));
@@ -52,7 +56,7 @@ const WithdrawMoney = () => {
         { withCredentials: true }
       )
       .then((res) => {
-        toast.success("Withdraw method added successfully!");
+        toast.success("Phương thức rút tiền đã được thêm thành công!");
         dispatch(loadSeller());
         setBankInfo({
           bankName: "",
@@ -74,18 +78,18 @@ const WithdrawMoney = () => {
         withCredentials: true,
       })
       .then((res) => {
-        toast.success("Withdraw method deleted successfully!");
+        toast.success("Phương thức rút tiền đã được xóa thành công!");
         dispatch(loadSeller());
       });
   };
 
   const error = () => {
-    toast.error("You not have enough balance to withdraw!");
+    toast.error("Bạn không có đủ số dư để rút tiền!");
   };
 
   const withdrawHandler = async () => {
-    if (withdrawAmount < 50 || withdrawAmount > availableBalance) {
-      toast.error("You can't withdraw this amount!");
+    if (withdrawAmount < 50 || withdrawAmount > seller?.availableBalance) {
+      toast.error("Bạn không thể rút số tiền này!");
     } else {
       const amount = withdrawAmount;
       await axios
@@ -95,25 +99,43 @@ const WithdrawMoney = () => {
           { withCredentials: true }
         )
         .then((res) => {
-          toast.success("Withdraw money request is successful!");
-        });
+          toast.success(
+            "Yêu cầu rút tiền thành công. Vui lòng đợi một chút để hoàn thành."
+          );
+        })
+        .then((res) => setOpen(false))
+        .then((res) =>
+          setTimeout(() => {
+            window.location.reload();
+          }, 3000)
+        );
     }
   };
-
-  const availableBalance = seller?.availableBalance.toFixed(2);
 
   return (
     <div className="w-full h-[90vh] p-8">
       <div className="w-full bg-white h-full rounded flex items-center justify-center flex-col">
-        <h5 className="text-[20px] pb-4">
-        <h4>Số dư khả dụng: {`${currency.format(availableBalance, { code: "VND" })}`}</h4>
+        <h5 className="font-bold text-xl uppercase">
+          <h4>
+            Số dư khả dụng:{" "}
+            {`${currency.format(availableBalance, { code: "VND" })}`}
+          </h4>
         </h5>
-        <div
-          className={`${styles.button} text-white !h-[42px] !rounded`}
-          onClick={() => (availableBalance < 50 ? error() : setOpen(true))}
-        >
-          Rút tiền
-        </div>
+        {availableBalance < 50 ? (
+          <p className="font-bold text-center uppercase">
+            Vui lòng lưu ý rằng để thực hiện giao dịch rút tiền, số dư tài khoản
+            của bạn cần phải đủ lớn, ít nhất là 50,000 VND. Hãy đảm bảo rằng bạn
+            có số tiền đủ trước khi thực hiện yêu cầu rút tiền của mình. Xin cảm
+            ơn!
+          </p>
+        ) : (
+          <button
+            className="btn btn-info font-bold uppercase text-white"
+            onClick={() => setOpen(true)}
+          >
+            Rút tiền
+          </button>
+        )}
       </div>
       {open && (
         <div className="w-full h-screen z-[9999] fixed top-0 left-0 flex items-center justify-center bg-[#0000004e]">
@@ -137,7 +159,7 @@ const WithdrawMoney = () => {
                 <form onSubmit={handleSubmit}>
                   <div>
                     <label>
-                     Tên ngân hàng <span className="text-red-500">*</span>
+                      Tên ngân hàng <span className="text-red-500">*</span>
                     </label>
                     <input
                       type="text"
@@ -195,8 +217,7 @@ const WithdrawMoney = () => {
 
                   <div className="pt-2">
                     <label>
-                      Số tài khoản{" "}
-                      <span className="text-red-500">*</span>
+                      Số tài khoản <span className="text-red-500">*</span>
                     </label>
                     <input
                       type="number"
@@ -237,7 +258,8 @@ const WithdrawMoney = () => {
 
                   <div className="pt-2">
                     <label>
-                      Địa chỉ đăng ký ngân hàng <span className="text-red-500">*</span>
+                      Địa chỉ đăng ký ngân hàng{" "}
+                      <span className="text-red-500">*</span>
                     </label>
                     <input
                       type="text"
@@ -256,9 +278,15 @@ const WithdrawMoney = () => {
                     />
                   </div>
 
-                  <button
+                  {/* <button
                     type="submit"
                     className={`${styles.button} mb-3 text-white`}
+                  >
+                    Thêm
+                  </button> */}
+                  <button
+                    type="submit"
+                    className="btn btn-success font-bold uppercase text-white my-4"
                   >
                     Thêm
                   </button>
@@ -266,8 +294,8 @@ const WithdrawMoney = () => {
               </div>
             ) : (
               <>
-                <h3 className="text-[22px] font-Poppins">
-                  Phương thức rút tiền:
+                <h3 className="font-bold text-xl uppercase text-center">
+                  Phương thức rút tiền
                 </h3>
 
                 {seller && seller?.withdrawMethod ? (
@@ -281,7 +309,9 @@ const WithdrawMoney = () => {
                           ) +
                             seller?.withdrawMethod.bankAccountNumber.slice(-3)}
                         </h5>
-                        <h5>Tên ngân hàng: {seller?.withdrawMethod.bankName}</h5>
+                        <h5>
+                          Tên ngân hàng: {seller?.withdrawMethod.bankName}
+                        </h5>
                       </div>
                       <div className="800px:w-[50%]">
                         <AiOutlineDelete
@@ -292,46 +322,58 @@ const WithdrawMoney = () => {
                       </div>
                     </div>
                     <br />
-                    <h4>Số dư khả dụng: {`${currency.format(availableBalance, { code: "VND" })}`}</h4>
+                    <h4>
+                      Số dư khả dụng:{" "}
+                      {`${currency.format(availableBalance, { code: "VND" })}`}
+                    </h4>
                     <br />
-                    <span>Nhập số tiền cần rút: (Số dư khả dụng tối thiểu {'>'} 200.000 VND)</span>
+                    <span>Nhập số tiền cần rút:</span>
                     <div className="800px:flex w-full items-center">
                       <input
                         type="number"
-                        placeholder="Amount..."
                         value={withdrawAmount}
                         onChange={(e) => setWithdrawAmount(e.target.value)}
                         className="800px:w-[100px] w-[full] border 800px:mr-3 p-1 rounded"
-                      /><span className='mr-4'>VND </span>
-                      
+                      />
+                      <span className="mr-4">VND </span>
+
                       {/* <div
                         className={`${styles.button} !h-[42px] text-white`}
                         onClick={withdrawHandler}
                       >
                         Rút tiền
                       </div> */}
-                      {availableBalance && availableBalance>200000 ?(
-                         <div
-                         className={`${styles.button} !h-[42px] text-white`}
-                         onClick={withdrawHandler}
-                       >
-                         Rút tiền
-                       </div>
-                      ):( null)}
+
+                      <div>
+                        <button
+                          className="btn btn-success font-bold uppercase"
+                          onClick={withdrawHandler}
+                        >
+                          Rút tiền
+                        </button>
+                      </div>
+                      {/* {availableBalance && availableBalance > 50 ? (
+                        <div
+                          className={`${styles.button} !h-[42px] text-white`}
+                          onClick={withdrawHandler}
+                        >
+                          Rút tiền
+                        </div>
+                      ) : null} */}
                     </div>
                   </div>
                 ) : (
-                  <div>
-                    <p className="text-[18px] pt-2">
+                  <div className="flex flex-col items-center">
+                    <p className="font-bold text-xl my-4">
                       Bạn chưa cập nhật phương thức rút tiền!
                     </p>
-                    <div className="w-full flex items-center">
-                      <div
-                        className={`${styles.button} text-[#fff] text-[18px] mt-4`}
+                    <div>
+                      <button
+                        className="btn btn-info font-bold uppercase text-white"
                         onClick={() => setPaymentMethod(true)}
                       >
                         Thêm
-                      </div>
+                      </button>
                     </div>
                   </div>
                 )}

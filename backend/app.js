@@ -40,7 +40,7 @@ const conversation = require("./controller/conversation");
 const message = require("./controller/message");
 const withdraw = require("./controller/withdraw");
 const invoice = require("./controller/invoice");
-const analytics = require("./controller/analytics");
+const analytic = require("./controller/analytic");
 
 app.use("/api/v2/user", user);
 app.use("/api/v2/conversation", conversation);
@@ -52,7 +52,7 @@ app.use("/api/v2/coupon", coupon);
 app.use("/api/v2/payment", payment);
 app.use("/api/v2/withdraw", withdraw);
 app.use("/api/v2/invoice", invoice);
-app.use("/api/v2/analytics", analytics);
+app.use("/api/v2/analytic", analytic);
 
 // it's for ErrorHandling
 app.use(ErrorHandler);

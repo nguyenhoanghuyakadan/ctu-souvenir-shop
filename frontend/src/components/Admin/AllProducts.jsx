@@ -16,45 +16,48 @@ const AllProducts = () => {
   const [data, setData] = useState([]);
 
   useEffect(() => {
-    axios.get(`${server}/product/admin-all-products`, {withCredentials: true}).then((res) => {
+    axios
+      .get(`${server}/product/admin-all-products`, { withCredentials: true })
+      .then((res) => {
         setData(res.data.products);
-    })
+      });
   }, []);
 
   const columns = [
-    { field: "id", headerName: "ID sản phẩm", minWidth: 150, flex: 0.7 },
+    { field: "id", headerName: "ID Sản phẩm", flex: 2 },
     {
       field: "name",
       headerName: "Tên sản phẩm",
-      minWidth: 180,
-      flex: 1.4,
+      flex: 2,
     },
     {
       field: "price",
       headerName: "Giá",
-      minWidth: 100,
-      flex: 0.6,
+      flex: 1,
     },
     {
       field: "Stock",
       headerName: "Số lượng",
+      headerAlign: "left",
+      align: "left",
       type: "number",
-      minWidth: 80,
-      flex: 0.5,
+      flex: 1,
     },
 
     {
       field: "sold",
       headerName: "Đã bán",
+      headerAlign: "left",
+      align: "left",
       type: "number",
-      minWidth: 130,
-      flex: 0.6,
+      flex: 1,
     },
     {
-      field: "Xem",
-      flex: 0.8,
-      minWidth: 100,
-      headerName: "",
+      field: "view",
+      flex: 1,
+      headerName: "Xem",
+      headerAlign: "left",
+      align: "left",
       type: "number",
       sortable: false,
       renderCell: (params) => {
@@ -74,7 +77,7 @@ const AllProducts = () => {
   const row = [];
 
   data &&
-  data.forEach((item) => {
+    data.forEach((item) => {
       row.push({
         id: item._id,
         name: item.name,
@@ -88,15 +91,16 @@ const AllProducts = () => {
 
   return (
     <>
-        <div className="w-full mx-8 pt-1 mt-10 bg-white">
-          <DataGrid
-            rows={row}
-            columns={columns}
-            pageSize={10}
-            disableSelectionOnClick
-            autoHeight
-          />
-        </div>
+      <div className="w-full my-4 bg-white">
+        <h3 className="text-xl font-bold my-2 uppercase">Tất cả sản phẩm</h3>
+        <DataGrid
+          rows={row}
+          columns={columns}
+          pageSize={10}
+          disableSelectionOnClick
+          autoHeight
+        />
+      </div>
     </>
   );
 };

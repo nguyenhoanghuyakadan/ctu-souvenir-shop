@@ -31,41 +31,41 @@ const ProfileSidebar = ({ setActive, active }) => {
       });
   };
   return (
-    <div className="w-full bg-white shadow-sm rounded-[10px] p-4 pt-8">
+    <div className="w-full bg-white shadow-sm rounded mx-2">
       <div
-        className="flex items-center cursor-pointer w-full mb-8"
+        className="flex items-center cursor-pointer w-full uppercase font-bold"
         onClick={() => setActive(1)}
       >
-        <RxPerson size={20} color={active === 1 ? "red" : ""} />
+        <RxPerson size={24} />
         <span
-          className={`pl-3 ${
-            active === 1 ? "text-[red]" : ""
+          className={`mx-2 ${
+            active === 1 ? "text-accent" : ""
           } 800px:block hidden`}
         >
           Trang cá nhân
         </span>
       </div>
       <div
-        className="flex items-center cursor-pointer w-full mb-8"
+        className="flex items-center cursor-pointer w-full my-8 uppercase font-bold"
         onClick={() => setActive(2)}
       >
-        <HiOutlineShoppingBag size={20} color={active === 2 ? "red" : ""} />
+        <HiOutlineShoppingBag size={24} />
         <span
-          className={`pl-3 ${
-            active === 2 ? "text-[red]" : ""
+          className={`mx-2 hover:text-error ${
+            active === 2 ? "text-accent" : ""
           } 800px:block hidden`}
         >
           Đơn đặt hàng
         </span>
       </div>
       <div
-        className="flex items-center cursor-pointer w-full mb-8"
+        className="flex items-center cursor-pointer w-full my-8 uppercase font-bold"
         onClick={() => setActive(3)}
       >
-        <HiOutlineReceiptRefund size={20} color={active === 3 ? "red" : ""} />
+        <HiOutlineReceiptRefund size={24} />
         <span
-          className={`pl-3 ${
-            active === 3 ? "text-[red]" : ""
+          className={`mx-2 hover:text-error ${
+            active === 3 ? "text-accent" : ""
           } 800px:block hidden`}
         >
           Đơn hoàn tiền
@@ -73,13 +73,13 @@ const ProfileSidebar = ({ setActive, active }) => {
       </div>
 
       <div
-        className="flex items-center cursor-pointer w-full mb-8"
+        className="flex items-center cursor-pointer w-full my-8 uppercase font-bold"
         onClick={() => setActive(4) || navigate("/inbox")}
       >
-        <AiOutlineMessage size={20} color={active === 4 ? "red" : ""} />
+        <AiOutlineMessage size={24} />
         <span
-          className={`pl-3 ${
-            active === 4 ? "text-[red]" : ""
+          className={`mx-2 hover:text-error ${
+            active === 4 ? "text-accent" : ""
           } 800px:block hidden`}
         >
           Tin nhắn
@@ -87,13 +87,13 @@ const ProfileSidebar = ({ setActive, active }) => {
       </div>
 
       <div
-        className="flex items-center cursor-pointer w-full mb-8"
+        className="flex items-center cursor-pointer w-full my-8 uppercase font-bold"
         onClick={() => setActive(5)}
       >
-        <MdOutlineTrackChanges size={20} color={active === 5 ? "red" : ""} />
+        <MdOutlineTrackChanges size={24} />
         <span
-          className={`pl-3 ${
-            active === 5 ? "text-[red]" : ""
+          className={`mx-2 hover:text-error ${
+            active === 5 ? "text-accent" : ""
           } 800px:block hidden`}
         >
           Theo dõi đơn hàng
@@ -101,46 +101,29 @@ const ProfileSidebar = ({ setActive, active }) => {
       </div>
 
       <div
-        className="flex items-center cursor-pointer w-full mb-8"
+        className="flex items-center cursor-pointer w-full my-8 uppercase font-bold"
         onClick={() => setActive(6)}
       >
-        <RiLockPasswordLine size={20} color={active === 6 ? "red" : ""} />
+        <RiLockPasswordLine size={24} />
         <span
-          className={`pl-3 ${
-            active === 6 ? "text-[red]" : ""
+          className={`mx-2 hover:text-error ${
+            active === 6 ? "text-accent" : ""
           } 800px:block hidden`}
         >
           Đổi mật khẩu
         </span>
       </div>
 
-      <div
-        className="flex items-center cursor-pointer w-full mb-8"
-        onClick={() => setActive(7)}
-      >
-        <TbAddressBook size={20} color={active === 7 ? "red" : ""} />
-        <span
-          className={`pl-3 ${
-            active === 7 ? "text-[red]" : ""
-          } 800px:block hidden`}
-        >
-          Địa chỉ
-        </span>
-      </div>
-
       {user && user?.role === "Admin" && (
         <Link to="/admin/dashboard">
           <div
-            className="flex items-center cursor-pointer w-full mb-8"
+            className="flex items-center cursor-pointer w-full my-8 uppercase font-bold"
             onClick={() => setActive(8)}
           >
-            <MdOutlineAdminPanelSettings
-              size={20}
-              color={active === 7 ? "red" : ""}
-            />
+            <MdOutlineAdminPanelSettings size={24} />
             <span
-              className={`pl-3 ${
-                active === 8 ? "text-[red]" : ""
+              className={`mx-2 hover:text-error ${
+                active === 8 ? "text-accent" : ""
               } 800px:block hidden`}
             >
               Quản lý
@@ -149,13 +132,13 @@ const ProfileSidebar = ({ setActive, active }) => {
         </Link>
       )}
       <div
-        className="single_item flex items-center cursor-pointer w-full mb-8"
+        className="single_item flex items-center cursor-pointer w-full my-8 uppercase font-bold"
         onClick={logoutHandler}
       >
-        <AiOutlineLogin size={20} color={active === 8 ? "red" : ""} />
+        <AiOutlineLogin size={24} />
         <span
-          className={`pl-3 ${
-            active === 8 ? "text-[red]" : ""
+          className={`mx-2 hover:text-error ${
+            active === 8 ? "text-accent" : ""
           } 800px:block hidden`}
         >
           Đăng xuất

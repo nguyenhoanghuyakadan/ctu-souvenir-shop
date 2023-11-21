@@ -40,6 +40,46 @@ router.post(
   })
 );
 
+// update product
+router.put(
+  "/update-product/:id",
+  catchAsyncErrors(async (req, res, next) => {
+    try {
+      const shopId = req.body.shopId;
+      const shop = await Shop.findById(shopId);
+      if (!shop) {
+        return next(new ErrorHandler("Id cửa hàng không hợp lệ!", 400));
+      } else {
+        const productId = req.params.id;
+        const { originalPrice, isActive } = req.body;
+        if (!productId) {
+          return next(
+            new ErrorHandler("ID sản phẩm hoặc ID cửa hàng không hợp lệ!", 400)
+          );
+        }
+
+        const existingProduct = await Product.findById(productId);
+        if (!existingProduct) {
+          return next(
+            new ErrorHandler("Không tìm thấy sản phẩm với ID này!", 404)
+          );
+        }
+        existingProduct.originalPrice = originalPrice;
+        existingProduct.isActive = isActive;
+
+        console.log(existingProduct);
+        await existingProduct.save();
+
+        res.status(200).json({
+          message: "Cập nhật sản phẩm thành công!",
+        });
+      }
+    } catch (error) {
+      return next(new ErrorHandler("Cập nhật sản phẩm thất bại!", 400));
+    }
+  })
+);
+
 // get all products of a shop
 router.get(
   "/get-all-products-shop/:id",
@@ -81,7 +121,9 @@ router.delete(
       const product = await Product.findByIdAndDelete(productId);
 
       if (!product) {
-        return next(new ErrorHandler("Không tìm thấy sản phẩm với ID này!", 500));
+        return next(
+          new ErrorHandler("Không tìm thấy sản phẩm với ID này!", 500)
+        );
       }
 
       res.status(201).json({

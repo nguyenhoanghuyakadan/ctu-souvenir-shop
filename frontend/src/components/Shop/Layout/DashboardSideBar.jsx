@@ -37,17 +37,15 @@ const DashboardSideBar = ({ active }) => {
   };
 
   return (
-    <div className="w-full h-[90vh] bg-white shadow-sm overflow-y-scroll sticky top-0 left-0 z-10">
+    // <div className="w-full h-[90vh] bg-white shadow-sm overflow-y-scroll sticky top-0 left-0 z-10">
+    <div className="w-full bg-white shadow-sm sticky top-0 left-0 z-10">
       {/* single item */}
-      <div className="w-full flex items-center p-4">
+      <div className="w-full flex items-center p-4 hover:bg-neutral-content">
         <Link to="/dashboard" className="w-full flex items-center">
-          <RxDashboard
-            size={30}
-            color={`${active === 1 ? "crimson" : "#555"}`}
-          />
+          <RxDashboard size={30} />
           <h5
-            className={`hidden 800px:block pl-2 text-[18px] font-[400] ${
-              active === 1 ? "text-[crimson] font-bold" : "text-[#555]"
+            className={`hidden 800px:block text-xl px-2 ${
+              active === 1 ? "text-info font-bold" : " "
             }`}
           >
             Dashboard
@@ -57,13 +55,10 @@ const DashboardSideBar = ({ active }) => {
 
       <div className="w-full flex items-center p-4">
         <Link to="/dashboard-orders" className="w-full flex items-center">
-          <FiShoppingBag
-            size={30}
-            color={`${active === 2 ? "crimson" : "#555"}`}
-          />
+          <FiShoppingBag size={30} />
           <h5
-            className={`hidden 800px:block pl-2 text-[18px] font-[400] ${
-              active === 2 ? "text-[crimson] font-bold" : "text-[#555]"
+            className={`hidden 800px:block text-xl px-2 ${
+              active === 2 ? "text-info font-bold" : " "
             }`}
           >
             Đơn hàng
@@ -73,10 +68,10 @@ const DashboardSideBar = ({ active }) => {
 
       <div className="w-full flex items-center p-4">
         <Link to="/dashboard-products" className="w-full flex items-center">
-          <FiPackage size={30} color={`${active === 3 ? "crimson" : "#555"}`} />
+          <FiPackage size={30} />
           <h5
-            className={`hidden 800px:block pl-2 text-[18px] font-[400] ${
-              active === 3 ? "text-[crimson] font-bold" : "text-[#555]"
+            className={`hidden 800px:block text-xl px-2 ${
+              active === 3 ? "text-info font-bold" : " "
             }`}
           >
             Sản phẩm
@@ -89,13 +84,10 @@ const DashboardSideBar = ({ active }) => {
           to="/dashboard-create-product"
           className="w-full flex items-center"
         >
-          <AiOutlineFolderAdd
-            size={30}
-            color={`${active === 4 ? "crimson" : "#555"}`}
-          />
+          <AiOutlineFolderAdd size={30} />
           <h5
-            className={`hidden 800px:block pl-2 text-[18px] font-[400] ${
-              active === 4 ? "text-[crimson] font-bold" : "text-[#555]"
+            className={`hidden 800px:block text-xl px-2 ${
+              active === 4 ? "text-info font-bold" : " "
             }`}
           >
             Thêm sản phẩm
@@ -105,13 +97,10 @@ const DashboardSideBar = ({ active }) => {
 
       <div className="w-full flex items-center p-4">
         <Link to="/dashboard-invoices" className="w-full flex items-center">
-          <LiaFileInvoiceSolid
-            size={30}
-            color={`${active === 12 ? "crimson" : "#555"}`}
-          />
+          <LiaFileInvoiceSolid size={30} />
           <h5
-            className={`hidden 800px:block pl-2 text-[18px] font-[400] ${
-              active === 12 ? "text-[crimson] font-bold" : "text-[#555]"
+            className={`hidden 800px:block text-xl px-2 ${
+              active === 12 ? "text-info font-bold" : " "
             }`}
           >
             Hóa đơn
@@ -124,13 +113,10 @@ const DashboardSideBar = ({ active }) => {
           to="/dashboard-create-purchase-invoice"
           className="w-full flex items-center"
         >
-          <LiaFileInvoiceDollarSolid
-            size={30}
-            color={`${active === 13 ? "crimson" : "#555"}`}
-          />
+          <LiaFileInvoiceDollarSolid size={30} />
           <h5
-            className={`hidden 800px:block pl-2 text-[18px] font-[400] ${
-              active === 13 ? "text-[crimson] font-bold" : "text-[#555]"
+            className={`hidden 800px:block text-xl px-2 ${
+              active === 13 ? "text-info font-bold" : " "
             }`}
           >
             Thêm phiếu nhập
@@ -143,13 +129,10 @@ const DashboardSideBar = ({ active }) => {
           to="/dashboard-withdraw-money"
           className="w-full flex items-center"
         >
-          <CiMoneyBill
-            size={30}
-            color={`${active === 7 ? "crimson" : "#555"}`}
-          />
+          <CiMoneyBill size={30} />
           <h5
-            className={`hidden 800px:block pl-2 text-[18px] font-[400] ${
-              active === 7 ? "text-[crimson] font-bold" : "text-[#555]"
+            className={`hidden 800px:block text-xl px-2 ${
+              active === 7 ? "text-info font-bold" : " "
             }`}
           >
             Rút tiền
@@ -159,13 +142,10 @@ const DashboardSideBar = ({ active }) => {
 
       <div className="w-full flex items-center p-4">
         <Link to="/dashboard-messages" className="w-full flex items-center">
-          <BiMessageSquareDetail
-            size={30}
-            color={`${active === 8 ? "crimson" : "#555"}`}
-          />
+          <BiMessageSquareDetail size={30} />
           <h5
-            className={`hidden 800px:block pl-2 text-[18px] font-[400] ${
-              active === 8 ? "text-[crimson] font-bold" : "text-[#555]"
+            className={`hidden 800px:block text-xl px-2 ${
+              active === 8 ? "text-info font-bold" : " "
             }`}
           >
             Tin nhắn
@@ -175,13 +155,10 @@ const DashboardSideBar = ({ active }) => {
 
       <div className="w-full flex items-center p-4">
         <Link to="/dashboard-coupouns" className="w-full flex items-center">
-          <AiOutlineGift
-            size={30}
-            color={`${active === 9 ? "crimson" : "#555"}`}
-          />
+          <AiOutlineGift size={30} />
           <h5
-            className={`hidden 800px:block pl-2 text-[18px] font-[400] ${
-              active === 9 ? "text-[crimson] font-bold" : "text-[#555]"
+            className={`hidden 800px:block text-xl px-2 ${
+              active === 9 ? "text-info font-bold" : " "
             }`}
           >
             Mã giảm giá
@@ -191,13 +168,10 @@ const DashboardSideBar = ({ active }) => {
 
       <div className="w-full flex items-center p-4">
         <Link to="/dashboard-refunds" className="w-full flex items-center">
-          <HiOutlineReceiptRefund
-            size={30}
-            color={`${active === 10 ? "crimson" : "#555"}`}
-          />
+          <HiOutlineReceiptRefund size={30} />
           <h5
-            className={`hidden 800px:block pl-2 text-[18px] font-[400] ${
-              active === 10 ? "text-[crimson] font-bold" : "text-[#555]"
+            className={`hidden 800px:block text-xl px-2 ${
+              active === 10 ? "text-info font-bold" : " "
             }`}
           >
             Hoàn tiền
@@ -207,13 +181,10 @@ const DashboardSideBar = ({ active }) => {
 
       <div className="w-full flex items-center p-4">
         <Link to="/dashboard-analytics" className="w-full flex items-center">
-          <IoAnalytics
-            size={30}
-            color={`${active === 10 ? "crimson" : "#555"}`}
-          />
+          <IoAnalytics size={30} />
           <h5
-            className={`hidden 800px:block pl-2 text-[18px] font-[400] ${
-              active === 14 ? "text-[crimson] font-bold" : "text-[#555]"
+            className={`hidden 800px:block text-xl px-2 ${
+              active === 14 ? "text-info font-bold" : " "
             }`}
           >
             Phân tích
@@ -223,13 +194,10 @@ const DashboardSideBar = ({ active }) => {
 
       <div className="w-full flex items-center p-4">
         <Link to="/settings" className="w-full flex items-center">
-          <CiSettings
-            size={30}
-            color={`${active === 11 ? "crimson" : "#555"}`}
-          />
+          <CiSettings size={30} />
           <h5
-            className={`hidden 800px:block pl-2 text-[18px] font-[400] ${
-              active === 11 ? "text-[crimson] font-bold" : "text-[#555]"
+            className={`hidden 800px:block text-xl px-2 ${
+              active === 11 ? "text-info font-bold" : " "
             }`}
           >
             Sửa thông tin
@@ -239,11 +207,7 @@ const DashboardSideBar = ({ active }) => {
 
       <div className="w-full flex items-center p-4" onClick={logoutHandler}>
         <AiOutlineLogout size={30} />
-        <h5
-          className={`hidden 800px:block pl-2 text-[18px] font-[400] text-[#555]`}
-        >
-          Đăng xuất
-        </h5>
+        <h5 className={`hidden 800px:block text-xl px-2`}>Đăng xuất</h5>
       </div>
     </div>
   );

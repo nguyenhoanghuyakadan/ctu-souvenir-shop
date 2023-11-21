@@ -1,9 +1,9 @@
 import React from "react";
 import DashboardHeader from "../../components/Shop/Layout/DashboardHeader";
 import DashboardSideBar from "../../components/Shop/Layout/DashboardSideBar";
-import Analytics from "../../components/Shop/Analytics";
+import Analytic from "../../components/Shop/Analytic";
 
-const ShopAnalytics = () => {
+const ShopAnalytic = () => {
   return (
     <div>
       <DashboardHeader />
@@ -12,11 +12,11 @@ const ShopAnalytics = () => {
           <DashboardSideBar active={14} />
         </div>
         <div className="w-full flex">
-          <Analytics />
+          <Analytic />
         </div>
       </div>
     </div>
   );
 };
 
-export default ShopAnalytics;
+export default ShopAnalytic;

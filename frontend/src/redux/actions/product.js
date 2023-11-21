@@ -27,6 +27,28 @@ export const createProduct = (newForm) => async (dispatch) => {
   }
 };
 
+export const updateProduct = (productId, updateData) => async (dispatch) => {
+  try {
+    dispatch({
+      type: "productUpdateRequest",
+    });
+
+    const { data } = await axios.put(
+      `${server}/product/update-product/${productId}`,
+      updateData
+    );
+    dispatch({
+      type: "productUpdateSuccess",
+      payload: data.product,
+    });
+  } catch (error) {
+    dispatch({
+      type: "productUpdateFail",
+      payload: error.response.data?.message,
+    });
+  }
+};
+
 // get All Products of a shop
 export const getAllProductsShop = (id) => async (dispatch) => {
   try {

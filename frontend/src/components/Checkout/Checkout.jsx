@@ -140,12 +140,12 @@ const Checkout = () => {
           />
         </div>
       </div>
-      <div
-        className={`${styles.button} w-[150px] 800px:w-[280px] mt-10 bg-[#f63b60f3]`}
+      <button
         onClick={paymentSubmit}
+        className="btn btn-accent font-bold text-white uppercase"
       >
-        <h5 className="text-white">Thanh toán</h5>
-      </div>
+        Thanh toán
+      </button>
     </div>
   );
 };
@@ -169,7 +169,9 @@ const ShippingInfo = ({
 }) => {
   return (
     <div className="w-full 800px:w-[95%] bg-white rounded-md p-5 pb-8">
-      <h5 className="text-[18px] font-[500]">Thông tin giao hàng</h5>
+      <h5 className="text-xl font-bold text-center uppercase">
+        Thông tin giao hàng
+      </h5>
       <br />
       <form>
         <div className="w-full flex pb-3">
@@ -195,7 +197,7 @@ const ShippingInfo = ({
 
         <div className="w-full flex pb-3">
           <div className="w-[50%]">
-            <label className="block pb-2">Số điện thoại: +(84)</label>
+            <label className="block pb-2">Số điện thoại:</label>
             <input
               type="number"
               required
@@ -350,18 +352,24 @@ const CartData = ({
       <form onSubmit={handleSubmit}>
         <input
           type="text"
-          className={`${styles.input} h-[40px] pl-2`}
+          className="input input-bordered input-accent w-full"
           placeholder="Áp dụng mã Voucher ngay!!! "
           value={couponCode}
           onChange={(e) => setCouponCode(e.target.value)}
           required
         />
-        <input
-          className={`w-full h-[40px] border border-[#f63b60] text-center text-[#f63b60] font-bold rounded-[3px] mt-8 cursor-pointer`}
+        {/* <input
+          className={`w-full h-[40px] border border-success text-center text-success font-bold rounded-[3px] mt-8 cursor-pointer`}
           required
           value="Áp dụng mã voucher"
           type="submit"
-        />
+        /> */}
+        <button
+          type="submit"
+          className="btn btn-accent text-white font-bold uppercase w-full my-2"
+        >
+          Áp dụng mã voucher
+        </button>
       </form>
     </div>
   );

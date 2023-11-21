@@ -12,30 +12,23 @@ const CreatePurchaseInvoice = () => {
   const [date, setDate] = useState("");
   const [invoiceNumber, setInvoiceNumber] = useState("");
   const [supplier, setSupplier] = useState("");
-  const [products, setProducts] = useState([
+  const [selectedItemsData, setSelectedItemsData] = useState([
     { id: 1, product: "", quantity: "", price: "" },
   ]);
 
   const [rowsToDelete, setRowsToDelete] = useState([]);
   const [isDeleteButtonVisible, setIsDeleteButtonVisible] = useState(false);
-
-  const { success, error } = useSelector((state) => state.invoices);
   const { seller } = useSelector((state) => state.seller);
-  const productsFromServer = useSelector((state) => state.products);
+  const { products } = useSelector((state) => state.products);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const formatDateToISOString = (inputDate) => {
-    // Tạo một đối tượng Date từ ngày đầu vào
     const inputDateObj = new Date(inputDate);
-
-    // Kiểm tra nếu ngày đầu vào là hợp lệ
     if (!isNaN(inputDateObj.getTime())) {
-      // Chuyển đổi ngày thành chuỗi ISO 8601
       const isoString = inputDateObj.toISOString();
       return isoString;
     } else {
-      // Trả về null nếu ngày không hợp lệ
       return null;
     }
   };
@@ -59,46 +52,39 @@ const CreatePurchaseInvoice = () => {
   }, []);
 
   useEffect(() => {
-    if (error) {
-      toast.error(error);
-    }
-    if (success) {
-      toast.success("Product created successfully!");
-      navigate("/dashboard");
-      window.location.reload();
-    }
-  }, [dispatch, error, success]);
-
-  useEffect(() => {
     dispatch(getAllProductsShop(seller._id)); // Thay seller._id bằng ID cần truy vấn
   }, [dispatch, seller._id]);
 
   useEffect(() => {
-    setIsDeleteButtonVisible(products.length > 1);
-  }, [products]);
+    setIsDeleteButtonVisible(selectedItemsData.length > 1);
+  }, [selectedItemsData]);
+
+  // console.log(products);
 
   const handleAddRow = () => {
-    const newId = products[products.length - 1].id + 1;
-    setProducts([
-      ...products,
+    const newId = selectedItemsData[selectedItemsData.length - 1].id + 1;
+    setSelectedItemsData([
+      ...selectedItemsData,
       { id: newId, product: "", quantity: "", price: "" },
     ]);
   };
 
   const handleDeleteRow = (id) => {
-    const updatedProducts = products.filter((product) => product.id !== id);
-    setProducts(updatedProducts);
+    const updatedProducts = selectedItemsData.filter(
+      (product) => product.id !== id
+    );
+    setSelectedItemsData(updatedProducts);
     setRowsToDelete([...rowsToDelete, id]);
   };
 
   const handleInputChange = (id, field, value) => {
-    const updatedProducts = products.map((product) => {
+    const updatedProducts = selectedItemsData.map((product) => {
       if (product.id === id) {
         return { ...product, [field]: value };
       }
       return product;
     });
-    setProducts(updatedProducts);
+    setSelectedItemsData(updatedProducts);
   };
 
   const handleDateChange = (value) => {
@@ -114,23 +100,35 @@ const CreatePurchaseInvoice = () => {
   };
 
   const handleSave = () => {
-    const isoDate = formatDateToISOString(date);
+    if (
+      date &&
+      invoiceNumber &&
+      supplier &&
+      selectedItemsData.every(
+        (item) => item.product && item.quantity && item.price
+      )
+    ) {
+      const isoDate = formatDateToISOString(date);
 
-    const dataToSend = {
-      type: "Purchase",
-      invoiceNumber,
-      shopId: seller._id,
-      date: isoDate,
-      supplier,
-      products,
-    };
-    console.log("Dữ liệu được gửi lên server:", dataToSend);
-
-    dispatch(createPurchaseInvoice(dataToSend));
+      const dataToSend = {
+        type: "Purchase",
+        invoiceNumber,
+        shopId: seller._id,
+        date: isoDate,
+        supplier,
+        selectedItemsData,
+      };
+      dispatch(createPurchaseInvoice(dataToSend));
+      toast.success("Hóa đơn đã được tạo thành công");
+      navigate("/dashboard-invoices");
+      window.location.reload();
+    } else {
+      toast.error("Vui lòng điền đầy đủ thông tin.");
+    }
   };
 
   return (
-    <div className="container mx-auto p-4">
+    <div className="container mx-auto">
       <div className="mb-4">
         <label className="text-lg">Ngày nhập:</label>
         <input
@@ -174,7 +172,7 @@ const CreatePurchaseInvoice = () => {
           </tr>
         </thead>
         <tbody>
-          {products.map((product) => (
+          {selectedItemsData.map((product) => (
             <tr key={product.id}>
               <td className="p-2">{product.id}</td>
               <td className="p-2">
@@ -186,11 +184,12 @@ const CreatePurchaseInvoice = () => {
                   className="w-full p-2 border rounded"
                 >
                   <option value="">Chọn sản phẩm</option>
-                  {productsFromServer.allProducts.map((product, index) => (
-                    <option key={index} value={product._id}>
-                      {product.name}
-                    </option>
-                  ))}
+                  {products &&
+                    products.map((p) => (
+                      <option key={p._id} value={p._id}>
+                        {p.name}
+                      </option>
+                    ))}
                 </select>
               </td>
               <td className="p-2">
@@ -218,15 +217,22 @@ const CreatePurchaseInvoice = () => {
         </tbody>
       </table>
       <div className="text-center">
-        <button onClick={handleAddRow} className="btn btn-info mb-4 text-white">
+        <button
+          onClick={handleAddRow}
+          className="btn btn-info mb-4 text-white font-bold uppercase"
+        >
           Thêm dòng
         </button>
       </div>
       <div className="text-center">
         {isDeleteButtonVisible && (
           <button
-            onClick={() => handleDeleteRow(products[products.length - 1].id)}
-            className="btn btn-error mb-4 text-white"
+            onClick={() =>
+              handleDeleteRow(
+                selectedItemsData[selectedItemsData.length - 1].id
+              )
+            }
+            className="btn btn-error mb-4 text-white font-bold uppercase"
           >
             Xóa dòng
           </button>
@@ -235,7 +241,7 @@ const CreatePurchaseInvoice = () => {
       <div className="text-right">
         <button
           onClick={handleSave}
-          className="btn btn-success mb-4 text-white"
+          className="btn btn-success mb-4 text-white font-bold uppercase"
         >
           Lưu
         </button>

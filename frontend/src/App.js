@@ -59,14 +59,13 @@ import ShopCreatePurchaseInvoice from "./pages/Shop/ShopCreatePurchaseInvoice";
 import { getAllInvoices } from "./redux/actions/invoice";
 import ShopAllInvoices from "./pages/Shop/ShopAllInvoices";
 import ShopInvoiceDetail from "./pages/Shop/ShopInvoiceDetail";
-import ShopAnalytics from "./pages/Shop/ShopAnalytics.jsx";
+import ShopAnalytic from "./pages/Shop/ShopAnalytic.jsx";
 
 const App = () => {
   useEffect(() => {
     Store.dispatch(loadUser());
     Store.dispatch(loadSeller());
     Store.dispatch(getAllProducts());
-    Store.dispatch(getAllInvoices());
   }, []);
 
   return (
@@ -256,7 +255,7 @@ const App = () => {
           path="/dashboard-analytics"
           element={
             <SellerProtectedRoute>
-              <ShopAnalytics />
+              <ShopAnalytic />
             </SellerProtectedRoute>
           }
         />

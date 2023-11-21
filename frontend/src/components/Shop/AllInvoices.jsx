@@ -17,6 +17,8 @@ const AllInvoices = () => {
     dispatch(getAllInvoicesShop(seller._id));
   }, [dispatch]);
 
+  console.log(invoices);
+
   const columns = [
     { field: "id", hide: true },
     { field: "date", headerName: "Ngày nhập", minWidth: 150, flex: 0.7 },
@@ -47,7 +49,7 @@ const AllInvoices = () => {
     ? invoices.map((item) => ({
         id: item._id,
         invoiceNumber: item.invoiceNumber,
-        date: item.date.slice(0,10),
+        date: item.date.slice(0, 10),
         type: item.type,
       }))
     : [];

@@ -2,8 +2,6 @@ import { createReducer } from "@reduxjs/toolkit";
 
 const initialState = {
   isLoading: true,
-  error: null,
-  success: false,
 };
 
 export const invoiceReducer = createReducer(initialState, {
@@ -14,12 +12,9 @@ export const invoiceReducer = createReducer(initialState, {
   invoiceCreateSuccess: (state, action) => {
     state.isLoading = false;
     state.invoice = action.payload;
-    state.success = true;
   },
   invoiceCreateFail: (state, action) => {
     state.isLoading = false;
-    state.error = action.payload;
-    state.success = false;
   },
 
   // Lấy danh sách phiếu nhập
@@ -32,7 +27,6 @@ export const invoiceReducer = createReducer(initialState, {
   },
   getAllInvoicesFailed: (state, action) => {
     state.isLoading = false;
-    state.error = action.payload;
   },
 
   // Lấy danh sách phiếu nhập của shop
@@ -45,7 +39,6 @@ export const invoiceReducer = createReducer(initialState, {
   },
   getAllInvoicesShopFailed: (state, action) => {
     state.isLoading = false;
-    state.error = action.payload;
   },
 
   // Xóa phiếu nhập
@@ -58,7 +51,6 @@ export const invoiceReducer = createReducer(initialState, {
   },
   deleteInvoiceFailed: (state, action) => {
     state.isLoading = false;
-    state.error = action.payload;
   },
 
   clearErrors: (state) => {

@@ -10,7 +10,7 @@ import ShopAllRefunds from "../pages/Shop/ShopAllRefunds";
 import ShopSettingsPage from "../pages/Shop/ShopSettingsPage";
 import ShopWithDrawMoneyPage from "../pages/Shop/ShopWithDrawMoneyPage";
 import ShopInboxPage from "../pages/Shop/ShopInboxPage";
-import ShopAnalytics from "../pages/Shop/ShopAnalytics";
+import ShopAnalytic from "../pages/Shop/ShopAnalytic";
 
 export {
   ShopDashboardPage,
@@ -25,5 +25,5 @@ export {
   ShopSettingsPage,
   ShopWithDrawMoneyPage,
   ShopInboxPage,
-  ShopAnalytics,
+  ShopAnalytic,
 };

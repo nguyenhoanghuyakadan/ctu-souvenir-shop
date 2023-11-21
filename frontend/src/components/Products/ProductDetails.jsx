@@ -6,6 +6,8 @@ import {
   AiOutlineMessage,
   AiOutlineShoppingCart,
 } from "react-icons/ai";
+import { FaRegMessage } from "react-icons/fa6";
+
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { getAllProductsShop } from "../../redux/actions/product";
@@ -147,49 +149,46 @@ const ProductDetails = ({ data }) => {
                   ></div>
                 </div>
               </div>
-              <div className="w-full 800px:w-[50%] pt-5">
-                <h1 className={`${styles.productTitle}`}>{data.name}</h1>
+              <div className="w-full 800px:w-[50%]">
+                <h1 className="font-bold text-2xl">{data.name}</h1>
                 <div>
                   Thể loại: <i className="text-error">{data.category}</i>
                 </div>
-
                 <span className="font-bold text-success">
-                  {data?.sold_out} đã bán
+                  Đã bán {data?.sold_out} sản phẩm
                 </span>
                 <div className="text-xl font-bold">
                   {currency.format(data.originalPrice, { code: "VND" })}
                 </div>
 
-                <div className="flex items-center mt-12 justify-between pr-3">
-                  <div className="counter flex items-center text-2xl justify-start">
-                    <div className="shadow-md flex">
-                      <div
-                        className="bg-success text-white w-10 flex items-center justify-center rounded-l-lg cursor-pointer"
-                        onClick={decrementCount}
-                      >
-                        -
-                      </div>
-                      <div className="w-9 flex items-center justify-center border-[1px] border-[#8a4af3]">
-                        {count}
-                      </div>
-                      <div
-                        className="bg-success text-white w-10 flex items-center justify-center rounded-r-lg cursor-pointer"
-                        onClick={incrementCount}
-                      >
-                        +
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div className="flex items-center pt-8">
-                  <div
-                    className="btn btn-info"
-                    onClick={() => addToCartHandler(data._id)}
+                <div className="flex flex-row h-10 w-32 rounded-lg relative bg-transparent my-4">
+                  <button
+                    className="bg-error text-gray-600 hover:text-gray-700 hover:bg-gray-300 h-full w-20 rounded-l cursor-pointer outline-none"
+                    onClick={decrementCount}
                   >
-                    <span className="flex items-center font-bold">
-                      Thêm vào giỏ <AiOutlineShoppingCart size={24} />
-                    </span>
-                  </div>
+                    <span className="m-auto text-2xl font-bold">−</span>
+                  </button>
+
+                  <input
+                    type="number"
+                    className="outline-none focus:outline-none text-center w-full bg-base-100 font-bold text-md hover:text-black focus:text-black  md:text-basecursor-default flex items-center text-gray-700  outline-none"
+                    value={count}
+                  />
+
+                  <button
+                    className="bg-success text-gray-600 hover:text-gray-700 hover:bg-gray-300 h-full w-20 rounded-r cursor-pointer"
+                    onClick={incrementCount}
+                  >
+                    <span className="m-auto text-2xl font-bold">+</span>
+                  </button>
+                </div>
+                <div className="flex items-center my-4">
+                  <button
+                    onClick={() => addToCartHandler(data._id)}
+                    className="btn btn-outline btn-info text-white font-bold text-xl rounded"
+                  >
+                    Thêm vào giỏ <AiOutlineShoppingCart size={24} />
+                  </button>
                   <div className="flex items-center ">
                     {click ? (
                       <>
@@ -216,33 +215,26 @@ const ProductDetails = ({ data }) => {
                   </div>
                 </div>
 
-                <div className="flex items-center pt-8 p-1">
-                  <Link to={`/shop/preview/${data?.shop._id}`}>
-                    <img
-                      src={`${backend_url}${data?.shop?.avatar}`}
-                      alt=""
-                      className="w-[60px] h-[60px] rounded-full mr-2"
-                    />
-                  </Link>
-                  <div className="pr-6 pl-2">
+                <div className="flex flex-col my-8">
+                  <div className="flex">
                     <Link to={`/shop/preview/${data?.shop._id}`}>
-                      <h3
-                        className={`${styles.shop_name} pb-1 pt-1 !text-red-700 !text-xl font-[600]`}
-                      >
-                        {data.shop.name}
-                      </h3>
+                      <div className="avatar">
+                        <div className="w-24 rounded-full">
+                          <img src={`${backend_url}${data?.shop?.avatar}`} />
+                        </div>
+                      </div>
                     </Link>
-                    <h5 className="pb-3 text-[18px]">
-                      ({averageRating}/5 ⭐) Đánh giá
-                    </h5>
+                    <Link to={`/shop/preview/${data?.shop._id}`}>
+                      <div className="font-bold text-lg">{data.shop.name}</div>
+                    </Link>
                   </div>
-                  <div
-                    className={`${styles.button} !bg-[#0030cc] mt-4 !rounded !h-11`}
-                    onClick={handleMessageSubmit}
-                  >
-                    <span className="text-white flex items-center">
-                      Gửi tin nhắn <AiOutlineMessage className="ml-1" />
-                    </span>
+                  <div>
+                    <button
+                      onClick={handleMessageSubmit}
+                      className="btn btn-info text-white font-bold"
+                    >
+                      Gửi tin nhắn <FaRegMessage size={24} />
+                    </button>
                   </div>
                 </div>
               </div>
@@ -271,46 +263,37 @@ const ProductDetailsInfo = ({
   const [active, setActive] = useState(1);
 
   return (
-    <div className="bg-[#f5f6fb] px-3 800px:px-10 py-2 rounded">
+    <div className="px-3 800px:px-10 py-2 rounded">
       <div className="w-full flex justify-between border-b pt-10 pb-2">
         <div className="relative">
           <h5
-            className={
-              "text-[#000] text-[18px] px-1 leading-5 font-[600] cursor-pointer 800px:text-[20px]"
-            }
+            className={`font-bold text-lg uppercase ${
+              active === 1 ? "text-info" : ""
+            }`}
             onClick={() => setActive(1)}
           >
             Giới thiệu
           </h5>
-          {active === 1 ? (
-            <div className={`${styles.active_indicator}`} />
-          ) : null}
         </div>
         <div className="relative">
           <h5
-            className={
-              "text-[#000] text-[18px] px-1 leading-5 font-[600] cursor-pointer 800px:text-[20px]"
-            }
+            className={`font-bold text-lg uppercase ${
+              active === 2 ? "text-warning" : ""
+            }`}
             onClick={() => setActive(2)}
           >
             Đánh giá
           </h5>
-          {active === 2 ? (
-            <div className={`${styles.active_indicator}`} />
-          ) : null}
         </div>
         <div className="relative">
           <h5
-            className={
-              "text-[#000] text-[18px] px-1 leading-5 font-[600] cursor-pointer 800px:text-[20px]"
-            }
+            className={`font-bold text-lg uppercase ${
+              active === 3 ? "text-accent" : ""
+            }`}
             onClick={() => setActive(3)}
           >
             Cửa hàng
           </h5>
-          {active === 3 ? (
-            <div className={`${styles.active_indicator}`} />
-          ) : null}
         </div>
       </div>
       {active === 1 ? (
@@ -322,25 +305,24 @@ const ProductDetailsInfo = ({
       ) : null}
 
       {active === 2 ? (
-        <div className="w-full min-h-[40vh] flex flex-col items-center py-3 overflow-y-scroll">
+        <div className="w-full min-h-[40vh] flex flex-col items-center overflow-y-scroll">
           {data &&
             data.reviews.map((item, index) => (
-              <div className="w-full flex my-2 bg-[#cccccc70] rounded-lg p-2">
-                <img
-                  src={`${backend_url}/${item.user.avatar}`}
-                  alt=""
-                  className="w-[50px] h-[50px] rounded-full"
-                />
-                <div className="pl-2">
+              <div className="w-full flex my-2 bg-base-200 rounded">
+                <div className="avatar m-2">
+                  <div className="w-24 rounded-full">
+                    <img src={`${backend_url}/${item.user.avatar}`} />
+                  </div>
+                </div>
+                <div className="mx-2">
                   <div className="w-full flex items-center">
-                    <h1 className="font-[500] text-xl mr-3">
+                    <h1 className="font-bold text-xl mr-2 text-accent">
                       {item.user.name}
                     </h1>
                     <Ratings rating={data?.ratings} />
                   </div>
-                  <div className="items-center py-3 p-2 ml-2">
-                    {" "}
-                    <p className="font-[500] text-base">{item.comment}</p>
+                  <div className="items-center">
+                    <p>{item.comment}</p>
                   </div>
                 </div>
               </div>
@@ -355,18 +337,20 @@ const ProductDetailsInfo = ({
       ) : null}
 
       {active === 3 && (
-        <div className="w-full block 800px:flex p-5">
+        <div className="w-full block 800px:flex m-2">
           <div className="w-full 800px:w-[50%]">
             <Link to={`/shop/preview/${data.shop._id}`}>
               <div className="flex items-center">
-                <img
-                  src={`${backend_url}${data?.shop?.avatar}`}
-                  className="w-[50px] h-[50px] rounded-full"
-                  alt=""
-                />
-                <div className="pl-3">
-                  <h3 className={`${styles.shop_name}`}>{data.shop.name}</h3>
-                  <h5 className="pb-2 text-[15px]">
+                <div className="avatar">
+                  <div className="w-24 rounded-full">
+                    <img src={`${backend_url}${data?.shop?.avatar}`} />
+                  </div>
+                </div>
+                <div>
+                  <h3 className="font-bold text-lg text-accent">
+                    {data.shop.name}
+                  </h3>
+                  <h5 className="font-bold text-warning">
                     ({averageRating}/5) đánh giá
                   </h5>
                 </div>
@@ -374,31 +358,17 @@ const ProductDetailsInfo = ({
             </Link>
             <p className="pt-2">{data.shop.description}</p>
           </div>
-          <div className="w-full 800px:w-[50%] mt-5 800px:mt-0 800px:flex flex-col items-end">
+          <div className="w-full 800px:w-[50%] 800px:mt-0 800px:flex flex-col items-end">
             <div className="text-left">
-              <h5 className="font-[600]">
-                Tham gia:{" "}
-                <span className="font-[500]">
-                  {data.shop?.createdAt?.slice(0, 10)}
-                </span>
+              <h5 className="font-bold">
+                Tham gia: <span>{data.shop?.createdAt?.slice(0, 10)}</span>
               </h5>
-              <h5 className="font-[600] pt-3">
-                Số lượng sản phẩm:{" "}
-                <span className="font-[500]">
-                  {products && products.length}
-                </span>
+              <h5 className="font-bold mt-2">
+                Số lượng sản phẩm: <span>{products && products.length}</span>
               </h5>
-              <h5 className="font-[600] pt-3">
-                Số lượng Review:{" "}
-                <span className="font-[500]">{totalReviewsLength}</span>
+              <h5 className="font-bold mt-2">
+                Số lượng Review: <span>{totalReviewsLength}</span>
               </h5>
-              {/* <Link to="/">
-                <div
-                  className={`${styles.button} !rounded-[4px] !h-[39.5px] mt-3`}
-                >
-                  <h4 className="text-white">Visit Shop</h4>
-                </div>
-              </Link> */}
             </div>
           </div>
         </div>

@@ -28,7 +28,7 @@ const COLORS = [
   "#00bfa0",
 ];
 
-const Analytics = () => {
+const Analytic = () => {
   const { seller } = useSelector((state) => state.seller);
   const { products } = useSelector((state) => state.products);
   const [appMode, setAppMode] = useState(null);
@@ -46,6 +46,8 @@ const Analytics = () => {
   useEffect(() => {
     dispatch(getAllProductsShop(seller._id));
   }, [dispatch]);
+
+  console.log(products);
 
   const switchMode = (mode) => {
     if (appMode === mode) {
@@ -81,7 +83,7 @@ const Analytics = () => {
   const getDataDay = async () => {
     try {
       const response = await axios.get(
-        `${server}/analytics/invoices-two-days?shopId=${seller._id}&time1=${time1}&time2=2024-01-01`,
+        `${server}/analytic/invoices-two-days?shopId=${seller._id}&time1=${time1}&time2=2024-01-01`,
         {
           withCredentials: true,
         }
@@ -97,7 +99,7 @@ const Analytics = () => {
   const getDataMonth = async () => {
     try {
       const response = await axios.get(
-        `${server}/analytics/invoices-two-months?shopId=${seller._id}&time1=${time1}&time2=2024-01-01`,
+        `${server}/analytic/invoices-two-months?shopId=${seller._id}&time1=${time1}&time2=2024-01-01`,
         {
           withCredentials: true,
         }
@@ -113,7 +115,7 @@ const Analytics = () => {
   const getDataBetweenMonths = async () => {
     try {
       const response = await axios.get(
-        `${server}/analytics/invoices-two-months?shopId=${seller._id}&time1=${time1}&time2=${time2}`,
+        `${server}/analytic/invoices-two-months?shopId=${seller._id}&time1=${time1}&time2=${time2}`,
         {
           withCredentials: true,
         }
@@ -148,7 +150,7 @@ const Analytics = () => {
   const getPurchaseDataBetweenMonths = async () => {
     try {
       const response = await axios.get(
-        `${server}/analytics/invoices-two-months?shopId=${seller._id}&time1=${time1}&time2=${time2}`,
+        `${server}/analytic/invoices-two-months?shopId=${seller._id}&time1=${time1}&time2=${time2}`,
         {
           withCredentials: true,
         }
@@ -184,7 +186,7 @@ const Analytics = () => {
   const getDataBetweenDays = async () => {
     try {
       const response = await axios.get(
-        `${server}/analytics/invoices-two-days?shopId=${seller._id}&time1=${time1}&time2=${time2}`,
+        `${server}/analytic/invoices-two-days?shopId=${seller._id}&time1=${time1}&time2=${time2}`,
         {
           withCredentials: true,
         }
@@ -797,4 +799,4 @@ const Analytics = () => {
   );
 };
 
-export default Analytics;
+export default Analytic;

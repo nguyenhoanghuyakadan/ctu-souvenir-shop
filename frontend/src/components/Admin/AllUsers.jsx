@@ -23,51 +23,48 @@ const AllUsers = () => {
 
   const handleDelete = async (id) => {
     await axios
-    .delete(`${server}/user/delete-user/${id}`, { withCredentials: true })
-    .then((res) => {
-      toast.success(res.data.message);
-    });
+      .delete(`${server}/user/delete-user/${id}`, { withCredentials: true })
+      .then((res) => {
+        toast.success(res.data.message);
+      });
 
-  dispatch(getAllUsers());
+    dispatch(getAllUsers());
   };
 
   const columns = [
-    { field: "id", headerName: "ID người dùng", minWidth: 150, flex: 0.7 },
+    { field: "id", headerName: "ID Người dùng", flex: 2 },
 
     {
       field: "name",
-      headerName: "Tên ",
-      minWidth: 130,
-      flex: 0.7,
+      headerName: "Tên",
+      flex: 2,
     },
     {
       field: "email",
       headerName: "Email",
       type: "text",
-      minWidth: 130,
-      flex: 0.7,
+      flex: 2,
     },
     {
       field: "role",
       headerName: "Vai trò",
       type: "text",
-      minWidth: 130,
-      flex: 0.7,
+      flex: 1,
     },
 
     {
       field: "joinedAt",
       headerName: "Tham gia",
       type: "text",
-      minWidth: 130,
-      flex: 0.8,
+      flex: 1,
     },
 
     {
-      field: " ",
+      field: "delete",
       flex: 1,
-      minWidth: 150,
-      headerName: "Xóa người dùng",
+      headerName: "Xóa",
+      headerAlign: "left",
+      align: "left",
       type: "number",
       sortable: false,
       renderCell: (params) => {
@@ -95,9 +92,9 @@ const AllUsers = () => {
     });
 
   return (
-    <div className="w-full flex justify-center pt-5">
+    <div className="w-full flex justify-center my-4">
       <div className="w-[97%]">
-        <h3 className="text-[22px] font-Poppins pb-2">Tất cả người dùng</h3>
+        <h3 className="text-xl font-bold my-2 uppercase">Tất cả người dùng</h3>
         <div className="w-full min-h-[45vh] bg-white rounded">
           <DataGrid
             rows={row}
@@ -113,22 +110,22 @@ const AllUsers = () => {
               <div className="w-full flex justify-end cursor-pointer">
                 <RxCross1 size={25} onClick={() => setOpen(false)} />
               </div>
-              <h3 className="text-[25px] text-center py-5 font-Poppins text-[#000000cb]">
-               Bạn có muốn xóa người dùng này?
+              <h3 className="text-xl font-bold text-center uppercase m-4">
+                Bạn có muốn xóa người dùng này?
               </h3>
               <div className="w-full flex items-center justify-center">
-                <div
-                  className={`${styles.button} text-white text-[18px] !h-[42px] mr-4`}
+                <button
                   onClick={() => setOpen(false)}
+                  className="btn btn-error font-bold text-white uppercase m-2"
                 >
-                  Hủy
-                </div>
-                <div
-                  className={`${styles.button} text-white text-[18px] !h-[42px] ml-4`}
-                  onClick={() =>  setOpen(false) || handleDelete(userId)}
+                  Hủy bỏ
+                </button>
+                <button
+                  onClick={() => setOpen(false) || handleDelete(userId)}
+                  className="btn btn-success font-bold text-white uppercase m-2"
                 >
                   Xác nhận
-                </div>
+                </button>
               </div>
             </div>
           </div>

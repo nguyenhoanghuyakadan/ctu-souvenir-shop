@@ -22,7 +22,6 @@ export const createPurchaseInvoice = (newInvoiceData) => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: "invoiceCreateFail",
-      payload: error.response.data?.message,
     });
   }
 };
@@ -46,7 +45,6 @@ export const getAllInvoicesShop = (shopId) => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: "getAllInvoicesShopFailed",
-      payload: error.response.data?.message,
     });
   }
 };
@@ -61,12 +59,11 @@ export const getAllInvoices = () => async (dispatch) => {
     const { data } = await axios.get(`${server}/invoice/get-all-invoices`);
     dispatch({
       type: "getAllInvoicesSuccess",
-      payload: data.invoices,
+      payload: data.invoice,
     });
   } catch (error) {
     dispatch({
       type: "getAllInvoicesFailed",
-      payload: error.response.data?.message,
     });
   }
 };

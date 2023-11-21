@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { BsFillBagFill } from "react-icons/bs";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import styles from "../styles/styles";
 import { getAllOrdersOfUser } from "../redux/actions/order";
 import { backend_url, server } from "../server";
 import { RxCross1 } from "react-icons/rx";
+import { FaBagShopping, FaMotorcycle, FaCashRegister } from "react-icons/fa6";
 import { AiFillStar, AiOutlineStar } from "react-icons/ai";
 import axios from "axios";
 import { toast } from "react-toastify";
@@ -20,7 +20,7 @@ const UserOrderDetails = () => {
   const [selectedItem, setSelectedItem] = useState(null);
   const [rating, setRating] = useState(1);
   const [conversations, setConversations] = useState([]);
-
+  const navigate = useNavigate();
   const { id } = useParams();
 
   useEffect(() => {
@@ -44,18 +44,15 @@ const UserOrderDetails = () => {
     };
     getConversation();
   }, [user]);
-
-  console.log(conversations);
-  console.log(user);
   const conversation = conversations.find((conversation) => {
     return conversation.members.includes(user._id);
   });
 
-  // Bây giờ bạn có biến conversation chứa cuộc trò chuyện mà user tham gia
-
-  console.log(conversation);
-
   const data = orders && orders.find((item) => item._id === id);
+  const totalPriceWithoutShippingFee =
+    data && data.cart
+      ? data.cart.reduce((sum, item) => sum + item.originalPrice * item.qty, 0)
+      : 0;
   const reviewHandler = async (e) => {
     await axios
       .put(
@@ -75,6 +72,10 @@ const UserOrderDetails = () => {
         setComment("");
         setRating(null);
         setOpen(false);
+      })
+      .then((res) => {
+        navigate("/");
+        window.location.reload();
       })
       .catch((error) => {
         toast.error(error);
@@ -99,42 +100,43 @@ const UserOrderDetails = () => {
     <div className={`py-4 min-h-screen ${styles.section}`}>
       <div className="w-full flex items-center justify-between">
         <div className="flex items-center">
-          <BsFillBagFill size={30} color="crimson" />
-          <h1 className="pl-2 text-[25px]">Thông tin đơn hàng</h1>
+          <FaBagShopping size={30} />
+          <h1 className="mx-2 font-bold text-accent text-xl uppercase">
+            Thông tin đơn hàng
+          </h1>
         </div>
       </div>
 
-      <div className="w-full flex items-center justify-between pt-6">
-        <h5 className="text-[#00000084]">
-          ID đơn hàng: <span>#{data?._id?.slice(0, 8)}</span>
+      <div className="w-full flex items-center justify-between my-4">
+        <h5>
+          <span className="uppercase">ID đơn hàng: </span>
+          <span className="font-bold">{data?._id}</span>
         </h5>
-        <h5 className="text-[#00000084]">
-          Thời gian: <span>{data?.createdAt?.slice(0, 10)}</span>
+        <h5>
+          <span className="uppercase">Thời gian: </span>
+          <span className="font-bold">{data?.createdAt?.slice(0, 10)}</span>
         </h5>
       </div>
 
-      {/* order items */}
-      <br />
-      <br />
       {data &&
         data?.cart.map((item, index) => {
           return (
-            <div className="w-full flex items-start mb-5">
+            <div className="w-full flex items-start my-4">
               <img
                 src={`${backend_url}/${item.images[0]}`}
                 alt=""
-                className="w-[80x] h-[80px]"
+                className="w-24 rounded"
               />
-              <div className="w-full">
-                <h5 className="pl-3 text-[20px]">{item.name}</h5>
-                <h5 className="pl-3 text-[20px] text-[#00000091]">
+              <div className="w-full mx-2">
+                <h5 className="font-bold text-xl">{item.name}</h5>
+                <h5 className="text-xl">
                   {currency.format(item.originalPrice, { code: "VND" })} x{" "}
                   {item.qty}
                 </h5>
               </div>
               {!item.isReviewed && data?.status === "Delivered" ? (
                 <button
-                  className="btn btn-info text-white font-bold"
+                  className="btn btn-accent text-white font-bold"
                   onClick={() => setOpen(true) || setSelectedItem(item)}
                 >
                   Đánh giá SP
@@ -148,26 +150,25 @@ const UserOrderDetails = () => {
       {open && (
         <div className="w-full fixed top-0 left-0 h-screen bg-[#0005] z-50 flex items-center justify-center">
           <div className="w-[50%] h-min bg-[#fff] shadow rounded-md p-3">
-            <div className="w-full flex justify-end p-3">
+            <div className="w-full flex justify-end">
               <RxCross1
                 size={30}
                 onClick={() => setOpen(false)}
                 className="cursor-pointer"
               />
             </div>
-            <h2 className="text-[30px] font-[500] font-Poppins text-center">
+            <h2 className="text-xl font-bold uppercase text-center my-2">
               Đánh giá sản phẩm
             </h2>
-            <br />
             <div className="w-full flex ">
               <img
                 src={`${backend_url}/${selectedItem?.images[0]}`}
                 alt=""
-                className="w-[90px] h-[90px] border-4 border-sky-500 rounded-[8px]"
+                className="w-24 rounded"
               />
-              <div>
-                <div className="pl-3 text-[20px]">{selectedItem?.name}</div>
-                <h4 className="pl-3 text-[20px]">
+              <div className="w-full mx-2">
+                <div className="font-bold text-xl">{selectedItem?.name}</div>
+                <h4 className="text-xl">
                   {currency.format(selectedItem?.originalPrice, {
                     code: "VND",
                   })}{" "}
@@ -175,21 +176,17 @@ const UserOrderDetails = () => {
                 </h4>
               </div>
             </div>
-
-            <br />
-            <br />
-
             {/* ratings */}
-            <h5 className="pl-3 text-[20px] font-[500]">
-              Đánh giá : <span className="text-red-500">*</span>
+            <h5 className="mt-2 font-bold text-lg uppercase">
+              Đánh giá :<span className="text-red-500">*</span>
             </h5>
-            <div className="flex w-full ml-2 pt-1">
+            <div className="flex w-full">
               {[1, 2, 3, 4, 5].map((i) =>
                 rating >= i ? (
                   <AiFillStar
                     key={i}
                     className="mr-1 cursor-pointer"
-                    color="rgb(246,186,0)"
+                    color="rgb(255,255,0)"
                     size={25}
                     onClick={() => setRating(i)}
                   />
@@ -197,18 +194,17 @@ const UserOrderDetails = () => {
                   <AiOutlineStar
                     key={i}
                     className="mr-1 cursor-pointer"
-                    color="rgb(246,186,0)"
+                    color="rgb(255,255,0)"
                     size={25}
                     onClick={() => setRating(i)}
                   />
                 )
               )}
             </div>
-            <br />
-            <div className="w-full ml-3">
-              <label className="block text-[20px] font-[500]">
+            <div className="w-full my-2">
+              <label className="block font-bold uppercase text-lg">
                 Viết đánh giá
-                <span className="ml-1 font-[400] text-[16px] text-[#00000052]">
+                <span className="mx-2 text-neutral-content">
                   (không bắt buộc)
                 </span>
               </label>
@@ -220,11 +216,11 @@ const UserOrderDetails = () => {
                 value={comment}
                 onChange={(e) => setComment(e.target.value)}
                 placeholder="Hãy để lại bình luận, nhận xét của bạn về sản phẩm nhé, điều này cực kì hữu ích cho những người mua khác và cả chính cửa hàng đó!"
-                className="mt-2 w-[95%] border p-2 outline-none"
+                className="textarea textarea-accent w-full"
               ></textarea>
             </div>
             <button
-              className="btn btn-success text-white font-bold ml-3"
+              className="btn btn-success text-white font-bold"
               onClick={rating > 1 ? reviewHandler : null}
             >
               Gửi
@@ -234,40 +230,72 @@ const UserOrderDetails = () => {
       )}
 
       <div className="border-t w-full text-right">
-        <h5 className="pt-3 text-[18px]">
-          Tổng tiền:{" "}
-          <strong> {currency.format(data?.totalPrice, { code: "VND" })}</strong>
-        </h5>
+        <div className="border-t w-full text-right flex flex-col py-4">
+          <h5>
+            <span className="uppercase font-bold">Phí giao hàng: </span>
+            <span className="font-bold text-accent">
+              {data &&
+                `${currency.format(
+                  data.totalPrice - totalPriceWithoutShippingFee,
+                  { code: "VND" }
+                )}`}
+            </span>
+          </h5>
+          <h5>
+            <span className="uppercase font-bold">Tổng tiền: </span>
+            <span className="font-bold  text-accent">
+              {data && `${currency.format(data.totalPrice, { code: "VND" })}`}
+            </span>
+          </h5>
+        </div>
       </div>
-      <br />
-      <br />
-      <div className="w-full 800px:flex items-center">
-        <div className="w-full 800px:w-[60%]">
-          <h4 className="pt-3 text-[20px] font-[700]">Thông tin giao hàng:</h4>
-          <h4 className="pt-3 text-[20px]">
-            <b>Địa chỉ:</b>{" "}
-            {data?.shippingAddress.address1 + ", " + data?.shippingAddress.city}
+      <div className="w-full 800px:flex">
+        <div className="w-full">
+          <div className="my-4 flex">
+            <FaMotorcycle size={30} />
+            <span className="font-bold text-xl uppercase text-accent mx-2">
+              Thông tin giao hàng
+            </span>
+          </div>
+          <h4 className="text-lg">
+            <span className="uppercase">Tên khách hàng:</span>{" "}
+            <span className="font-bold">{data?.user?.name}</span>
+          </h4>
+          <h4 className="text-lg">
+            <span className="uppercase">Địa chỉ:</span>{" "}
+            <span className="font-bold">{data?.shippingAddress.address1}</span>
           </h4>
           {/* <h4 className=" text-[20px]">{data?.shippingAddress.country}</h4> */}
           {/* <h4 className=" text-[20px]">{data?.shippingAddress.city}</h4> */}
-          <h4 className=" text-[20px]">
-            <b>Số điện thoại:</b> (+84) {data?.shippingAddress?.phoneNumber}
+          <h4 className="text-lg">
+            <span className="uppercase">Số điện thoại:</span>{" "}
+            <span className="font-bold">
+              {data?.shippingAddress?.phoneNumber}
+            </span>
           </h4>
         </div>
-        <div className="w-full 800px:w-[40%]">
-          <h4 className="pt-3 text-[20px]">Thông tin thanh toán:</h4>
-          <h4>
-            Trạng thái:{" "}
-            {data?.paymentInfo?.status ? data?.paymentInfo?.status : "Not Paid"}
+        <div className="w-full">
+          <div className="my-4 flex">
+            <FaCashRegister size={30} />
+            <span className="font-bold text-xl uppercase text-accent mx-2">
+              Thông tin thanh toán
+            </span>
+          </div>
+          <h4 className="text-lg">
+            <span className="uppercase">Trạng thái:</span>{" "}
+            <span className="font-bold">
+              {data?.paymentInfo?.status
+                ? data?.paymentInfo?.status
+                : "Chưa thanh toán"}
+            </span>
           </h4>
-          <br />
           {data?.status === "Delivered" && (
-            <div
-              className={`${styles.button} text-white`}
+            <button
               onClick={refundHandler}
+              className="btn btn-warning font-bold text-white uppercase"
             >
               Yêu cầu trả hàng
-            </div>
+            </button>
           )}
         </div>
       </div>

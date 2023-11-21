@@ -8,7 +8,7 @@ const Shop = require("../model/shop");
 // Tạo hóa đơn mới (bao gồm cả nhập và bán)
 router.post("/create-purchase-invoice", isSeller, async (req, res) => {
   try {
-    const { type, invoiceNumber, products, shopId, date, supplier } = req.body; // Dữ liệu được gửi từ phía client
+    const { type, invoiceNumber, selectedItemsData, shopId, date, supplier } = req.body; // Dữ liệu được gửi từ phía client
 
     // Tìm thông tin cửa hàng dựa trên shopId
     const shop = await Shop.findById(shopId);
@@ -17,7 +17,7 @@ router.post("/create-purchase-invoice", isSeller, async (req, res) => {
     }
 
     const combinedInvoices = [];
-    for (const productData of products) {
+    for (const productData of selectedItemsData) {
       const { product, quantity, price } = productData;
       const existingInvoice = combinedInvoices.find(
         (invoice) =>
@@ -43,7 +43,6 @@ router.post("/create-purchase-invoice", isSeller, async (req, res) => {
     }
 
     const createdInvoices = await Invoice.insertMany(combinedInvoices);
-    console.log(createdInvoices);
     for (const createdInvoice of createdInvoices) {
       for (const productData of createdInvoice.products) {
         const { product, quantity, price } = productData;
@@ -69,10 +68,11 @@ router.post("/create-purchase-invoice", isSeller, async (req, res) => {
       }
     }
 
-    res.status(200).json({ message: `${type} invoice successful` });
+    res.status(200).json({
+      message: `${type} invoice successful`,
+      invoice: createdInvoices,
+    });
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: `An error occurred while ${type} invoice` });
   }
 });
 
@@ -92,15 +92,11 @@ router.get("/get-all-invoices-shop/:id", isSeller, async (req, res) => {
 
     res.status(200).json(invoices);
   } catch (error) {
-    console.error(error);
-    res.status(500).json({
-      error: "An error occurred while retrieving invoices for the shop",
-    });
   }
 });
 
 // Lấy số hóa đơn lớn nhất + 1 cho cửa hàng cụ thể
-router.get("/get-next-invoice-number/:shopId",isSeller, async (req, res) => {
+router.get("/get-next-invoice-number/:shopId", isSeller, async (req, res) => {
   try {
     const shopId = req.params.shopId;
 
@@ -124,10 +120,6 @@ router.get("/get-next-invoice-number/:shopId",isSeller, async (req, res) => {
 
     res.status(200).json({ nextInvoiceNumber });
   } catch (error) {
-    console.error(error);
-    res.status(500).json({
-      error: "An error occurred while getting the next invoice number",
-    });
   }
 });
 

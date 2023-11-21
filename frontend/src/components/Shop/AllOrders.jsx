@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import Loader from "../Layout/Loader";
 import { getAllOrdersOfShop } from "../../redux/actions/order";
-import { AiOutlineArrowRight } from "react-icons/ai";
+import { FaEye } from "react-icons/fa6";
 import currency from "currency-formatter";
 
 const AllOrders = () => {
@@ -19,13 +19,12 @@ const AllOrders = () => {
   }, [dispatch]);
 
   const columns = [
-    { field: "id", headerName: "ID đơn hàng", minWidth: 150, flex: 0.7 },
+    { field: "id", headerName: "ID đơn hàng", flex: 2 },
 
     {
       field: "status",
       headerName: "Trạng thái",
-      minWidth: 130,
-      flex: 0.7,
+      flex: 1,
       cellClassName: (params) => {
         return params.getValue(params.id, "status") === "Delivered"
           ? "greenColor"
@@ -35,24 +34,27 @@ const AllOrders = () => {
     {
       field: "itemsQty",
       headerName: "Số lượng",
+      headerAlign: "left",
+      align: "left",
       type: "number",
-      minWidth: 130,
-      flex: 0.7,
+      flex: 1,
     },
 
     {
       field: "total",
       headerName: "Tổng cộng",
+      headerAlign: "left",
+      align: "left",
       type: "number",
-      minWidth: 130,
-      flex: 0.8,
+      flex: 1,
     },
 
     {
       field: " ",
       flex: 1,
-      minWidth: 150,
-      headerName: "",
+      headerName: "Xem",
+      headerAlign: "left",
+      align: "left",
       type: "number",
       sortable: false,
       renderCell: (params) => {
@@ -60,7 +62,7 @@ const AllOrders = () => {
           <>
             <Link to={`/order/${params.id}`}>
               <Button>
-                <AiOutlineArrowRight size={20} />
+                <FaEye size={20} />
               </Button>
             </Link>
           </>
