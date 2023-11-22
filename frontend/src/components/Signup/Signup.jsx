@@ -1,6 +1,5 @@
 import { React, useState } from "react";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
-import styles from "../../styles/styles";
 import { Link } from "react-router-dom";
 import { BiCool } from "react-icons/bi";
 import axios from "axios";
@@ -47,9 +46,7 @@ const Singup = () => {
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
-        <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
-          Đăng ký
-        </h2>
+        <h2 className="text-center text-3xl font-bold uppercase">Đăng ký</h2>
       </div>
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
         <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
@@ -79,7 +76,7 @@ const Singup = () => {
                 htmlFor="email"
                 className="block text-sm font-medium text-gray-700"
               >
-                Email 
+                Email
               </label>
               <div className="mt-1">
                 <input
@@ -156,7 +153,6 @@ const Singup = () => {
                     accept=".jpg,.jpeg,.webp,.png"
                     onChange={handleFileInputChange}
                     className="sr-only"
-                    
                   />
                 </label>
               </div>
@@ -165,14 +161,14 @@ const Singup = () => {
             <div>
               <button
                 type="submit"
-                className="btn btn-info text-white w-full font-bold text-xl"
+                className="btn btn-info w-full text-white font-bold"
               >
                 Đăng Ký
               </button>
             </div>
-            <div className={`${styles.noramlFlex} w-full`}>
+            <div className="flex">
               <h4>Bạn đã có tài khoản?</h4>
-              <Link to="/login" className="text-blue-600 pl-2">
+              <Link to="/login" className="text-info font-bold mx-2">
                 Đăng nhập ngay!
               </Link>
             </div>

@@ -21,20 +21,18 @@ const AllInvoices = () => {
 
   const columns = [
     { field: "id", hide: true },
-    { field: "date", headerName: "Ngày nhập", minWidth: 150, flex: 0.7 },
+    { field: "date", headerName: "Ngày nhập", flex: 1 },
     {
       field: "invoiceNumber",
       headerName: "Số hóa đơn",
-      minWidth: 150,
-      flex: 0.7,
+      flex: 1,
     },
-    { field: "type", headerName: "Loại hóa đơn", minWidth: 150, flex: 0.7 },
+    { field: "type", headerName: "Loại hóa đơn", flex: 1 },
     {
       field: "view",
       headerName: "Xem",
       sortable: false,
-      minWidth: 100,
-      flex: 0.3,
+      flex: 1,
       renderCell: (params) => (
         <Link to={`/invoice/${params.row.id}`}>
           <Button>
@@ -59,7 +57,8 @@ const AllInvoices = () => {
       {isLoading ? (
         <Loader />
       ) : (
-        <div className="w-full mx-8 pt-1 mt-10 bg-white">
+        <div className="w-full bg-white">
+          <div className="my-4 text-xl font-bold uppercase">Tất cả hóa đơn</div>
           <DataGrid
             rows={rows}
             columns={columns}

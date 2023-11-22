@@ -4,12 +4,8 @@ import { useSelector } from "react-redux";
 import socketIO from "socket.io-client";
 import { backend_url, server } from "../server";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
-import { AiOutlineArrowRight, AiOutlineSend } from "react-icons/ai";
-import { BsArrow90DegLeft } from "react-icons/bs";
-import { TfiGallery } from "react-icons/tfi";
-import styles from "../styles/styles";
-// const ENDPOINT = "https://socket-ecommerce-tu68.onrender.com/";
+import { useNavigate, Link } from "react-router-dom";
+import { FaArrowLeft, FaPaperPlane, FaPhotoFilm } from "react-icons/fa6";
 const ENDPOINT = "http://localhost:4000/";
 const socketId = socketIO(ENDPOINT, { transports: ["websocket"] });
 
@@ -203,11 +199,19 @@ const UserInbox = () => {
     scrollRef.current?.scrollIntoView({ beahaviour: "smooth" });
   }, [messages]);
 
+  console.log(messages);
+
   return (
     <div className="w-full">
+      <Link to={"/profile"} className="flex my-4">
+        <FaArrowLeft size={24} />
+        <span className="font-bold uppercase text-xl">
+          Trở về trang tổng quan
+        </span>
+      </Link>
       {!open && (
         <>
-          <h1 className="text-center text-4xl font-bold my-4">
+          <h1 className="text-center text-4xl font-bold my-4 uppercase">
             Tất cả tin nhắn
           </h1>
           {/* All messages list */}
@@ -245,38 +249,19 @@ const UserInbox = () => {
         />
       )} */}
       {open && (
-        <div className="flex items-start ">
-          <div className="w-[80px] 800px:w-[330px]">
-            {conversations &&
-              conversations.map((item, index) => (
-                <MessageList
-                  data={item}
-                  key={index}
-                  index={index}
-                  setOpen={setOpen}
-                  setCurrentChat={setCurrentChat}
-                  me={user?._id}
-                  setUserData={setUserData}
-                  userData={userData}
-                  online={onlineCheck(item)}
-                  setActiveStatus={setActiveStatus}
-                />
-              ))}
-          </div>
-          <div className="w-full bg-[#dadadaee] rounded-md">
-            <SellerInbox
-              setOpen={setOpen}
-              newMessage={newMessage}
-              setNewMessage={setNewMessage}
-              sendMessageHandler={sendMessageHandler}
-              messages={messages}
-              sellerId={user._id}
-              userData={userData}
-              activeStatus={activeStatus}
-              scrollRef={scrollRef}
-              handleImageUpload={handleImageUpload}
-            />
-          </div>
+        <div className="w-full rounded">
+          <SellerInbox
+            setOpen={setOpen}
+            newMessage={newMessage}
+            setNewMessage={setNewMessage}
+            sendMessageHandler={sendMessageHandler}
+            messages={messages}
+            sellerId={user._id}
+            userData={userData}
+            activeStatus={activeStatus}
+            scrollRef={scrollRef}
+            handleImageUpload={handleImageUpload}
+          />
         </div>
       )}
     </div>
@@ -318,8 +303,8 @@ const MessageList = ({
 
   return (
     <div
-      className={`w-full flex p-3 px-3 border-b-2 border-slate-400 rounded-md ${
-        active === index ? "bg-[#30303005]" : "bg-transparent"
+      className={`w-full flex rounded border-b-4 ${
+        active === index ? "bg-base-200" : "bg-transparent"
       }  cursor-pointer`}
       onClick={(e) =>
         setActive(index) ||
@@ -329,24 +314,19 @@ const MessageList = ({
         setActiveStatus(online)
       }
     >
-      <div className="relative">
-        <img
-          src={`${backend_url}${user?.avatar}`}
-          alt=""
-          className="w-[50px] h-[50px] rounded-full"
-        />
-        {online ? (
-          <div className="w-[12px] h-[12px] bg-green-400 rounded-full absolute top-[2px] right-[2px]" />
-        ) : (
-          <div className="w-[12px] h-[12px] bg-[#c7b9b9] rounded-full absolute top-[2px] right-[2px]" />
-        )}
+      <div className={`avatar ${online ? "online" : "offline"}`}>
+        <div className="w-20 rounded-full m-2">
+          <img src={`${backend_url}${user?.avatar}`} />
+        </div>
       </div>
-      <div className="pl-3">
-        <h1 className="text-[18px]">{user?.name}</h1>
-        <p className="text-[16px] text-[#030303cc]">
-          {data?.lastMessageId !== userData?._id
+      <div className="m-2">
+        <h1 className="font-bold">{user?.name}</h1>
+        <p className="font-bold text-neutral">
+          {data?.lastMessageId !== user?._id
             ? "Bạn:"
-            : userData?.name && userData?.name.split(" ")[0] + ": "}{" "}
+            : user?.name
+            ? user.name.split(" ")[0] + ": "
+            : ""}{" "}
           {data?.lastMessage}
         </p>
       </div>
@@ -367,102 +347,140 @@ const SellerInbox = ({
   handleImageUpload,
 }) => {
   return (
-    <div className="w-[full] min-h-full flex flex-col justify-between p-5">
+    <div className="w-[full] min-h-full flex flex-col justify-between m-4">
       {/* message header */}
-      <div className="w-full flex p-3 items-center justify-between bg-slate-400 rounded">
+      <div className="w-full flex items-center justify-between bg-base-100 rounded">
         <div className="flex">
-          <img
-            src={`${backend_url}${userData?.avatar}`}
-            alt=""
-            className="w-[60px] h-[60px] rounded-full"
-          />
-          <div className="pl-3">
-            <h1 className="text-[18px] font-[600]">{userData?.name}</h1>
-            <h1>{activeStatus ? "Đang hoạt động" : ""}</h1>
+          <div className="avatar m-2">
+            <div className="w-20 rounded-full">
+              <img src={`${backend_url}${userData?.avatar}`} />
+            </div>
+          </div>
+          <div className="m-2">
+            <h1 className="font-bold">{userData?.name}</h1>
+            <h1 className="font-bold text-success">
+              {activeStatus ? "Đang hoạt động" : ""}
+            </h1>
           </div>
         </div>
-        <BsArrow90DegLeft
-          size={25}
-          className="cursor-pointer mr-6"
+        <FaArrowLeft
+          size={24}
+          className="cursor-pointer mx-4"
           onClick={() => setOpen(false)}
         />
       </div>
 
       {/* messages */}
-      <div className="px-3 h-[57vh] py-3 overflow-y-scroll">
+      <div className="h-[50vh] overflow-y-scroll">
         {messages &&
-          messages.map((item, index) => (
-            <div
-              className={`flex w-full my-2 ${
-                item.sender === sellerId ? "justify-end" : "justify-start"
-              }`}
-              ref={scrollRef}
-            >
-              {item.sender !== sellerId && (
-                <img
-                  src={`${backend_url}${userData?.avatar}`}
-                  className="w-[40px] h-[40px] rounded-full mr-3"
-                  alt=""
-                />
-              )}
-              {item.images && (
-                <img
-                  src={`${backend_url}${item.images}`}
-                  className="w-[300px] h-[300px] object-cover rounded-[15px] ml-2 mb-2"
-                />
-              )}
-              {item.text !== "" && (
-                <div>
-                  <div
-                    className={`w-max p-2 rounded-[12px] ${
-                      item.sender === sellerId ? "bg-blue" : "bg-[#38c776]"
-                    } text-[#fff] h-min`}
-                  >
-                    <p>{item.text}</p>
+          messages.map((item, index) => {
+            return (
+              // <div
+              //   className={`chat ${
+              //     item.sender === sellerId ? "chat-end" : "chat-start"
+              //   }`}
+              //   ref={scrollRef}
+              // >
+              //   <div className="flex">
+              //     {item.sender !== sellerId && (
+              //       <div className="chat-image avatar mr-2">
+              //         <div className="w-10 rounded-full">
+              //           <img src={`${backend_url}${userData?.avatar}`} />
+              //         </div>
+              //       </div>
+              //     )}
+              //     {item.text !== "" && (
+              //       <div
+              //         className={`chat-bubble font-bold ${
+              //           item.sender === sellerId
+              //             ? "chat-bubble-info"
+              //             : "chat-bubble chat-bubble-secondary text-white"
+              //         }`}
+              //       >
+              //         {item.text}
+              //       </div>
+              //     )}
+              //     {item.images && (
+              //       <div>
+              //         <img
+              //           src={`${backend_url}${item.images}`}
+              //           className="object-cover h-96 rounded"
+              //         />
+              //       </div>
+              //     )}
+              //   </div>
+              // </div>
+              <div
+                ref={scrollRef}
+                className={`chat ${
+                  item.sender !== sellerId ? "chat-start" : "chat-end"
+                }`}
+              >
+                {item.sender !== sellerId && (
+                  <div className="chat-image avatar">
+                    <div className="w-10 rounded-full">
+                      <img src={`${backend_url}${userData?.avatar}`} />
+                    </div>
                   </div>
-
-                  <p className="text-[12px] text-[#000000d3] pt-1">
-                    {item.createdAt}
-                  </p>
+                )}
+                <div className="chat-header">
+                  <time className="text-xs opacity-50">
+                    {item.createdAt &&
+                      `${new Date(item.createdAt)
+                        .toLocaleTimeString()
+                        .slice(0, 5)} ${new Date(item.createdAt)
+                        .toLocaleDateString()
+                        .slice(0, 10)}`}
+                  </time>
                 </div>
-              )}
-            </div>
-          ))}
+                {item.text !== "" && (
+                  <div className="chat-bubble">{item.text}</div>
+                )}
+                {item.images && (
+                  <div>
+                    <img
+                      src={`${backend_url}${item.images}`}
+                      className="object-cover h-96 rounded"
+                    />
+                  </div>
+                )}
+              </div>
+            );
+          })}
       </div>
 
       {/* send message input */}
       <form
         aria-required={true}
-        className="p-3 relative w-full flex justify-between items-center"
+        className="w-full flex justify-between items-center mt-4"
         onSubmit={sendMessageHandler}
       >
-        <div className="w-[30px]">
+        <div className="mx-2">
           <input
             type="file"
-            name=""
+            name="image"
             id="image"
             className="hidden"
             onChange={handleImageUpload}
           />
           <label htmlFor="image">
-            <TfiGallery className="cursor-pointer" size={20} />
+            <FaPhotoFilm size={24} />
           </label>
         </div>
         <div className="w-full">
           <input
             type="text"
             required
-            placeholder="Enter your message..."
+            placeholder="Nhập tin nhắn..."
             value={newMessage}
             onChange={(e) => setNewMessage(e.target.value)}
-            className={`${styles.input} pb-4`}
+            className="input input-bordered w-full"
           />
+        </div>
+        <div className="mx-2">
           <input type="submit" value="Send" className="hidden" id="send" />
           <label htmlFor="send">
-            <AiOutlineSend
-              size={20}
-              className="absolute right-4 top-5 cursor-pointer"
-            />
+            <FaPaperPlane size={24} type="submit" />
           </label>
         </div>
       </form>

@@ -173,6 +173,9 @@ const AllProducts = () => {
         <Loader />
       ) : (
         <div className="w-full bg-white">
+          <div className="my-4 text-xl font-bold uppercase">
+            Tất cả sản phẩm
+          </div>
           <DataGrid
             rows={row}
             columns={columns}

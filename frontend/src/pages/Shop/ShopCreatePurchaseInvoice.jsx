@@ -7,11 +7,11 @@ const ShopCreatePurchaseInvoice = () => {
   return (
     <div>
       <DashboardHeader />
-      <div className="flex items-center justify-between w-full">
+      <div className="flex w-full">
         <div className="w-[330px]">
           <DashboardSideBar active={13} />
         </div>
-        <div className="w-full justify-center flex">
+        <div className="w-full">
           <CreatePurchaseInvoice />
         </div>
       </div>

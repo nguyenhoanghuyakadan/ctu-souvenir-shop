@@ -3,10 +3,8 @@ import React, { useRef, useState } from "react";
 import { useEffect } from "react";
 import { backend_url, server } from "../../server";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import { AiOutlineArrowRight, AiOutlineSend } from "react-icons/ai";
-import styles from "../../styles/styles";
-import { TfiGallery } from "react-icons/tfi";
+import { useNavigate, Link } from "react-router-dom";
+import { FaArrowLeft, FaPhotoFilm, FaPaperPlane } from "react-icons/fa6";
 import socketIO from "socket.io-client";
 // const ENDPOINT = "https://socket-ecommerce-tu68.onrender.com/";
 const ENDPOINT = "http://localhost:4000/";
@@ -205,10 +203,16 @@ const DashboardMessages = () => {
   }, [messages]);
 
   return (
-    <div className="w-[90%] bg-white m-5 h-[85vh] overflow-y-scroll rounded">
+    <div className="w-full overflow-y-scroll rounded my-4">
+      <Link to={"/dashboard"} className="flex mb-4">
+        <FaArrowLeft size={24} />
+        <span className="font-bold uppercase text-xl">
+          Trở về trang tổng quan
+        </span>
+      </Link>
       {!open && (
         <>
-          <h1 className="text-center text-[30px] py-3 font-Poppins">
+          <h1 className="text-center font-bold text-2xl uppercase">
             Tất cả tin nhắn
           </h1>
           {/* All messages list */}
@@ -259,7 +263,6 @@ const MessageList = ({
   online,
   setActiveStatus,
 }) => {
-  console.log(data);
   const [user, setUser] = useState([]);
   const navigate = useNavigate();
   const handleClick = (id) => {
@@ -284,8 +287,8 @@ const MessageList = ({
 
   return (
     <div
-      className={`w-full flex p-3 px-3 ${
-        active === index ? "bg-[#00000010]" : "bg-transparent"
+      className={`w-full flex rounded ${
+        active === index ? "bg-base-200" : "bg-transparent"
       }  cursor-pointer`}
       onClick={(e) =>
         setActive(index) ||
@@ -295,23 +298,16 @@ const MessageList = ({
         setActiveStatus(online)
       }
     >
-      <div className="relative">
-        <img
-          src={`${backend_url}${user?.avatar}`}
-          alt=""
-          className="w-[50px] h-[50px] rounded-full"
-        />
-        {online ? (
-          <div className="w-[12px] h-[12px] bg-green-400 rounded-full absolute top-[2px] right-[2px]" />
-        ) : (
-          <div className="w-[12px] h-[12px] bg-[#c7b9b9] rounded-full absolute top-[2px] right-[2px]" />
-        )}
+      <div className={`avatar ${online ? "online" : "offline"}`}>
+        <div className="w-20 rounded-full m-2">
+          <img src={`${backend_url}${user?.avatar}`} />
+        </div>
       </div>
-      <div className="pl-3">
-        <h1 className="text-[18px]">{user?.name}</h1>
-        <p className="text-[16px] text-[#000c]">
+      <div className="m-2">
+        <h1 className="font-bold">{user?.name}</h1>
+        <p className="font-bold text-neutral">
           {data?.lastMessageId !== user?._id
-            ? "You:"
+            ? "Bạn:"
             : user?.name
             ? user.name.split(" ")[0] + ": "
             : ""}{" "}
@@ -337,62 +333,64 @@ const SellerInbox = ({
   return (
     <div className="w-full min-h-full flex flex-col justify-between">
       {/* message header */}
-      <div className="w-full flex p-3 items-center justify-between bg-slate-200">
+      <div className="w-full flex items-center justify-between bg-base-200 rounded">
         <div className="flex">
-          <img
-            src={`${backend_url}${userData?.avatar}`}
-            alt=""
-            className="w-[60px] h-[60px] rounded-full"
-          />
-          <div className="pl-3">
-            <h1 className="text-[18px] font-[600]">{userData?.name}</h1>
-            <h1>{activeStatus ? "Active Now" : ""}</h1>
+          <div className="avatar m-2">
+            <div className="w-20 rounded-full">
+              <img src={`${backend_url}${userData?.avatar}`} />
+            </div>
+          </div>
+          <div className="m-2">
+            <h1 className="font-bold">{userData?.name}</h1>
+            <h1 className="font-bold text-success">
+              {activeStatus ? "Đang hoạt động" : ""}
+            </h1>
           </div>
         </div>
-        <AiOutlineArrowRight
-          size={20}
-          className="cursor-pointer"
+        <FaArrowLeft
+          size={24}
+          className="cursor-pointer mx-4"
           onClick={() => setOpen(false)}
         />
       </div>
 
       {/* messages */}
-      <div className="px-3 h-[65vh] py-3 overflow-y-scroll">
+      <div className="h-[50vh] overflow-y-scroll">
         {messages &&
           messages.map((item, index) => {
             return (
               <div
-                className={`flex w-full my-2 ${
-                  item.sender === sellerId ? "justify-end" : "justify-start"
-                }`}
                 ref={scrollRef}
+                className={`chat ${
+                  item.sender !== sellerId ? "chat-start" : "chat-end"
+                }`}
               >
                 {item.sender !== sellerId && (
-                  <img
-                    src={`${backend_url}${userData?.avatar}`}
-                    className="w-[40px] h-[40px] rounded-full mr-3"
-                    alt=""
-                  />
+                  <div className="chat-image avatar">
+                    <div className="w-10 rounded-full">
+                      <img src={`${backend_url}${userData?.avatar}`} />
+                    </div>
+                  </div>
+                )}
+                <div className="chat-header">
+                  <time className="text-xs opacity-50">
+                    {item.createdAt &&
+                      `${new Date(item.createdAt)
+                        .toLocaleTimeString()
+                        .slice(0, 5)} ${new Date(item.createdAt)
+                        .toLocaleDateString()
+                        .slice(0, 10)}`}
+                  </time>
+                </div>
+                {item.text !== "" && (
+                  <div className="chat-bubble">{item.text}</div>
                 )}
                 {item.images && (
-                  <img
-                    src={`${backend_url}${item.images}`}
-                    className="w-[300px] h-[300px] object-cover rounded-[10px] mr-2"
-                  />
-                )}
-                {item.text !== "" && (
                   <div>
-                    <div
-                      className={`w-max p-2 rounded ${
-                        item.sender === sellerId ? "bg-blue" : "bg-[#38c776]"
-                      } text-[#fff] h-min`}
-                    >
-                      <p>{item.text}</p>
-                    </div>
-
-                    <p className="text-[12px] text-[#000000d3] pt-1">
-                      {item.createdAt}
-                    </p>
+                    <img
+                      src={`${backend_url}${item.images}`}
+                      className="object-cover h-96 rounded"
+                    />
                   </div>
                 )}
               </div>
@@ -401,38 +399,38 @@ const SellerInbox = ({
       </div>
 
       {/* send message input */}
+
       <form
         aria-required={true}
-        className="p-3 relative w-full flex justify-between items-center"
+        className="w-full flex justify-between items-center mt-4"
         onSubmit={sendMessageHandler}
       >
-        <div className="w-[30px]">
+        <div className="mx-2">
           <input
             type="file"
-            name=""
+            name="image"
             id="image"
             className="hidden"
             onChange={handleImageUpload}
           />
           <label htmlFor="image">
-            <TfiGallery className="cursor-pointer" size={20} />
+            <FaPhotoFilm size={24} />
           </label>
         </div>
         <div className="w-full">
           <input
             type="text"
             required
-            placeholder="Enter your message..."
+            placeholder="Nhập tin nhắn..."
             value={newMessage}
             onChange={(e) => setNewMessage(e.target.value)}
-            className={`${styles.input}`}
+            className="input input-bordered w-full"
           />
+        </div>
+        <div className="mx-2">
           <input type="submit" value="Send" className="hidden" id="send" />
           <label htmlFor="send">
-            <AiOutlineSend
-              size={20}
-              className="absolute right-4 top-5 cursor-pointer"
-            />
+            <FaPaperPlane size={24} type="submit" />
           </label>
         </div>
       </form>

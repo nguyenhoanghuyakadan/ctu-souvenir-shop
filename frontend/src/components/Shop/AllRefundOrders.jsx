@@ -5,7 +5,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import Loader from "../Layout/Loader";
 import { getAllOrdersOfShop } from "../../redux/actions/order";
-import { AiOutlineArrowRight } from "react-icons/ai";
+import { FaArrowRight } from "react-icons/fa6";
+
 import currency from "currency-formatter";
 
 const AllRefundOrders = () => {
@@ -18,16 +19,20 @@ const AllRefundOrders = () => {
     dispatch(getAllOrdersOfShop(seller._id));
   }, [dispatch]);
 
-  const refundOrders = orders && orders.filter((item) => item.status === "Processing refund"  || item.status === "Refund Success");
+  const refundOrders =
+    orders &&
+    orders.filter(
+      (item) =>
+        item.status === "Processing refund" || item.status === "Refund Success"
+    );
 
   const columns = [
-    { field: "id", headerName: "ID đơn hàng", minWidth: 150, flex: 0.7 },
+    { field: "id", headerName: "ID Đơn hàng", flex: 2 },
 
     {
       field: "status",
       headerName: "Trạng thái",
-      minWidth: 130,
-      flex: 0.7,
+      flex: 1,
       cellClassName: (params) => {
         return params.getValue(params.id, "status") === "Delivered"
           ? "greenColor"
@@ -38,31 +43,34 @@ const AllRefundOrders = () => {
       field: "itemsQty",
       headerName: "Số lượng",
       type: "number",
-      minWidth: 130,
-      flex: 0.7,
+      headerAlign: "left",
+      align: "left",
+      flex: 1,
     },
 
     {
       field: "total",
       headerName: "Tổng cộng",
       type: "number",
-      minWidth: 130,
-      flex: 0.8,
+      headerAlign: "left",
+      align: "left",
+      flex: 1,
     },
 
     {
-      field: " ",
+      field: "detail",
       flex: 1,
-      minWidth: 150,
-      headerName: "",
+      headerName: "Chi tiết",
       type: "number",
+      headerAlign: "left",
+      align: "left",
       sortable: false,
       renderCell: (params) => {
         return (
           <>
             <Link to={`/order/${params.id}`}>
               <Button>
-                <AiOutlineArrowRight size={20} />
+                <FaArrowRight size={20} />
               </Button>
             </Link>
           </>
@@ -74,11 +82,11 @@ const AllRefundOrders = () => {
   const row = [];
 
   refundOrders &&
-  refundOrders.forEach((item) => {
+    refundOrders.forEach((item) => {
       row.push({
         id: item._id,
         itemsQty: item.cart.length,
-        total:`${currency.format(item.totalPrice, { code: "VND" })}`,
+        total: `${currency.format(item.totalPrice, { code: "VND" })}`,
         status: item.status,
       });
     });
