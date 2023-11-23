@@ -38,7 +38,7 @@ const ProfileSidebar = ({ setActive, active }) => {
       >
         <RxPerson size={24} />
         <span
-          className={`mx-2 ${
+          className={`mx-2 hover:text-error ${
             active === 1 ? "text-accent" : ""
           } 800px:block hidden`}
         >

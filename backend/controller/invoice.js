@@ -4,11 +4,13 @@ const router = express.Router();
 const Invoice = require("../model/invoice");
 const Product = require("../model/product");
 const Shop = require("../model/shop");
+const ErrorHandler = require("../utils/ErrorHandler");
 
 // Tạo hóa đơn mới (bao gồm cả nhập và bán)
 router.post("/create-purchase-invoice", isSeller, async (req, res) => {
   try {
-    const { type, invoiceNumber, selectedItemsData, shopId, date, supplier } = req.body; // Dữ liệu được gửi từ phía client
+    const { type, invoiceNumber, selectedItemsData, shopId, date, supplier } =
+      req.body; // Dữ liệu được gửi từ phía client
 
     // Tìm thông tin cửa hàng dựa trên shopId
     const shop = await Shop.findById(shopId);
@@ -72,8 +74,7 @@ router.post("/create-purchase-invoice", isSeller, async (req, res) => {
       message: `${type} invoice successful`,
       invoice: createdInvoices,
     });
-  } catch (error) {
-  }
+  } catch (error) {}
 });
 
 // Lấy tất cả hóa đơn của cửa hàng với ID tương ứng
@@ -88,10 +89,35 @@ router.get("/get-all-invoices-shop/:id", isSeller, async (req, res) => {
     }
 
     // Tìm tất cả các hóa đơn của cửa hàng với ID tương ứng
-    const invoices = await Invoice.find({ shop: shopId }).populate("customer");
+    const invoices = await Invoice.find({ shop: shopId }).populate(
+      "customer shop"
+    );
 
     res.status(200).json(invoices);
+  } catch (error) {}
+});
+
+router.get(
+  "/admin-all-invoices",
+  isAuthenticated,
+  isAdmin("Admin"),
+  async (req, res) => {
+    try {
+      const invoices = await Invoice.find({}).populate("customer shop");
+      res.status(200).json({ invoices });
+    } catch (error) {
+      return next(new ErrorHandler(error.message, 500));
+    }
+  }
+);
+
+router.get("/get-invoice/:id", async (req, res) => {
+  try {
+    const id = req.params.id;
+    const invoice = await Invoice.findOne({ _id: id }).populate("customer shop");
+    res.status(200).json({ invoice });
   } catch (error) {
+    return next(new ErrorHandler(error.message, 500));
   }
 });
 
@@ -119,8 +145,7 @@ router.get("/get-next-invoice-number/:shopId", isSeller, async (req, res) => {
     }
 
     res.status(200).json({ nextInvoiceNumber });
-  } catch (error) {
-  }
+  } catch (error) {}
 });
 
 // Cập nhật thông tin hóa đơn

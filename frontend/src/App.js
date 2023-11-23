@@ -35,6 +35,9 @@ import {
   ShopSettingsPage,
   ShopWithDrawMoneyPage,
   ShopInboxPage,
+  ShopAllInvoices,
+  ShopAnalytic,
+  ShopInvoiceDetail,
 } from "./routes/ShopRoutes";
 import {
   AdminDashboardPage,
@@ -43,6 +46,8 @@ import {
   AdminDashboardOrders,
   AdminDashboardProducts,
   AdminDashboardWithdraw,
+  AdminDashboardInvoices,
+  AdminDashboardInvoiceDetail,
 } from "./routes/AdminRoutes";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -57,9 +62,6 @@ import axios from "axios";
 import { server } from "./server";
 import ShopCreatePurchaseInvoice from "./pages/Shop/ShopCreatePurchaseInvoice";
 import { getAllInvoices } from "./redux/actions/invoice";
-import ShopAllInvoices from "./pages/Shop/ShopAllInvoices";
-import ShopInvoiceDetail from "./pages/Shop/ShopInvoiceDetail";
-import ShopAnalytic from "./pages/Shop/ShopAnalytic.jsx";
 
 const App = () => {
   useEffect(() => {
@@ -314,6 +316,22 @@ const App = () => {
           element={
             <ProtectedAdminRoute>
               <AdminDashboardProducts />
+            </ProtectedAdminRoute>
+          }
+        />
+        <Route
+          path="/admin-invoices"
+          element={
+            <ProtectedAdminRoute>
+              <AdminDashboardInvoices />
+            </ProtectedAdminRoute>
+          }
+        />
+        <Route
+          path="/admin-invoice/:id"
+          element={
+            <ProtectedAdminRoute>
+              <AdminDashboardInvoiceDetail />
             </ProtectedAdminRoute>
           }
         />

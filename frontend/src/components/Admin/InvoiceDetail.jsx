@@ -2,8 +2,9 @@ import React, { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { useReactToPrint } from "react-to-print";
-import { getInvoiceDetail } from "../../redux/actions/invoice";
 import { getAllProducts } from "../../redux/actions/product";
+import { getAllSellers } from "../../redux/actions/sellers";
+import { getInvoiceDetail } from "../../redux/actions/invoice";
 import Loader from "../Layout/Loader";
 const InvoiceDetail = () => {
   const { id } = useParams();
@@ -16,6 +17,7 @@ const InvoiceDetail = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
+    dispatch(getAllSellers());
     dispatch(getInvoiceDetail(id));
     dispatch(getAllProducts());
   }, [dispatch]);

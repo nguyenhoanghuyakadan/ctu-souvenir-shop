@@ -6,8 +6,8 @@ import { CiMoneyBill, CiSettings } from "react-icons/ci";
 import { Link } from "react-router-dom";
 import { HiOutlineUserGroup } from "react-icons/hi";
 import { BsHandbag } from "react-icons/bs";
-import { MdOutlineLocalOffer } from "react-icons/md";
 import { AiOutlineSetting } from "react-icons/ai";
+import { FaFileInvoice } from "react-icons/fa6";
 
 const AdminSideBar = ({ active }) => {
   return (
@@ -74,6 +74,19 @@ const AdminSideBar = ({ active }) => {
             }`}
           >
             Sản phẩm
+          </h5>
+        </Link>
+      </div>
+
+      <div className="w-full flex items-center p-4 hover:bg-neutral-content">
+        <Link to="/admin-invoices" className="w-full flex items-center">
+          <FaFileInvoice size={30} />
+          <h5
+            className={`hidden 800px:block text-xl px-2 ${
+              active === 9 ? "text-info font-bold" : " "
+            }`}
+          >
+            Hóa đơn
           </h5>
         </Link>
       </div>

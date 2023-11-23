@@ -4,6 +4,8 @@ import AdminDashboardSellers from "../pages/AdminDashboardSellers";
 import AdminDashboardOrders from "../pages/AdminDashboardOrders";
 import AdminDashboardProducts from "../pages/AdminDashboardProducts";
 import AdminDashboardWithdraw from "../pages/AdminDashboardWithdraw";
+import AdminDashboardInvoices from "../pages/AdminDashboardInvoices";
+import AdminDashboardInvoiceDetail from "../pages/AdminDashboardInvoiceDetail";
 
 export {
   AdminDashboardPage,
@@ -11,5 +13,7 @@ export {
   AdminDashboardSellers,
   AdminDashboardOrders,
   AdminDashboardProducts,
-  AdminDashboardWithdraw
+  AdminDashboardWithdraw,
+  AdminDashboardInvoices,
+  AdminDashboardInvoiceDetail,
 };

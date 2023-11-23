@@ -11,6 +11,8 @@ import ShopSettingsPage from "../pages/Shop/ShopSettingsPage";
 import ShopWithDrawMoneyPage from "../pages/Shop/ShopWithDrawMoneyPage";
 import ShopInboxPage from "../pages/Shop/ShopInboxPage";
 import ShopAnalytic from "../pages/Shop/ShopAnalytic";
+import ShopAllInvoices from "../pages/Shop/ShopAllInvoices";
+import ShopInvoiceDetail from "../pages/Shop/ShopInvoiceDetail";
 
 export {
   ShopDashboardPage,
@@ -26,4 +28,6 @@ export {
   ShopWithDrawMoneyPage,
   ShopInboxPage,
   ShopAnalytic,
+  ShopAllInvoices,
+  ShopInvoiceDetail,
 };

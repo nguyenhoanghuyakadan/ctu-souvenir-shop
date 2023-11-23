@@ -29,6 +29,18 @@ export const invoiceReducer = createReducer(initialState, {
     state.isLoading = false;
   },
 
+  // Lấy danh sách phiếu nhập
+  getInvoiceDetailRequest: (state) => {
+    state.isLoading = true;
+  },
+  getInvoiceDetailSuccess: (state, action) => {
+    state.isLoading = false;
+    state.invoice = action.payload;
+  },
+  getInvoiceDetailFailed: (state, action) => {
+    state.isLoading = false;
+  },
+
   // Lấy danh sách phiếu nhập của shop
   getAllInvoicesShopRequest: (state) => {
     state.isLoading = true;
