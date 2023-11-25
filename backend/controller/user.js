@@ -111,7 +111,9 @@ router.post(
       const { email, password } = req.body;
 
       if (!email || !password) {
-        return next(new ErrorHandler("Vui lòng cung cấp tất cả thông tin!", 400));
+        return next(
+          new ErrorHandler("Vui lòng cung cấp tất cả thông tin!", 400)
+        );
       }
 
       const user = await User.findOne({ email }).select("+password");
@@ -327,9 +329,7 @@ router.put(
       }
 
       if (req.body.newPassword !== req.body.confirmPassword) {
-        return next(
-          new ErrorHandler("Mật khẩu không khớp với nhau!", 400)
-        );
+        return next(new ErrorHandler("Mật khẩu không khớp với nhau!", 400));
       }
       user.password = req.body.newPassword;
 

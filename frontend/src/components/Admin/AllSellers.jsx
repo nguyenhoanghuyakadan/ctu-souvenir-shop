@@ -93,7 +93,7 @@ const AllSellers = () => {
       },
     },
     {
-      field: " ",
+      field: "delete",
       flex: 0.75,
       headerName: "Xóa",
       headerAlign: "left",

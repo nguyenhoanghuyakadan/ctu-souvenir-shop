@@ -1,36 +1,20 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { universitiesData, categoriesData } from "../../../static/data";
-import styles from "../../../styles/styles";
+import { FaL, FaList } from "react-icons/fa6";
 
 const Categories = () => {
   const navigate = useNavigate();
   return (
-    <>
-      <div className={`${styles.section} hidden sm:block`}>
-        {/* <div
-          className={`branding my-4 flex justify-between w-full p-3 rounded-md`}
-        >
-          {universitiesData &&
-            universitiesData.map((i, index) => (
-              <div className="flex items-start" key={index}>
-                {i.icon}
-                <div className="px-3">
-                  <h3 className="font-bold text-sm md:text-base">{i.title}</h3>
-                  <p className="text-xs md:text-sm">{i.description}</p>
-                </div>
-              </div>
-            ))}
-        </div> */}
-        <div className={`${styles.heading}`}>
-          <h1>Danh mục sản phẩm</h1>
-        </div>
+    <div className="my-8 mx-24">
+      <div className="flex my-4">
+        <FaList size={36} />
+        <h1 className="text-3xl font-bold uppercase italic ml-2">
+          Danh mục sản phẩm
+        </h1>
       </div>
 
-      <div
-        className={`${styles.section} bg-white p-6 rounded-lg mb-12`}
-        id="categories"
-      >
+      <div id="categories">
         <div className="grid grid-cols-1 gap-[5px] md:grid-cols-2 md:gap-[10px] lg:grid-cols-4 lg:gap-[20px] xl:grid-cols-5 xl:gap-[30px]">
           {categoriesData &&
             categoriesData.map((i) => {
@@ -39,14 +23,14 @@ const Categories = () => {
               };
               return (
                 <div
-                  className="w-full h-[100px] flex items-center justify-between cursor-pointer overflow-hidden"
+                  className="w-full flex items-center justify-between cursor-pointer overflow-hidden shadow-lg p-2"
                   key={i.id}
                   onClick={() => handleSubmit(i)}
                 >
-                  <h5 className={`text-[18px] leading-[1.3]`}>{i.title}</h5>
+                  <h5 className="text-xl font-bold">{i.title}</h5>
                   <img
                     src={i.image_Url}
-                    className="w-[120px] object-cover"
+                    className="w-32 rounded object-cover"
                     alt=""
                   />
                 </div>
@@ -54,7 +38,7 @@ const Categories = () => {
             })}
         </div>
       </div>
-    </>
+    </div>
   );
 };
 

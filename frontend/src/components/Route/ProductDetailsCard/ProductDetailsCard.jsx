@@ -5,6 +5,13 @@ import {
   AiOutlineMessage,
   AiOutlineShoppingCart,
 } from "react-icons/ai";
+import {
+  FaCartShopping,
+  FaHeart,
+  FaStar,
+  FaArrowTrendUp,
+  FaRegMessage,
+} from "react-icons/fa6";
 import { RxCross1 } from "react-icons/rx";
 import { Link, useNavigate } from "react-router-dom";
 // import { backend_url } from "../../../server";
@@ -95,11 +102,13 @@ const ProductDetailsCard = ({ setOpen, data }) => {
     dispatch(addToWishlist(data));
   };
 
+  console.log(data);
+
   return (
-    <div className="bg-[#fff]">
+    <div className="bg-white rounded">
       {data ? (
         <div className="fixed w-full h-screen top-0 left-0 bg-[#00000030] z-40 flex items-center justify-center">
-          <div className="w-[90%] 800px:w-[60%] h-[90vh] overflow-y-scroll 800px:h-[75vh] bg-white rounded-md shadow-sm relative p-4">
+          <div className="w-4/5 800px:w-3/4 overflow-y-scroll bg-white rounded shadow relative p-4">
             <RxCross1
               size={30}
               className="absolute right-3 top-3 z-50"
@@ -107,105 +116,29 @@ const ProductDetailsCard = ({ setOpen, data }) => {
             />
 
             <div className="block w-full 800px:flex">
-              <div className="w-full 800px:w-[50%]">
+              <div className="w-full 800px:w-1/2">
                 <img
                   src={`${backend_url}${data.images && data.images[0]}`}
                   alt=""
+                  className="rounded "
                 />
-                {/* <div className="flex mt-3">
-                  <Link to={`/shop/preview/${data.shop._id}`} className="flex">
-                    <img
-                      src={`${backend_url}${data?.shop?.avatar}`}
-                      alt=""
-                      className="w-[50px] h-[50px] rounded-full mr-2"
-                    />
-                    <div>
-                      <h3 className={`${styles.shop_name} text-[18px] text-[#830000ea] font-medium`}>
-                        {data.shop.name}
-                      </h3>
-                      <h5 className="pb-3 text-[16px] font-normal">(4.5) Đánh giá</h5>
-                    </div>
-                  </Link>
-                </div> */}
-                <div class="flex flex-row justify-center mt-4">
-                  <div class="relative flex flex-row md:flex-row md:space-x-5 space-y-3 md:space-y-0 rounded-xl shadow-lg p-3 max-w-xs md:max-w-3xl mx-auto border border-white bg-[#ffeee8]">
-                    <div class="w-full md:w-1/3 bg-[#ffeee8] grid place-items-center">
-                      <img
-                        src={`${backend_url}${data?.shop?.avatar}`}
-                        alt=""
-                        class=" w-[90%] h-[90%] rounded-full object-cover"
-                      />
-                    </div>
-                    <div class="w-full md:w-2/3 bg-[#ffeee8] flex flex-col space-y-2 p-3">
-                      <div class="flex justify-between item-center">
-                        <p class="text-gray-500 font-medium hidden md:block">
-                          Đánh giá
-                        </p>
-                        <div class="flex items-center">
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            class="h-5 w-5 text-yellow-500"
-                            viewBox="0 0 20 20"
-                            fill="currentColor"
-                          >
-                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                          </svg>
-                          <p class="text-gray-600 font-bold text-sm ml-1">
-                            4.5
-                            <span class="text-gray-500 font-normal">
-                              {/* (76 reviews) */}
-                            </span>
-                          </p>
-                        </div>
-
-                        <div class="bg-gray-200 px-3 py-1 rounded-full text-xs font-medium text-gray-800 hidden md:block">
-                          Chất lượng
-                        </div>
-                      </div>
-                      <Link to={`/shop/preview/${data.shop._id}`}>
-                        <h3 class="font-black text-gray-800 md:text-2xl text-xl">
-                          {data.shop.name}
-                        </h3>
-                      </Link>
-
-                      {/* <div
-                          className={`${styles.button} bg-[#000] mt-4 rounded-[4px] h-11`}
-                          onClick={handleMessageSubmit}
-                        >
-                          <span className="text-[#fff] flex items-center">
-                            Gửi tin nhắn <AiOutlineMessage className="ml-1" />
-                          </span>
-                        </div> */}
-                    </div>
-                  </div>
-                </div>
-
-                <h5 className="text-[16px] text-[red] mt-5"></h5>
               </div>
 
-              <div className="w-full 800px:w-[50%] pt-5 pl-[5px] pr-[5px]">
-                <h1 className={`${styles.productTitle} text-[22px] px-5`}>
-                  {data.name}
-                </h1>
-
-                <div className="flex pt-3 px-5">
+              <div className="w-full 800px:w-1/2">
+                <h1 className="font-bold text-2xl m-4">{data.name}</h1>
+                <div className="flex m-4">
                   <div className="text-xl font-bold">
                     {currency.format(data.originalPrice, { code: "VND" })}
                   </div>
                 </div>
                 {
-                  /* <p className="py-2 text-[18px] leading-8 pb-10 px-5 whitespace-pre-line">
-                  {data.description.length > 200
-                    ? data.description.slice(0, 130) + "..." + <Link to={`/product/${data._id}`}> <p>Nhấn để xem thêm</p></Link>
-                    : data.description}
-                </p> */
-                  <p className="py-2 text-[18px] leading-8 pb-10 px-5 whitespace-pre-line">
+                  <p className="m-4 whitespace-pre-line">
                     {data.description.length > 200 ? (
                       <>
                         {data.description.slice(0, 130)} ...
                         <Link to={`/product/${data._id}`}>
                           {" "}
-                          <p className="text-[#0054c3f5]">Nhấn để xem thêm</p>
+                          <p className="italic">Nhấn để xem thêm</p>
                         </Link>
                       </>
                     ) : (
@@ -213,51 +146,101 @@ const ProductDetailsCard = ({ setOpen, data }) => {
                     )}
                   </p>
                 }
-                <div className="flex items-center mt-12 justify-between px-5 pr-3">
-                  <div>
+                <div className="flex flex-col w-32 rounded-lg relative bg-transparent m-4">
+                  <div className="flex">
                     <button
-                      className="bg-gradient-to-r from-teal-400 to-teal-500 text-white font-bold rounded-l px-4 py-2 shadow-lg hover:opacity-75 transition duration-300 ease-in-out"
+                      className="bg-error text-gray-600 hover:text-gray-700 hover:bg-gray-300 h-full w-20 rounded-l cursor-pointer outline-none"
                       onClick={decrementCount}
                     >
-                      -
+                      <span className="m-auto text-2xl font-bold">−</span>
                     </button>
-                    <span className="bg-gray-200 text-gray-800 font-medium px-4 py-[11px]">
-                      {count}
-                    </span>
+
+                    <input
+                      type="number"
+                      className="outline-none focus:outline-none text-center w-full bg-base-100 font-bold text-md hover:text-black focus:text-black  md:text-basecursor-default flex items-center text-gray-700  outline-none"
+                      value={count}
+                    />
+
                     <button
-                      className="bg-gradient-to-r from-teal-400 to-teal-500 text-white font-bold rounded-l px-4 py-2 shadow-lg hover:opacity-75 transition duration-300 ease-in-out"
+                      className="bg-success text-gray-600 hover:text-gray-700 hover:bg-gray-300 h-full w-20 rounded-r cursor-pointer"
                       onClick={incrementCount}
                     >
-                      +
+                      <span className="m-auto text-2xl font-bold">+</span>
                     </button>
                   </div>
-                  <div>
-                    {click ? (
-                      <AiFillHeart
-                        size={30}
-                        className="cursor-pointer"
-                        onClick={() => removeFromWishlistHandler(data)}
-                        color={click ? "red" : "#333"}
-                        title="Remove from wishlist"
-                      />
-                    ) : (
-                      <AiOutlineHeart
-                        size={30}
-                        className="cursor-pointer"
-                        onClick={() => addToWishlistHandler(data)}
-                        title="Add to wishlist"
-                      />
-                    )}
-                  </div>
                 </div>
-                <div className="px-4">
-                  <div
-                    className={`${styles.button} mt-6 rounded-[4px] h-11 flex items-center`}
+                <div className="m-4">
+                  {click ? (
+                    <>
+                      <button
+                        onClick={() => removeFromWishlistHandler(data)}
+                        className="btn btn-error font-bold flex text-white"
+                      >
+                        <FaHeart size={24} />
+                        Đã thích
+                      </button>
+                    </>
+                  ) : (
+                    <button
+                      onClick={() => addToWishlistHandler(data)}
+                      className="btn font-bold flex text-black"
+                    >
+                      <FaHeart size={24} />
+                      Thích
+                    </button>
+                  )}
+                </div>
+                <div className="m-4">
+                  <button
                     onClick={() => addToCartHandler(data._id)}
+                    className="btn btn-accent text-white font-bold flex"
                   >
-                    <span className="text-[#fff] flex items-center">
-                      Thêm vào giỏ <AiOutlineShoppingCart className="ml-1" />
-                    </span>
+                    <FaCartShopping size={24} />
+                    Thêm vào giỏ
+                  </button>
+                </div>
+
+                <div className="m-4">
+                  <button
+                    onClick={handleMessageSubmit}
+                    className="btn btn-info text-white font-bold flex"
+                  >
+                    <FaRegMessage size={24} />
+                    Gửi tin nhắn
+                  </button>
+                </div>
+
+                <div className="stats shadow m-4 w-full">
+                  <div className="stat">
+                    <div className="stat-figure text-primary">
+                      <FaStar size={24} color="yellow" />
+                    </div>
+                    <div className="stat-title">Đánh giá</div>
+                    <div className="stat-value text-primary">
+                      {data?.ratings}
+                    </div>
+                  </div>
+                  <div className="stat">
+                    <div className="stat-figure text-secondary">
+                      <FaArrowTrendUp size={24} color="red" />
+                    </div>
+                    <div className="stat-title">Đã bán</div>
+                    <div className="stat-value text-secondary">
+                      {data?.sold_out}
+                    </div>
+                    <div className="stat-desc">Còn lại {data?.stock}</div>
+                  </div>
+                  <div className="stat">
+                    <Link to={`/shop/preview/${data.shop._id}`}>
+                      <div className="stat-title">Xem chi tiết</div>
+                      <div className="stat-figure text-secondary">
+                        <div className="avatar">
+                          <div className="w-16 rounded-full">
+                            <img src={`${backend_url}${data?.shop?.avatar}`} />
+                          </div>
+                        </div>
+                      </div>
+                    </Link>
                   </div>
                 </div>
               </div>

@@ -6,6 +6,8 @@ import AdminDashboardProducts from "../pages/AdminDashboardProducts";
 import AdminDashboardWithdraw from "../pages/AdminDashboardWithdraw";
 import AdminDashboardInvoices from "../pages/AdminDashboardInvoices";
 import AdminDashboardInvoiceDetail from "../pages/AdminDashboardInvoiceDetail";
+import AdminDashboardBanners from "../pages/AdminDashboardBanners";
+import AdminDashboardSuppliers from "../pages/AdminDashboardSuppliers";
 
 export {
   AdminDashboardPage,
@@ -16,4 +18,6 @@ export {
   AdminDashboardWithdraw,
   AdminDashboardInvoices,
   AdminDashboardInvoiceDetail,
+  AdminDashboardBanners,
+  AdminDashboardSuppliers,
 };

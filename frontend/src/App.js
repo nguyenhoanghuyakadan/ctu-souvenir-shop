@@ -38,6 +38,7 @@ import {
   ShopAllInvoices,
   ShopAnalytic,
   ShopInvoiceDetail,
+  ShopCreatePurchaseInvoice,
 } from "./routes/ShopRoutes";
 import {
   AdminDashboardPage,
@@ -48,6 +49,8 @@ import {
   AdminDashboardWithdraw,
   AdminDashboardInvoices,
   AdminDashboardInvoiceDetail,
+  AdminDashboardBanners,
+  AdminDashboardSuppliers,
 } from "./routes/AdminRoutes";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -58,16 +61,16 @@ import ProtectedAdminRoute from "./routes/ProtectedAdminRoute";
 import { ShopHomePage } from "./ShopRoutes.js";
 import SellerProtectedRoute from "./routes/SellerProtectedRoute";
 import { getAllProducts } from "./redux/actions/product";
-import axios from "axios";
-import { server } from "./server";
-import ShopCreatePurchaseInvoice from "./pages/Shop/ShopCreatePurchaseInvoice";
-import { getAllInvoices } from "./redux/actions/invoice";
+import { getAllBanners } from "./redux/actions/banner.js";
+import { getAllSuppliers } from "./redux/actions/supplier.js";
 
 const App = () => {
   useEffect(() => {
     Store.dispatch(loadUser());
     Store.dispatch(loadSeller());
     Store.dispatch(getAllProducts());
+    Store.dispatch(getAllBanners());
+    Store.dispatch(getAllSuppliers());
   }, []);
 
   return (
@@ -332,6 +335,22 @@ const App = () => {
           element={
             <ProtectedAdminRoute>
               <AdminDashboardInvoiceDetail />
+            </ProtectedAdminRoute>
+          }
+        />
+        <Route
+          path="/admin-banners"
+          element={
+            <ProtectedAdminRoute>
+              <AdminDashboardBanners />
+            </ProtectedAdminRoute>
+          }
+        />
+        <Route
+          path="/admin-suppliers"
+          element={
+            <ProtectedAdminRoute>
+              <AdminDashboardSuppliers />
             </ProtectedAdminRoute>
           }
         />

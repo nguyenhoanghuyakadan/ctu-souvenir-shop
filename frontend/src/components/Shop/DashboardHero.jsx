@@ -27,13 +27,12 @@ const DashboardHero = () => {
   const availableBalance = seller?.availableBalance.toFixed(2);
 
   const columns = [
-    { field: "id", headerName: "Order ID", minWidth: 150, flex: 0.7 },
+    { field: "id", headerName: "ID Đơn hàng", minWidth: 150, flex: 1 },
 
     {
       field: "status",
       headerName: "Trạng thái",
-      minWidth: 130,
-      flex: 0.7,
+      flex: 1,
       cellClassName: (params) => {
         return params.getValue(params.id, "status") === "Delivered"
           ? "greenColor"
@@ -44,37 +43,40 @@ const DashboardHero = () => {
       field: "itemsQty",
       headerName: "Số lượng",
       type: "number",
-      minWidth: 130,
-      flex: 0.7,
+      headerAlign: "left",
+      align: "left",
+      flex: 1,
     },
 
     {
       field: "total",
       headerName: "Tổng cộng",
       type: "number",
-      minWidth: 130,
-      flex: 0.8,
+      headerAlign: "left",
+      align: "left",
+      flex: 1,
     },
 
-    // {
-    //   field: " ",
-    //   flex: 1,
-    //   minWidth: 150,
-    //   headerName: "",
-    //   type: "number",
-    //   sortable: false,
-    //   renderCell: (params) => {
-    //     return (
-    //       <>
-    //         <Link to={`/dashboard/order/${params.id}`}>
-    //           <Button>
-    //             <AiOutlineArrowRight size={20} />
-    //           </Button>
-    //         </Link>
-    //       </>
-    //     );
-    //   },
-    // },
+    {
+      field: "detail",
+      flex: 1,
+      headerName: "Chi tiết",
+      type: "number",
+      headerAlign: "left",
+      align: "left",
+      sortable: false,
+      renderCell: (params) => {
+        return (
+          <>
+            <Link to={`/dashboard/order/${params.id}`}>
+              <Button>
+                <AiOutlineArrowRight size={20} />
+              </Button>
+            </Link>
+          </>
+        );
+      },
+    },
   ];
 
   const row = [];

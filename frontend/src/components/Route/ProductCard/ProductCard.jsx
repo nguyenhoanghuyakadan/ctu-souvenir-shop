@@ -63,80 +63,77 @@ const ProductCard = ({ data }) => {
   };
 
   return (
-    <>
-      <div className="w-full h-[370px] bg-white rounded-lg shadow-sm p-3 relative cursor-pointer">
-        <div className="flex justify-end"></div>
-        <Link to={`/product/${data._id}`}>
-          <img
-            src={`${backend_url}${data.images && data.images[0]}`}
-            alt=""
-            className="w-[auto] block mr-[auto] ml-[auto] h-[155px] object-contain rounded-[4px]"
-          />
-        </Link>
-        <Link to={`/shop/preview/${data?.shop._id}`}>
-          <h5 className={`${styles.shop_name}`}>
-            {" "}
-            {data.shop.name.length > 20
-              ? data.shop.name.slice(0, 15) + "..."
-              : data.shop.name}
-          </h5>
-        </Link>
-        <Link to={`/product/${data._id}`}>
-          <h4 className="pb-3 font-[500]">
-            {data.name.length > 35 ? data.name.slice(0, 27) + "..." : data.name}
-          </h4>
+    <div className="w-full h-96 bg-white rounded shadow-lg relative cursor-pointer p-4">
+      <Link to={`/product/${data._id}`}>
+        <img
+          src={`${backend_url}${data.images && data.images[0]}`}
+          alt=""
+          className="w-auto block mx-auto h-40 object-contain rounded"
+        />
+      </Link>
+      <Link to={`/shop/preview/${data?.shop._id}`}>
+        <h5 className="text-sm italic my-2">
+          {" "}
+          {data.shop.name.length > 20
+            ? data.shop.name.slice(0, 15) + "..."
+            : data.shop.name}
+        </h5>
+      </Link>
+      <Link to={`/product/${data._id}`}>
+        <h4 className="font-bold mb-2">
+          {data.name.length > 35 ? data.name.slice(0, 27) + "..." : data.name}
+        </h4>
 
-          <div className="flex">
-            <Ratings rating={data?.ratings} />
-          </div>
-
-          <div className="py-2 flex items-center justify-between">
-            <div className="text-xl font-bold">
-              {currency.format(data.originalPrice, { code: "VND" })}
-            </div>
-            <span className="font-bold text-success">
-              {data?.sold_out} đã bán
-            </span>
-          </div>
-        </Link>
-
-        {/* side options */}
-        <div>
-          {click ? (
-            <AiFillHeart
-              size={22}
-              className="cursor-pointer absolute right-2 top-5"
-              onClick={() => removeFromWishlistHandler(data)}
-              color={click ? "red" : "#333"}
-              title="Xóa khỏi giỏ hàng yêu thích"
-            />
-          ) : (
-            <AiOutlineHeart
-              size={22}
-              className="cursor-pointer absolute right-2 top-5"
-              onClick={() => addToWishlistHandler(data)}
-              color={click ? "red" : "#333"}
-              title="Thêm vào giỏ hàng yêu thích"
-            />
-          )}
-          <AiOutlineEye
-            size={22}
-            className="cursor-pointer absolute right-2 top-14"
-            onClick={() => setOpen(!open)}
-            color="#333"
-            title="Xem nhanh"
-          />
-          <AiOutlineShoppingCart
-            size={25}
-            className="cursor-pointer absolute right-2 top-24"
-            onClick={() => addToCartHandler(data._id)}
-            color="#444"
-            title="Thêm vào giỏ hàng"
-          />
-          {open ? <ProductDetailsCard setOpen={setOpen} data={data} /> : null}
+        <div className="flex">
+          <Ratings rating={data?.ratings} />
         </div>
+
+        <div className="py-2 flex items-center justify-between">
+          <div className="text-xl font-bold">
+            {currency.format(data.originalPrice, { code: "VND" })}
+          </div>
+          <span className="font-bold text-success">
+            Đã bán {data?.sold_out}
+          </span>
+        </div>
+      </Link>
+
+      {/* side options */}
+      <div>
+        {click ? (
+          <AiFillHeart
+            size={24}
+            className="cursor-pointer absolute right-2 top-5"
+            onClick={() => removeFromWishlistHandler(data)}
+            color={click ? "red" : "#333"}
+            title="Xóa khỏi giỏ hàng yêu thích"
+          />
+        ) : (
+          <AiOutlineHeart
+            size={24}
+            className="cursor-pointer absolute right-2 top-5"
+            onClick={() => addToWishlistHandler(data)}
+            color={click ? "red" : "#333"}
+            title="Thêm vào giỏ hàng yêu thích"
+          />
+        )}
+        <AiOutlineEye
+          size={24}
+          className="cursor-pointer absolute right-2 top-14"
+          onClick={() => setOpen(!open)}
+          color="#333"
+          title="Xem nhanh"
+        />
+        <AiOutlineShoppingCart
+          size={24}
+          className="cursor-pointer absolute right-2 top-24"
+          onClick={() => addToCartHandler(data._id)}
+          color="#444"
+          title="Thêm vào giỏ hàng"
+        />
+        {open ? <ProductDetailsCard setOpen={setOpen} data={data} /> : null}
       </div>
-    </>
+    </div>
   );
 };
 

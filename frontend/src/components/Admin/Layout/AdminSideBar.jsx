@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 import { HiOutlineUserGroup } from "react-icons/hi";
 import { BsHandbag } from "react-icons/bs";
 import { AiOutlineSetting } from "react-icons/ai";
-import { FaFileInvoice } from "react-icons/fa6";
+import { FaFileInvoice, FaPhotoFilm, FaSteam } from "react-icons/fa6";
 
 const AdminSideBar = ({ active }) => {
   return (
@@ -100,6 +100,32 @@ const AdminSideBar = ({ active }) => {
             }`}
           >
             Yêu cầu rút tiền
+          </h5>
+        </Link>
+      </div>
+
+      <div className="w-full flex items-center p-4 hover:bg-neutral-content">
+        <Link to="/admin-suppliers" className="w-full flex items-center">
+          <FaSteam size={30} />
+          <h5
+            className={`hidden 800px:block text-xl px-2 ${
+              active === 11 ? "text-info font-bold" : " "
+            }`}
+          >
+            Nhà cung cấp
+          </h5>
+        </Link>
+      </div>
+
+      <div className="w-full flex items-center p-4 hover:bg-neutral-content">
+        <Link to="/admin-banners" className="w-full flex items-center">
+          <FaPhotoFilm size={30} />
+          <h5
+            className={`hidden 800px:block text-xl px-2 ${
+              active === 10 ? "text-info font-bold" : " "
+            }`}
+          >
+            Banner
           </h5>
         </Link>
       </div>

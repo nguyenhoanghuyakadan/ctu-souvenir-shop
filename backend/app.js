@@ -41,6 +41,8 @@ const message = require("./controller/message");
 const withdraw = require("./controller/withdraw");
 const invoice = require("./controller/invoice");
 const analytic = require("./controller/analytic");
+const banner = require("./controller/banner");
+const supplier = require("./controller/supplier");
 
 app.use("/api/v2/user", user);
 app.use("/api/v2/conversation", conversation);
@@ -53,6 +55,8 @@ app.use("/api/v2/payment", payment);
 app.use("/api/v2/withdraw", withdraw);
 app.use("/api/v2/invoice", invoice);
 app.use("/api/v2/analytic", analytic);
+app.use("/api/v2/banner", banner);
+app.use("/api/v2/supplier", supplier);
 
 // it's for ErrorHandling
 app.use(ErrorHandler);
