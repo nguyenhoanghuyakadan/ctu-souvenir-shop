@@ -128,7 +128,7 @@ const CreatePurchaseInvoice = () => {
   };
 
   return (
-    <div className="container">
+    <div className="container mx-4">
       <div className="my-4 text-xl font-bold uppercase">Thêm phiếu nhập</div>
       <div className="mb-4">
         <label className="text-lg">Ngày nhập:</label>

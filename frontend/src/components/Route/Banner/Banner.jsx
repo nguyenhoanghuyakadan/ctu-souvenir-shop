@@ -2,10 +2,10 @@ import React from "react";
 import Slider from "react-slick";
 import { useSelector } from "react-redux";
 import { backend_url } from "../../../server";
+import { Link } from "react-router-dom";
 
 const Banner = () => {
-  const { isLoading, allBanners } = useSelector((state) => state.banners);
-  console.log(allBanners);
+  const { allBanners } = useSelector((state) => state.banners);
   const settings = {
     dots: true,
     infinite: true,
@@ -16,19 +16,22 @@ const Banner = () => {
     autoplaySpeed: 2000,
     cssEase: "linear",
   };
+
+  const activeBanners = allBanners?.filter((banner) => banner.isActive);
+
   return (
-    <div className="mx-24">
+    <div className="mx-24 my-4">
       <Slider {...settings}>
-        {allBanners?.map((i) => (
-          <div className="rounded">
-            <div>
+        {activeBanners?.map((i) => (
+          <Link to={i.link} key={i.id}>
+            <div className="rounded">
               <img
                 src={`${backend_url}${i.image}`}
                 alt={i.name}
-                className="max-w-full	max-h-full object-cover rounded"
+                className="max-w-full max-h-full object-contain rounded"
               />
             </div>
-          </div>
+          </Link>
         ))}
       </Slider>
     </div>

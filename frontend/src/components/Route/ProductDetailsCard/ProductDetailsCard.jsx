@@ -11,6 +11,7 @@ import {
   FaStar,
   FaArrowTrendUp,
   FaRegMessage,
+  FaX,
 } from "react-icons/fa6";
 import { RxCross1 } from "react-icons/rx";
 import { Link, useNavigate } from "react-router-dom";
@@ -108,14 +109,14 @@ const ProductDetailsCard = ({ setOpen, data }) => {
     <div className="bg-white rounded">
       {data ? (
         <div className="fixed w-full h-screen top-0 left-0 bg-[#00000030] z-40 flex items-center justify-center">
-          <div className="w-4/5 800px:w-3/4 overflow-y-scroll bg-white rounded shadow relative p-4">
-            <RxCross1
-              size={30}
-              className="absolute right-3 top-3 z-50"
+          <div className="h-4/5 w-4/5 800px:w-3/4 overflow-y-scroll bg-white rounded shadow p-4 relative">
+            <FaX
+              size={24}
+              className="top-0 right-0 absolute 800px:top-2 800px:right-2 z-50"
               onClick={() => setOpen(false)}
             />
 
-            <div className="block w-full 800px:flex">
+            <div className="block mt-2 w-full 800px:flex 800px:m-0">
               <div className="w-full 800px:w-1/2">
                 <img
                   src={`${backend_url}${data.images && data.images[0]}`}
@@ -128,7 +129,7 @@ const ProductDetailsCard = ({ setOpen, data }) => {
                 <h1 className="font-bold text-2xl m-4">{data.name}</h1>
                 <div className="flex m-4">
                   <div className="text-xl font-bold">
-                    {currency.format(data.originalPrice, { code: "VND" })}
+                    {currency.format(data.price, { code: "VND" })}
                   </div>
                 </div>
                 {

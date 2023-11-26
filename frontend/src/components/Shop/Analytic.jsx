@@ -202,7 +202,7 @@ const Analytic = () => {
   };
 
   return (
-    <div className="bg-white w-full">
+    <div className="bg-white mx-4 w-full">
       <div className="flex w-full">
         <button
           className="btn btn-outline btn-info w-1/2 m-2 text-white font-bold "

@@ -8,6 +8,7 @@ import AdminDashboardInvoices from "../pages/AdminDashboardInvoices";
 import AdminDashboardInvoiceDetail from "../pages/AdminDashboardInvoiceDetail";
 import AdminDashboardBanners from "../pages/AdminDashboardBanners";
 import AdminDashboardSuppliers from "../pages/AdminDashboardSuppliers";
+import AdminDashboardCategories from "../pages/AdminDashboardCategories";
 
 export {
   AdminDashboardPage,
@@ -20,4 +21,5 @@ export {
   AdminDashboardInvoiceDetail,
   AdminDashboardBanners,
   AdminDashboardSuppliers,
+  AdminDashboardCategories,
 };

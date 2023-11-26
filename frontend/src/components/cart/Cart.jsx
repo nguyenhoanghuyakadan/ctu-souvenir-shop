@@ -9,6 +9,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { addTocart, removeFromCart } from "../../redux/actions/cart";
 import { toast } from "react-toastify";
 import currency from "currency-formatter";
+import {
+  FaBagShopping,
+  FaCircleArrowDown,
+  FaCircleArrowUp,
+  FaX,
+} from "react-icons/fa6";
 
 const Cart = ({ setOpenCart }) => {
   const { cart } = useSelector((state) => state.cart);
@@ -19,7 +25,7 @@ const Cart = ({ setOpenCart }) => {
   };
 
   const totalPrice = cart.reduce(
-    (acc, item) => acc + item.qty * item.originalPrice,
+    (acc, item) => acc + item.qty * item.price,
     0
   );
 
@@ -33,28 +39,30 @@ const Cart = ({ setOpenCart }) => {
         {cart && cart.length === 0 ? (
           <div className="w-full h-screen flex items-center justify-center">
             <div className="flex w-full justify-end pt-5 pr-5 fixed top-3 right-3">
-               <RxCross1 
-                size={25}
+              <FaX
+                size={24}
                 className="cursor-pointer"
                 onClick={() => setOpenCart(false)}
-                />
+              />
             </div>
             <h5>Giỏ hàng trống !</h5>
           </div>
         ) : (
           <>
             <div>
-              <div className="flex w-full justify-end pt-5 pr-5">
-                <RxCross1
-                  size={25}
+              <div className="flex w-full justify-end p-2">
+                <FaX
+                  size={24}
                   className="cursor-pointer"
                   onClick={() => setOpenCart(false)}
                 />
               </div>
               {/* Item length */}
-              <div className={`${styles.noramlFlex} p-4`}>
-                <IoBagHandleOutline size={25} />
-                <h5 className="pl-2 text-[20px] font-[500]">{cart && cart.length} Sản phẩm </h5>
+              <div className="flex mx-4">
+                <FaBagShopping size={24} />
+                <h5 className="font-bold ml-2">
+                  {cart && cart.length} Sản phẩm
+                </h5>
               </div>
 
               {/* cart Single Items */}
@@ -72,16 +80,12 @@ const Cart = ({ setOpenCart }) => {
               </div>
             </div>
 
-            <div className="px-5 mb-3">
+            <div className="m-4">
               {/* checkout buttons */}
               <Link to="/checkout">
-                <div
-                  className={`h-[45px] flex items-center justify-center w-[100%] bg-[#e44343] rounded-[5px]`}
-                >
-                  <h1 className="text-[#fff] text-[18px] font-[600]">
-                    Mua({`${currency.format(totalPrice, { code: "VND" })}`})
-                  </h1>
-                </div>
+                <button className="btn btn-accent font-bold text-white w-full">
+                  Mua({`${currency.format(totalPrice, { code: "VND" })}`})
+                </button>
               </Link>
             </div>
           </>
@@ -93,7 +97,7 @@ const Cart = ({ setOpenCart }) => {
 
 const CartSingle = ({ data, quantityChangeHandler, removeFromCartHandler }) => {
   const [value, setValue] = useState(data.qty);
-  const totalPrice = data.originalPrice * value;
+  const totalPrice = data.price * value;
 
   const increment = (data) => {
     if (data.stock < value) {
@@ -113,40 +117,41 @@ const CartSingle = ({ data, quantityChangeHandler, removeFromCartHandler }) => {
 
   return (
     <div className="border-b p-4">
-      <div className="w-full flex items-center">
-        <div>
-          <div
-            className={`bg-[#e44343] border border-[#e4434373] rounded-full w-[25px] h-[25px] ${styles.noramlFlex} justify-center cursor-pointer`}
-            onClick={() => increment(data)}
-          >
-            <HiPlus size={18} color="#fff" />
+      <div className="w-full flex items-center justify-between">
+        <div className="flex items-center">
+          <div>
+            <FaCircleArrowUp
+              size={24}
+              color="#50e991"
+              onClick={() => increment(data)}
+            />
+            <span className="pl-[10px]">{data.qty}</span>
+            <FaCircleArrowDown
+              size={24}
+              color="#e60049"
+              onClick={() => decrement(data)}
+            />
           </div>
-          <span className="pl-[10px]">{data.qty}</span>
-          <div
-            className="bg-[#a7abb14f] rounded-full w-[25px] h-[25px] flex items-center justify-center cursor-pointer"
-            onClick={() => decrement(data)}
-          >
-            <HiOutlineMinus size={16} color="#7d879c" />
+          <img
+            src={`${backend_url}${data?.images[0]}`}
+            alt=""
+            className="w-[130px] h-min ml-2 mr-2 rounded-[5px]"
+          />
+          <div className="pl-[5px]">
+            <h1>{data.name}</h1>
+            <h4 className="font-[400] text-[15px] text-[#00000082]">
+              {`${currency.format(data.price, { code: "VND" })}`} *{" "}
+              {value}
+            </h4>
+            <h4 className="font-[600] text-[17px] pt-[3px] text-[#d02222] font-Roboto">
+              {/* US${totalPrice} */}
+              {`${currency.format(totalPrice, { code: "VND" })}`}
+            </h4>
           </div>
         </div>
-        <img
-          src={`${backend_url}${data?.images[0]}`}
-          alt=""
-          className="w-[130px] h-min ml-2 mr-2 rounded-[5px]"
-        />
-        <div className="pl-[5px]">
-          <h1>{data.name}</h1>
-          <h4 className="font-[400] text-[15px] text-[#00000082]">
-            {`${currency.format(data.originalPrice, { code: "VND" })}`} * {value}
-          </h4>
-          <h4 className="font-[600] text-[17px] pt-[3px] text-[#d02222] font-Roboto">
-            {/* US${totalPrice} */}
-            {`${currency.format(totalPrice, { code: "VND" })}`}
-          </h4>
-        </div>
-        <RxCross1 size={36} 
-        color="#fff"
-          className="cursor-pointer bg-[#d80a0a] border border-[#e4434373] rounded-[50%]"
+        <FaX
+          size={24}
+          color="#e60049"
           onClick={() => removeFromCartHandler(data)}
         />
       </div>

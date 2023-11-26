@@ -158,7 +158,7 @@ const ProductDetails = ({ data }) => {
                   Đã bán {data?.sold_out} sản phẩm
                 </span>
                 <div className="text-xl font-bold">
-                  {currency.format(data.originalPrice, { code: "VND" })}
+                  {currency.format(data.price, { code: "VND" })}
                 </div>
 
                 <div className="flex flex-row h-10 w-32 rounded-lg relative bg-transparent my-4">

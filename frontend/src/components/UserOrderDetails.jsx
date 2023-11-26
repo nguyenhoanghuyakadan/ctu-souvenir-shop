@@ -51,7 +51,7 @@ const UserOrderDetails = () => {
   const data = orders && orders.find((item) => item._id === id);
   const totalPriceWithoutShippingFee =
     data && data.cart
-      ? data.cart.reduce((sum, item) => sum + item.originalPrice * item.qty, 0)
+      ? data.cart.reduce((sum, item) => sum + item.price * item.qty, 0)
       : 0;
   const reviewHandler = async (e) => {
     await axios
@@ -130,7 +130,7 @@ const UserOrderDetails = () => {
               <div className="w-full mx-2">
                 <h5 className="font-bold text-xl">{item.name}</h5>
                 <h5 className="text-xl">
-                  {currency.format(item.originalPrice, { code: "VND" })} x{" "}
+                  {currency.format(item.price, { code: "VND" })} x{" "}
                   {item.qty}
                 </h5>
               </div>
@@ -169,7 +169,7 @@ const UserOrderDetails = () => {
               <div className="w-full mx-2">
                 <div className="font-bold text-xl">{selectedItem?.name}</div>
                 <h4 className="text-xl">
-                  {currency.format(selectedItem?.originalPrice, {
+                  {currency.format(selectedItem?.price, {
                     code: "VND",
                   })}{" "}
                   x {selectedItem?.qty}

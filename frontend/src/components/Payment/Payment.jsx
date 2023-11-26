@@ -267,7 +267,7 @@ const CartData = ({ orderData }) => {
         </h3>
         <h5 className="text-[18px] font-[600]">
           -{" "}
-          {currency.format(orderData.originalPrice, {
+          {currency.format(orderData.price, {
             code: "VND",
           })}
         </h5>

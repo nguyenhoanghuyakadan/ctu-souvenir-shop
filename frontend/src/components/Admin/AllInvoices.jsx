@@ -70,8 +70,8 @@ const AllInvoices = () => {
       {isLoading ? (
         <Loader />
       ) : (
-        <div className="w-full bg-white mx-2">
-          <div className="text-xl font-bold uppercase my-4">Tất cả hóa đơn</div>
+        <div className="w-full bg-white m-4">
+          <div className="text-xl font-bold uppercase">Tất cả hóa đơn</div>
           <select
             value={selectedShop}
             onChange={handleChange}

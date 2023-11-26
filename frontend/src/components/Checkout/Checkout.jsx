@@ -22,7 +22,7 @@ const Checkout = () => {
   const [zipCode, setZipCode] = useState(null);
   const [couponCode, setCouponCode] = useState("");
   const [couponCodeData, setCouponCodeData] = useState(null);
-  const [originalPrice, setOriginalPrice] = useState(null);
+  const [price, setOriginalPrice] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -47,7 +47,7 @@ const Checkout = () => {
         totalPrice,
         subTotalPrice,
         shipping,
-        originalPrice,
+        price,
         shippingAddress,
         user,
       };
@@ -59,7 +59,7 @@ const Checkout = () => {
   };
 
   const subTotalPrice = cart.reduce(
-    (acc, item) => acc + item.qty * item.originalPrice,
+    (acc, item) => acc + item.qty * item.price,
     0
   );
 
@@ -82,11 +82,11 @@ const Checkout = () => {
           setCouponCode("");
         } else {
           const eligiblePrice = isCouponValid.reduce(
-            (acc, item) => acc + item.qty * item.originalPrice,
+            (acc, item) => acc + item.qty * item.price,
             0
           );
-          const originalPrice = (eligiblePrice * couponCodeValue) / 100;
-          setOriginalPrice(originalPrice);
+          const price = (eligiblePrice * couponCodeValue) / 100;
+          setOriginalPrice(price);
           setCouponCodeData(res.data.couponCode);
           setCouponCode("");
         }
@@ -98,7 +98,7 @@ const Checkout = () => {
     });
   };
 
-  const discountPercentenge = couponCodeData ? originalPrice : "";
+  const discountPercentenge = couponCodeData ? price : "";
 
   const totalPrice = couponCodeData
     ? (subTotalPrice + shipping - discountPercentenge).toFixed(2)

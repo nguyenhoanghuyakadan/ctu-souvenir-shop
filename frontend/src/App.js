@@ -51,6 +51,7 @@ import {
   AdminDashboardInvoiceDetail,
   AdminDashboardBanners,
   AdminDashboardSuppliers,
+  AdminDashboardCategories,
 } from "./routes/AdminRoutes";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -63,6 +64,7 @@ import SellerProtectedRoute from "./routes/SellerProtectedRoute";
 import { getAllProducts } from "./redux/actions/product";
 import { getAllBanners } from "./redux/actions/banner.js";
 import { getAllSuppliers } from "./redux/actions/supplier.js";
+import { getAllCategories } from "./redux/actions/category.js";
 
 const App = () => {
   useEffect(() => {
@@ -71,6 +73,7 @@ const App = () => {
     Store.dispatch(getAllProducts());
     Store.dispatch(getAllBanners());
     Store.dispatch(getAllSuppliers());
+    Store.dispatch(getAllCategories());
   }, []);
 
   return (
@@ -335,6 +338,14 @@ const App = () => {
           element={
             <ProtectedAdminRoute>
               <AdminDashboardInvoiceDetail />
+            </ProtectedAdminRoute>
+          }
+        />
+        <Route
+          path="/admin-categories"
+          element={
+            <ProtectedAdminRoute>
+              <AdminDashboardCategories />
             </ProtectedAdminRoute>
           }
         />

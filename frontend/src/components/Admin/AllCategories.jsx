@@ -1,26 +1,18 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import { Button } from "@material-ui/core";
 import { DataGrid } from "@material-ui/data-grid";
-import {
-  createSupplier,
-  getAllSuppliers,
-  deleteSupplier,
-} from "../../redux/actions/supplier";
-import { FaTrash, FaModx } from "react-icons/fa6";
+import { createCategory, deleteCategory } from "../../redux/actions/category";
+import { FaTrash } from "react-icons/fa6";
 import { backend_url } from "../../server";
 
-const AllBanners = () => {
+const AllCategories = () => {
   const [name, setName] = useState("");
   const [image, setImage] = useState(null);
-  const [address, setAddress] = useState("");
   const [preview, setPreview] = useState(null);
-  const [phoneNumber, setPhoneNumber] = useState(null);
-  const [email, setEmail] = useState("");
 
-  const { isLoading, allSuppliers } = useSelector((state) => state.suppliers);
+  const { isLoading, allCategories } = useSelector((state) => state.categories);
 
   const dispatch = useDispatch();
 
@@ -32,10 +24,10 @@ const AllBanners = () => {
 
   const handleDelete = (id) => {
     try {
-      dispatch(deleteSupplier(id));
-      toast.success("Xóa nhà cung cấp thành công!");
+      dispatch(deleteCategory(id));
+      toast.success("Xóa danh mục thành công!");
     } catch (error) {
-      toast.error("Xóa nhà cung cấp thất bại!");
+      toast.error("Xóa danh mục thất bại!");
     } finally {
       setTimeout(() => {
         window.location.reload();
@@ -45,32 +37,28 @@ const AllBanners = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (name && image && address && phoneNumber && email) {
+    if (name && image) {
       const formData = new FormData();
       formData.append("name", name);
       formData.append("file", image);
-      formData.append("address", address);
-      formData.append("phoneNumber", phoneNumber);
-      formData.append("email", email);
-      console.log(formData)
-      dispatch(createSupplier(formData));
+      console.log(formData.get("name"));
+      dispatch(createCategory(formData));
       setName("");
       setImage(null);
       setPreview(null);
-      setAddress("");
-      setPhoneNumber("");
-      setEmail("");
-      toast.success("Nhà cung cấp đã được thêm thành công!");
+      toast.success("Danh mục đã được thêm thành công!");
     } else {
-      toast.error("Thêm nhà cung cấp thất bại!");
+      toast.error("Thêm danh mục thất bại!");
     }
   };
 
+  console.log(allCategories);
+
   const columns = [
-    { field: "id", headerName: "ID Nhà cung cấp", flex: 1, hide: true },
+    { field: "id", headerName: "ID Danh mục", flex: 1, hide: true },
     {
       field: "name",
-      headerName: "Tên nhà cung cấp",
+      headerName: "Tên danh mục",
       flex: 1,
     },
     {
@@ -85,28 +73,6 @@ const AllBanners = () => {
           />
         );
       },
-    },
-    {
-      field: "address",
-      headerName: "Địa chỉ",
-      headerAlign: "left",
-      align: "left",
-      flex: 1,
-    },
-
-    {
-      field: "phoneNumber",
-      headerName: "Số điện thoại",
-      headerAlign: "left",
-      align: "left",
-      flex: 1,
-    },
-    {
-      field: "email",
-      headerName: "Email",
-      headerAlign: "left",
-      align: "left",
-      flex: 1,
     },
     {
       field: "delete",
@@ -129,19 +95,14 @@ const AllBanners = () => {
   ];
 
   const row = [];
-  allSuppliers &&
-    allSuppliers.forEach((item) => {
+  allCategories &&
+    allCategories.forEach((item) => {
       row.push({
         id: item._id,
         name: item.name,
         image: item.image,
-        address: item.address,
-        phoneNumber: item.phoneNumber,
-        email: item.email,
       });
     });
-
-  console.log(allSuppliers);
 
   return (
     <div className="w-full m-4">
@@ -150,7 +111,7 @@ const AllBanners = () => {
           <div className="flex mb-6">
             <div className="w-full">
               <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
-                Tên nhà cung cấp
+                Tên danh mục
               </label>
               <input
                 className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
@@ -172,45 +133,6 @@ const AllBanners = () => {
                   setImage(e.target.files[0]); // Set image state
                   handlePreview(e);
                 }}
-              />
-            </div>
-          </div>
-
-          <div className="flex mb-6">
-            <div className="w-full">
-              <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
-                Địa chỉ
-              </label>
-              <input
-                className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                value={address}
-                onChange={(e) => setAddress(e.target.value)}
-              />
-            </div>
-          </div>
-
-          <div className="flex mb-6">
-            <div className="w-full">
-              <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
-                Số điện thoại
-              </label>
-              <input
-                className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                value={phoneNumber}
-                onChange={(e) => setPhoneNumber(e.target.value)}
-              />
-            </div>
-          </div>
-
-          <div className="flex mb-6">
-            <div className="w-full">
-              <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
-                Email
-              </label>
-              <input
-                className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
               />
             </div>
           </div>
@@ -243,4 +165,4 @@ const AllBanners = () => {
   );
 };
 
-export default AllBanners;
+export default AllCategories;

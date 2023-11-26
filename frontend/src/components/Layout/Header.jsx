@@ -6,6 +6,16 @@ import {
   AiOutlineSearch,
   AiOutlineShoppingCart,
 } from "react-icons/ai";
+import {
+  FaShopify,
+  FaSearchengin,
+  FaArrowRight,
+  FaHeart,
+  FaCartShopping,
+  FaUserAstronaut,
+  FaBars,
+  FaArrowLeft,
+} from "react-icons/fa6";
 import { IoIosArrowForward } from "react-icons/io";
 import { CgProfile } from "react-icons/cg";
 import Navbar from "./Navbar";
@@ -51,26 +61,25 @@ const Header = ({ activeHeading }) => {
 
   return (
     <>
-      <div className={`${styles.section}`}>
+      <div className="mx-24">
         <div className="hidden 800px:h-[50px] 800px:py-10 800px:flex items-center justify-between">
           <div>
-            <Link to="/">
-              <h1 className="text-4xl font-bold block hover:text-blue">
-                CTU Souvenir Shop
-              </h1>
+            <Link to="/" className="flex">
+              <FaShopify size={36} color="#50e991" />
+              <h1 className="text-4xl font-bold uppercase italic">CTU</h1>
             </Link>
           </div>
           {/* search box */}
           <div className="w-[50%] relative">
             <input
               type="text"
-              placeholder="Search Product..."
+              placeholder="Tìm sản phẩm..."
               value={searchTerm}
               onChange={handleSearchChange}
-              className="h-[40px] w-full px-2 border-blue border-[2px] rounded-md"
+              className="h-[40px] w-full px-2 border-[#0bb4ff] border-[2px] rounded-md"
             />
-            <AiOutlineSearch
-              size={30}
+            <FaSearchengin
+              size={24}
               className="absolute right-2 top-1.5 cursor-pointer"
             />
             {searchData && searchData.length !== 0 ? (
@@ -94,95 +103,77 @@ const Header = ({ activeHeading }) => {
             ) : null}
           </div>
           <div className="flex items-center flex-col">
-            <div className={`${styles.button}`}>
+            <button className="btn">
               {isSeller ? (
                 <Link to={"/dashboard"}>
                   <h1 className="text-lg text-black flex items-center">
                     Quản Lý
-                    <IoIosArrowForward className="ml-1" />
+                    <FaArrowRight className="ml-2" />
                   </h1>
                 </Link>
               ) : (
                 <Link to={"/shop-login"}>
                   <h1 className="text-lg text-black flex items-center">
-                    {"Đăng nhập vào cửa hàng"}{" "}
-                    <IoIosArrowForward className="ml-1" />
+                    {"Đăng nhập vào cửa hàng"} <FaArrowRight className="ml-2" />
                   </h1>
                 </Link>
               )}
-            </div>
-
-            {/* <div className={`${styles.button}`}>
-              <Link to={`${isSeller ? "/dashboard" : "/shop-login"}`}>
-                <h1 className="text-lg text-black flex items-center">
-                  {isSeller ? "Quản lý " : "Đăng nhập"}{" "}
-                  <IoIosArrowForward className="ml-1" />
-                </h1>
-              </Link>
-              {isSeller && isSeller ? null : (
-                <Link to="/shop-create">
-                  <div className={`${styles.button} mt-5`}>
-                    <span className="text-[#fff] font-[Poppins] text-[18px]">
-                      Seller
-                    </span>
-                  </div>
-                </Link>
-              )}
-            </div> */}
+            </button>
           </div>
         </div>
       </div>
       <div
-        className={`${
-          active === true ? "shadow-sm fixed top-0 left-0 z-10" : null
-        } transition hidden 800px:flex items-center justify-between w-full bg-extra-extra-light-gray h-[70px]`}
+        // className={`${
+        //   active === true ? "shadow-sm fixed top-0 left-0 z-10" : null
+        // } transition hidden 800px:flex items-center justify-between w-full h-[70px]`}
+        className="bg-[#50e991]"
       >
         <div
-          className={`${styles.section} relative ${styles.noramlFlex} justify-between`}
+          // className={`${styles.section} relative ${styles.noramlFlex} justify-between`}
+          className="mx-24 hidden 800px:flex justify-between"
         >
           {/* navitems */}
-          <div className={`${styles.noramlFlex}`}>
+          <div>
             <Navbar active={activeHeading} />
           </div>
 
-          <div className="flex">
-            <div className={`${styles.noramlFlex}`}>
+          <div className="flex items-center">
+            <div className="flex">
               <div
                 className="relative cursor-pointer mr-[15px]"
                 onClick={() => setOpenWishlist(true)}
               >
-                <AiOutlineHeart size={35} color="#de650a" />
-                <span className="absolute right-0 top-0 rounded-full bg-blue w-4 h-4 top right p-0 m-0 text-white font-mono text-[12px] leading-tight text-center">
+                <FaHeart color="#e60049" size={36} />
+                <span className="absolute right-0 top-0 rounded-full bg-[#0bb4ff] w-4 h-4 top right p-0 m-0 text-white font-mono text-[12px] leading-tight text-center">
                   {wishlist && wishlist.length}
                 </span>
               </div>
             </div>
-
-            <div className={`${styles.noramlFlex} `}>
+            <div className="flex">
               <div
                 className="relative cursor-pointer mr-[15px]"
                 onClick={() => setOpenCart(true)}
               >
-                <AiOutlineShoppingCart size={35} color="#de650a" />
-                <span className="absolute right-0 top-0 rounded-full bg-blue w-4 h-4 top right p-0 m-0 text-white font-mono text-[12px] leading-tight text-center">
+                <FaCartShopping size={36} color="#e6d800" />
+                <span className="absolute right-0 top-0 rounded-full bg-[#0bb4ff] w-4 h-4 top right p-0 m-0 text-white font-mono text-[12px] leading-tight text-center">
                   {cart && cart.length}
                 </span>
               </div>
             </div>
 
-            <div className={`${styles.noramlFlex}`}>
+            <div className="flex">
               <div className="relative cursor-pointer mr-[20px]">
                 {isAuthenticated ? (
                   <Link to="/profile">
-                    <img
-                      src={`${backend_url}${user?.avatar}`}
-                      className="w-[50px] h-[50px] rounded-full"
-                      alt=""
-                    />
+                    <div className="avatar">
+                      <div className="w-12 rounded-full">
+                        <img src={`${backend_url}${user?.avatar}`} />
+                      </div>
+                    </div>
                   </Link>
                 ) : (
                   <Link to="/login">
-                    <CgProfile size={35} color="#de650a" />
+                    <FaUserAstronaut size={35} color="#de650a" />
                   </Link>
                 )}
               </div>
@@ -204,21 +195,16 @@ const Header = ({ activeHeading }) => {
         className={`${
           active === true ? "shadow-sm fixed top-0 left-0 z-10" : null
         }
-      w-full h-[60px] bg-extra-extra-light-gray z-50 top-0 left-0 shadow-sm 800px:hidden`}
+      w-full h-12 z-999 bg-white top-0 left-0 shadow 800px:hidden`}
       >
         <div className="w-full flex items-center justify-between">
           <div>
-            <TbAdjustmentsHorizontal
-              size={40}
-              className="ml-4"
-              onClick={() => setOpen(true)}
-            />
+            <FaBars size={36} onClick={() => setOpen(true)} />
           </div>
           <div>
-            <Link to="/">
-              <h1 className="text-4xl font-bold hover:text-blue">
-                CTU Souvenir Shop
-              </h1>
+            <Link to="/" className="flex">
+              <FaShopify size={36} color="#50e991" />
+              <h1 className="text-4xl font-bold uppercase italic">CTU</h1>
             </Link>
           </div>
           <div>
@@ -226,7 +212,7 @@ const Header = ({ activeHeading }) => {
               className="relative mr-[20px]"
               onClick={() => setOpenCart(true)}
             >
-              <AiOutlineShoppingCart size={30} />
+              <FaCartShopping size={36} />
               <span class="absolute right-0 top-0 rounded-full bg-blue w-4 h-4 top right p-0 m-0 text-white font-mono text-[12px]  leading-tight text-center">
                 {cart && cart.length}
               </span>
@@ -251,14 +237,14 @@ const Header = ({ activeHeading }) => {
                     className="relative mr-[15px]"
                     onClick={() => setOpenWishlist(true) || setOpen(false)}
                   >
-                    <AiOutlineHeart size={30} className="mt-5 ml-3" />
+                    <FaHeart size={36} className="mt-5 ml-3" />
                     <span class="absolute right-0 top-0 rounded-full bg-blue w-4 h-4 top right p-0 m-0 text-white font-mono text-[12px]  leading-tight text-center">
                       {wishlist && wishlist.length}
                     </span>
                   </div>
                 </div>
-                <TbArrowBarLeft
-                  size={30}
+                <FaArrowLeft
+                  size={36}
                   className="ml-4 mt-5"
                   onClick={() => setOpen(false)}
                 />
@@ -292,7 +278,6 @@ const Header = ({ activeHeading }) => {
                   </div>
                 ) : null}
               </div>
-
               <Navbar active={activeHeading} />
               <div className={`${styles.button} ml-4 !rounded-[4px]`}>
                 <Link to="/shop-create">

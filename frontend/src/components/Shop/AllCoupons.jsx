@@ -14,7 +14,7 @@ const AllCoupons = () => {
   const [open, setOpen] = useState(false);
   const [name, setName] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [coupouns,setCoupouns] = useState([]);
+  const [coupouns, setCoupouns] = useState([]);
   const [minAmount, setMinAmout] = useState(null);
   const [maxAmount, setMaxAmount] = useState(null);
   const [selectedProducts, setSelectedProducts] = useState(null);
@@ -40,9 +40,11 @@ const AllCoupons = () => {
   }, [dispatch]);
 
   const handleDelete = async (id) => {
-    axios.delete(`${server}/coupon/delete-coupon/${id}`,{withCredentials: true}).then((res) => {
-      toast.success("Coupon code deleted succesfully!")
-    })
+    axios
+      .delete(`${server}/coupon/delete-coupon/${id}`, { withCredentials: true })
+      .then((res) => {
+        toast.success("Coupon code deleted succesfully!");
+      });
     window.location.reload();
   };
 
@@ -63,9 +65,9 @@ const AllCoupons = () => {
         { withCredentials: true }
       )
       .then((res) => {
-       toast.success("Đã tạo mã giảm giá thành công!");
-       setOpen(false);
-       window.location.reload();
+        toast.success("Đã tạo mã giảm giá thành công!");
+        setOpen(false);
+        window.location.reload();
       })
       .catch((error) => {
         toast.error(error.response.data.message);
@@ -108,7 +110,7 @@ const AllCoupons = () => {
   const row = [];
 
   coupouns &&
-  coupouns.forEach((item) => {
+    coupouns.forEach((item) => {
       row.push({
         id: item._id,
         name: item.name,
@@ -122,15 +124,13 @@ const AllCoupons = () => {
       {isLoading ? (
         <Loader />
       ) : (
-        <div className="w-full mx-8 pt-1 mt-10 bg-white">
-          <div className="w-full flex justify-end">
-            <div
-              className="btn btn-info my-2 font-bold text-white"
-              onClick={() => setOpen(true)}
-            >
-              <span className="text-white">Thêm mã giảm giá</span>
-            </div>
-          </div>
+        <div className="w-full mx-4 bg-white">
+          <button
+            onClick={() => setOpen(true)}
+            className="btn btn-outline btn-accent font-bold my-4 font-bold"
+          >
+            Thêm mã giảm giá
+          </button>
           <DataGrid
             rows={row}
             columns={columns}
@@ -140,7 +140,7 @@ const AllCoupons = () => {
           />
           {open && (
             <div className="fixed top-0 left-0 w-full h-screen bg-[#00000062] z-[20000] flex items-center justify-center">
-              <div className="w-[90%] 800px:w-[40%] h-[80vh] bg-white rounded-md shadow p-4">
+              <div className="w-[90%] 800px:w-[40%] h-[90vh] bg-white rounded-md shadow p-4">
                 <div className="w-full flex justify-end">
                   <RxCross1
                     size={30}
@@ -148,8 +148,8 @@ const AllCoupons = () => {
                     onClick={() => setOpen(false)}
                   />
                 </div>
-                <h5 className="text-[30px] font-Poppins text-center">
-                 Thêm mã giảm giá
+                <h5 className="text-2xl uppercase font-bold text-center">
+                  Thêm mã giảm giá
                 </h5>
                 {/* create coupoun code */}
                 <form onSubmit={handleSubmit} aria-required={true}>
@@ -171,8 +171,7 @@ const AllCoupons = () => {
                   <br />
                   <div>
                     <label className="pb-2">
-                     Số lượng giảm (%){" "}
-                      <span className="text-red-500">*</span>
+                      Số lượng giảm (%) <span className="text-red-500">*</span>
                     </label>
                     <input
                       type="text"
@@ -210,7 +209,9 @@ const AllCoupons = () => {
                   </div>
                   <br />
                   <div>
-                    <label className="pb-2">Chọn sản phẩm có thể áp dụng mã giảm giá</label>
+                    <label className="pb-2">
+                      Chọn sản phẩm có thể áp dụng mã giảm giá
+                    </label>
                     <select
                       className="w-full mt-2 border h-[35px] rounded-[5px]"
                       value={selectedProducts}
@@ -229,11 +230,7 @@ const AllCoupons = () => {
                   </div>
                   <br />
                   <div>
-                    <input
-                      type="submit"
-                      value="Tạo mã giảm giá"
-                      className="mt-2 appearance-none block w-full px-3 h-[35px] bg-[#050505bd] text-[#fff] border border-gray-300 rounded-[3px] placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-                    />
+                    <button className="btn btn-success w-full text-white font-bold">Tạo mã giảm giá</button>
                   </div>
                 </form>
               </div>

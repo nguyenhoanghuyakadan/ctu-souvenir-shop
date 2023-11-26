@@ -51,7 +51,7 @@ router.put(
         return next(new ErrorHandler("Id cửa hàng không hợp lệ!", 400));
       } else {
         const productId = req.params.id;
-        const { originalPrice, isActive } = req.body;
+        const { price, isActive } = req.body;
         if (!productId) {
           return next(
             new ErrorHandler("ID sản phẩm hoặc ID cửa hàng không hợp lệ!", 400)
@@ -64,7 +64,7 @@ router.put(
             new ErrorHandler("Không tìm thấy sản phẩm với ID này!", 404)
           );
         }
-        existingProduct.originalPrice = originalPrice;
+        existingProduct.price = price;
         existingProduct.isActive = isActive;
 
         console.log(existingProduct);

@@ -125,45 +125,43 @@ const AllSellers = () => {
     });
 
   return (
-    <div className="w-full flex justify-center my-4">
-      <div className="w-[97%]">
-        <h3 className="text-xl font-bold my-2 uppercase">Tất cả người bán</h3>
-        <div className="w-full min-h-[45vh] bg-white rounded">
-          <DataGrid
-            rows={row}
-            columns={columns}
-            pageSize={10}
-            disableSelectionOnClick
-            autoHeight
-          />
-        </div>
-        {open && (
-          <div className="w-full fixed top-0 left-0 z-[999] bg-[#00000039] flex items-center justify-center h-screen">
-            <div className="w-[95%] 800px:w-[40%] min-h-[20vh] bg-white rounded shadow p-5">
-              <div className="w-full flex justify-end cursor-pointer">
-                <RxCross1 size={25} onClick={() => setOpen(false)} />
-              </div>
-              <h3 className="text-xl font-bold text-center uppercase m-4">
-                Bạn có chắc chắn xóa người bán này?
-              </h3>
-              <div className="w-full flex items-center justify-center">
-                <button
-                  onClick={() => setOpen(false)}
-                  className="btn btn-error font-bold text-white uppercase m-2"
-                >
-                  Hủy bỏ
-                </button>
-                <button
-                  onClick={() => setOpen(false) || handleDelete(userId)}
-                  className="btn btn-success font-bold text-white uppercase m-2"
-                >
-                  Xác nhận
-                </button>
-              </div>
+    <div className="w-full justify-center m-4">
+      <h3 className="text-xl font-bold my-2 uppercase">Tất cả người bán</h3>
+      <div className="w-full min-h-[45vh] bg-white rounded">
+        <DataGrid
+          rows={row}
+          columns={columns}
+          pageSize={10}
+          disableSelectionOnClick
+          autoHeight
+        />
+      </div>
+      {open && (
+        <div className="w-full fixed top-0 left-0 z-[999] bg-[#00000039] flex items-center justify-center h-screen">
+          <div className="w-[95%] 800px:w-[40%] min-h-[20vh] bg-white rounded shadow p-5">
+            <div className="w-full flex justify-end cursor-pointer">
+              <RxCross1 size={25} onClick={() => setOpen(false)} />
+            </div>
+            <h3 className="text-xl font-bold text-center uppercase m-4">
+              Bạn có chắc chắn xóa người bán này?
+            </h3>
+            <div className="w-full flex items-center justify-center">
+              <button
+                onClick={() => setOpen(false)}
+                className="btn btn-error font-bold text-white uppercase m-2"
+              >
+                Hủy bỏ
+              </button>
+              <button
+                onClick={() => setOpen(false) || handleDelete(userId)}
+                className="btn btn-success font-bold text-white uppercase m-2"
+              >
+                Xác nhận
+              </button>
             </div>
           </div>
-        )}
-      </div>
+        </div>
+      )}
     </div>
   );
 };

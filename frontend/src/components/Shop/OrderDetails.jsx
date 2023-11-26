@@ -31,7 +31,7 @@ const OrderDetails = () => {
 
   const totalPriceWithoutShippingFee =
     data && data.cart
-      ? data.cart.reduce((sum, item) => sum + item.originalPrice * item.qty, 0)
+      ? data.cart.reduce((sum, item) => sum + item.price * item.qty, 0)
       : 0;
 
   const orderUpdateHandler = async (e) => {
@@ -108,7 +108,7 @@ const OrderDetails = () => {
             <div className="w-full mx-2">
               <h5 className="font-bold text-xl">{item.name}</h5>
               <h5 className="text-xl">
-                {currency.format(item.originalPrice, { code: "VND" })} x{" "}
+                {currency.format(item.price, { code: "VND" })} x{" "}
                 {item.qty}
               </h5>
             </div>

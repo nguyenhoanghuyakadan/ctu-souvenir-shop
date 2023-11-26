@@ -186,7 +186,7 @@ const AllBanners = () => {
   console.log(allBanners);
 
   return (
-    <div className="w-full my-4">
+    <div className="w-full m-4">
       <div className="flex justify-between">
         <form onSubmit={handleSubmit}>
           <div className="flex mb-6">

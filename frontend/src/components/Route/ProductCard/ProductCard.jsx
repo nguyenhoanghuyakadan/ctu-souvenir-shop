@@ -90,7 +90,7 @@ const ProductCard = ({ data }) => {
 
         <div className="py-2 flex items-center justify-between">
           <div className="text-xl font-bold">
-            {currency.format(data.originalPrice, { code: "VND" })}
+            {currency.format(data.price, { code: "VND" })}
           </div>
           <span className="font-bold text-success">
             Đã bán {data?.sold_out}

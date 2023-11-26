@@ -81,7 +81,7 @@ const AllProducts = () => {
       row.push({
         id: item._id,
         name: item.name,
-        price: `${currency.format(item.originalPrice, {
+        price: `${currency.format(item.price, {
           code: "VND",
         })}`,
         Stock: item.stock,
@@ -90,18 +90,16 @@ const AllProducts = () => {
     });
 
   return (
-    <>
-      <div className="w-full my-4 bg-white">
-        <h3 className="text-xl font-bold my-2 uppercase">Tất cả sản phẩm</h3>
-        <DataGrid
-          rows={row}
-          columns={columns}
-          pageSize={10}
-          disableSelectionOnClick
-          autoHeight
-        />
-      </div>
-    </>
+    <div className="w-full m-4 bg-white">
+      <h3 className="text-xl font-bold uppercase">Tất cả sản phẩm</h3>
+      <DataGrid
+        rows={row}
+        columns={columns}
+        pageSize={10}
+        disableSelectionOnClick
+        autoHeight
+      />
+    </div>
   );
 };
 

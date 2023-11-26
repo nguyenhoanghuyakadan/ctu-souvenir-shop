@@ -3,12 +3,12 @@ import { AiOutlinePlusCircle } from "react-icons/ai";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { createProduct } from "../../redux/actions/product";
-import { categoriesData } from "../../static/data";
 import { toast } from "react-toastify";
 
 const CreateProduct = () => {
   const { seller } = useSelector((state) => state.seller);
   const { success, error } = useSelector((state) => state.products);
+  const { allCategories } = useSelector((state) => state.categories);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -16,7 +16,7 @@ const CreateProduct = () => {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [category, setCategory] = useState("");
-  const [originalPrice, setOriginalPrice] = useState();
+  const [price, setOriginalPrice] = useState();
 
   useEffect(() => {
     if (error) {
@@ -47,7 +47,7 @@ const CreateProduct = () => {
     newForm.append("name", name);
     newForm.append("description", description);
     newForm.append("category", category);
-    newForm.append("originalPrice", originalPrice);
+    newForm.append("price", price);
     newForm.append("shopId", seller._id);
     dispatch(createProduct(newForm));
     toast.success("Sản phẩm đã được tạo thành công!");
@@ -56,10 +56,12 @@ const CreateProduct = () => {
   };
 
   return (
-    <div className="w-[90%] 800px:w-[50%] bg-white shadow rounded my-4">
-      <h5 className="font-bold text-xl text-center uppercase">Thêm sản phẩm</h5>
+    <div className="w-full bg-white mx-4">
+      <h5 className="font-bold text-xl text-center uppercase my-4">
+        Thêm sản phẩm
+      </h5>
       {/* create product form */}
-      <form onSubmit={handleSubmit} className="m-2">
+      <form onSubmit={handleSubmit}>
         <br />
         <div>
           <label className="pb-2">
@@ -102,24 +104,23 @@ const CreateProduct = () => {
             onChange={(e) => setCategory(e.target.value)}
           >
             <option value="Choose a category">Chọn danh mục SP</option>
-            {categoriesData &&
-              categoriesData.map((i) => (
-                <option value={i.title} key={i.title}>
-                  {i.title}
-                </option>
-              ))}
+            {allCategories?.map((i) => (
+              <option value={i.name} key={i._id}>
+                {i.name}
+              </option>
+            ))}
           </select>
         </div>
         <br />
         <div>
-          <label className="pb-2">Giá gốc</label>
+          <label className="pb-2">Giá</label>
           <input
             type="number"
             name="price"
-            value={originalPrice}
+            value={price}
             className="mt-2 appearance-none block w-full px-3 h-[35px] border border-gray-300 rounded-[3px] placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
             onChange={(e) => setOriginalPrice(e.target.value)}
-            placeholder="Thêm giá gốc của sản phẩm"
+            placeholder="Thêm giá của sản phẩm"
           />
         </div>
         <br />
@@ -153,7 +154,7 @@ const CreateProduct = () => {
           <div>
             <button
               type="submit"
-              className="btn btn-outline btn-accent font-bold w-full"
+              className="btn btn-outline btn-accent font-bold w-full text-white"
             >
               Thêm sản phẩm
             </button>

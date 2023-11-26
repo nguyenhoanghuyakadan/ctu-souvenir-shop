@@ -124,7 +124,7 @@ router.put(
           products: order.cart.map((item) => ({
             product: item._id,
             quantity: item.qty,
-            price: item.originalPrice,
+            price: item.price,
           })),
           shop: order.shop,
           customer: order.user,

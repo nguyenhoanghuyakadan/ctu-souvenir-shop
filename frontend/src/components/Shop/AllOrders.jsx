@@ -88,7 +88,7 @@ const AllOrders = () => {
       {isLoading ? (
         <Loader />
       ) : (
-        <div className="w-full bg-white">
+        <div className="w-full mx-4 bg-white">
           <div className="my-4 text-xl font-bold uppercase">
             Tất cả đơn hàng
           </div>

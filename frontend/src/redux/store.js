@@ -8,6 +8,7 @@ import { orderReducer } from "./reducers/order";
 import { invoiceReducer } from "./reducers/invoice";
 import { bannerReducer } from "./reducers/banner";
 import { supplierReducer } from "./reducers/supplier";
+import { categoryReducer } from "./reducers/category";
 
 const Store = configureStore({
   reducer: {
@@ -20,6 +21,7 @@ const Store = configureStore({
     invoices: invoiceReducer,
     banners: bannerReducer,
     suppliers: supplierReducer,
+    categories: categoryReducer,
   },
 });
 

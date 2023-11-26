@@ -19,7 +19,7 @@ const AllProducts = () => {
 
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [updateData, setUpdateData] = useState({
-    originalPrice: null,
+    price: null,
     isActive: null,
     shopId: seller._id,
   });
@@ -158,7 +158,7 @@ const AllProducts = () => {
       row.push({
         id: item._id,
         name: item.name,
-        price: `${currency.format(item.originalPrice, {
+        price: `${currency.format(item.price, {
           code: "VND",
         })}`,
         stock: item.stock,
@@ -172,7 +172,7 @@ const AllProducts = () => {
       {isLoading ? (
         <Loader />
       ) : (
-        <div className="w-full bg-white">
+        <div className="w-full mx-4 bg-white">
           <div className="my-4 text-xl font-bold uppercase">
             Tất cả sản phẩm
           </div>
@@ -197,15 +197,15 @@ const AllProducts = () => {
                   <input
                     type="number"
                     id="productPrice"
-                    value={updateData.originalPrice}
+                    value={updateData.price}
                     onChange={(e) =>
                       setUpdateData({
                         ...updateData,
-                        originalPrice: e.target.value,
+                        price: e.target.value,
                       })
                     }
                     className="input input-bordered input-warning w-full max-w block"
-                    placeholder={selectedProduct.originalPrice}
+                    placeholder={selectedProduct.price}
                   />
                 </div>
                 <div className="my-4">
