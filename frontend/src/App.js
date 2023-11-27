@@ -22,6 +22,7 @@ import {
   UserInboxPage,
   PageNotfound,
   // UserInbox,
+  AboutMePage,
 } from "./routes/Routes.js";
 import {
   ShopDashboardPage,
@@ -94,6 +95,8 @@ const App = () => {
         <Route path="/product/:id" element={<ProductDetailsPage />} />
         <Route path="/best-selling" element={<BestSellingPage />} />
         <Route path="/faq" element={<FAQPage />} />
+        <Route path="/about-me" element={<AboutMePage />} />
+
         <Route
           path="/checkout"
           element={

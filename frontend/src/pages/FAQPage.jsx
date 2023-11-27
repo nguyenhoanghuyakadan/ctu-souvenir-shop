@@ -1,12 +1,11 @@
-import React, { useState } from "react";
+import React from "react";
 import Footer from "../components/Layout/Footer";
 import Header from "../components/Layout/Header";
-import styles from "../styles/styles";
 
 const FAQPage = () => {
   return (
     <div>
-      <Header activeHeading={5} />
+      <Header activeHeading={4} />
       <Faq />
       <Footer />
     </div>
@@ -14,106 +13,71 @@ const FAQPage = () => {
 };
 
 const Faq = () => {
-  const [activeTab, setActiveTab] = useState(0);
-
-  const toggleTab = (tab) => {
-    if (activeTab === tab) {
-      setActiveTab(0);
-    } else {
-      setActiveTab(tab);
-    }
-  };
-
   return (
-    <div className={`${styles.section} my-8`}>
-      <h2 className="text-3xl font-bold text-gray-900 mb-8">FAQ</h2>
-      <div className="mx-auto space-y-4">
-        {/* single Faq */}
-
-        <div className="border-b border-gray-200 pb-4">
-          <button
-            className="flex items-center justify-between w-full"
-            onClick={() => toggleTab(2)}
-          >
-            <span className="text-lg font-medium text-gray-900"></span>
-            {activeTab === 2 ? (
-              <svg
-                className="h-6 w-6 text-gray-500"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M6 18L18 6M6 6l12 12"
-                />
-              </svg>
-            ) : (
-              <svg
-                className="h-6 w-6 text-gray-500"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M9 5l7 7-7 7"
-                />
-              </svg>
-            )}
-          </button>
-          {activeTab === 2 && (
-            <div className="mt-4">
-              <p className="text-base text-gray-500"></p>
-            </div>
-          )}
+    <div className="mx-24 my-4">
+      <div className="text-4xl font-bold uppercase mb-4">FAQ</div>
+      <div className="collapse collapse-plus border">
+        <input type="radio" name="my-accordion-3" />
+        <div className="collapse-title text-xl font-medium">
+          Tôi có thể đặt hàng qua điện thoại hoặc email không?
         </div>
-
-        <div className="border-b border-gray-200 pb-4">
-          <button
-            className="flex items-center justify-between w-full"
-            onClick={() => toggleTab(3)}
-          >
-            <span className="text-lg font-medium text-gray-900"></span>
-            {activeTab === 3 ? (
-              <svg
-                className="h-6 w-6 text-gray-500"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M6 18L18 6M6 6l12 12"
-                />
-              </svg>
-            ) : (
-              <svg
-                className="h-6 w-6 text-gray-500"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M9 5l7 7-7 7"
-                />
-              </svg>
-            )}
-          </button>
-          {activeTab === 3 && (
-            <div className="mt-4">
-              <p className="text-base text-gray-500"></p>
-            </div>
-          )}
+        <div className="collapse-content">
+          <p>
+            Có, quý khách có thể đặt hàng qua điện thoại, email hoặc trực tiếp
+            trên website. Chúng tôi sẽ xác nhận đơn hàng và thu tiền khi giao
+            hàng.
+          </p>
+        </div>
+      </div>
+      <div className="collapse collapse-plus border">
+        <input type="radio" name="my-accordion-3" />
+        <div className="collapse-title text-xl font-medium">
+          Tôi có thể tham khảo hàng trước khi đặt mua không?
+        </div>
+        <div className="collapse-content">
+          <p>
+            Có, quý khách có thể xem hình ảnh sản phẩm chi tiết với nhiều góc
+            chụp khác nhau trên website. Nếu có nhu cầu xem trực tiếp, quý khách
+            vui lòng liên hệ với chúng tôi để được hỗ trợ.
+          </p>
+        </div>
+      </div>
+      <div className="collapse collapse-plus border">
+        <input type="radio" name="my-accordion-3" />
+        <div className="collapse-title text-xl font-medium">
+          Tôi có thể đổi/trả hàng sau khi nhận không?
+        </div>
+        <div className="collapse-content">
+          <p>
+            Có, tất cả sản phẩm đều áp dụng chính sách đổi/trả hàng trong vòng 7
+            ngày nếu hàng không đúng mô tả hoặc lỗi từ nhà sản xuất. Quý khách
+            vui lòng liên hệ ngay với chúng tôi để được giải quyết.
+          </p>
+        </div>
+      </div>
+      <div className="collapse collapse-plus border">
+        <input type="radio" name="my-accordion-3" />
+        <div className="collapse-title text-xl font-medium">
+          Chi phí vận chuyển được tính như thế nào?
+        </div>
+        <div className="collapse-content">
+          <p>
+            Chi phí vận chuyển được tính dựa trên giá trị đơn hàng và địa chỉ
+            giao hàng. Quý khách vui lòng xem bảng giá vận chuyển được niêm yết
+            công khai trên website.
+          </p>
+        </div>
+      </div>
+      <div className="collapse collapse-plus border">
+        <input type="radio" name="my-accordion-3" />
+        <div className="collapse-title text-xl font-medium">
+          Tôi cần xuất hóa đơn VAT khi mua hàng?
+        </div>
+        <div className="collapse-content">
+          <p>
+            Đối với khách hàng cá nhân thì không yêu cầu hóa đơn VAT. Chúng tôi
+            sẽ xuất hóa đơn GTGT nếu khách hàng là tổ chức có nhu cầu.
+          </p>
         </div>
       </div>
     </div>

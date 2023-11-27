@@ -2,15 +2,12 @@ import React, { useState } from "react";
 import currency from "currency-formatter";
 import {
   AiFillHeart,
-  AiFillStar,
   AiOutlineEye,
   AiOutlineHeart,
   AiOutlineShoppingCart,
-  AiOutlineStar,
 } from "react-icons/ai";
 import { Link } from "react-router-dom";
 import { backend_url } from "../../../server";
-import styles from "../../../styles/styles";
 import { useDispatch, useSelector } from "react-redux";
 import ProductDetailsCard from "../ProductDetailsCard/ProductDetailsCard";
 import {
@@ -68,7 +65,7 @@ const ProductCard = ({ data }) => {
         <img
           src={`${backend_url}${data.images && data.images[0]}`}
           alt=""
-          className="w-auto block mx-auto h-40 object-contain rounded"
+          className="w-40 block mx-auto h-40 object-contain rounded"
         />
       </Link>
       <Link to={`/shop/preview/${data?.shop._id}`}>

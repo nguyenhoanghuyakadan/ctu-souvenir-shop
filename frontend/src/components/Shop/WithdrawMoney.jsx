@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { getAllOrdersOfShop } from "../../redux/actions/order";
-import styles from "../../styles/styles";
 import { RxCross1 } from "react-icons/rx";
 import axios from "axios";
 import { server } from "../../server";
@@ -171,49 +170,9 @@ const WithdrawMoney = () => {
                       }
                       id=""
                       placeholder="Thêm tên ngân hàng!"
-                      className={`${styles.input} mt-2`}
+                      className="w-full border p-1 rounded-[5px] mt-2"
                     />
                   </div>
-                  {/* <div className="pt-2">
-                    <label>
-                      Khu vực <span className="text-red-500">*</span>
-                    </label>
-                    <input
-                      type="text"
-                      name=""
-                      value={bankInfo.bankCountry}
-                      onChange={(e) =>
-                        setBankInfo({
-                          ...bankInfo,
-                          bankCountry: e.target.value,
-                        })
-                      }
-                      id=""
-                      required
-                      placeholder="Enter your bank Country!"
-                      className={`${styles.input} mt-2`}
-                    />
-                  </div>
-                  <div className="pt-2">
-                    <label>
-                      Bank Swift Code <span className="text-red-500">*</span>
-                    </label>
-                    <input
-                      type="text"
-                      name=""
-                      id=""
-                      required
-                      value={bankInfo.bankSwiftCode}
-                      onChange={(e) =>
-                        setBankInfo({
-                          ...bankInfo,
-                          bankSwiftCode: e.target.value,
-                        })
-                      }
-                      placeholder="Enter your Bank Swift Code!"
-                      className={`${styles.input} mt-2`}
-                    />
-                  </div> */}
 
                   <div className="pt-2">
                     <label>
@@ -232,7 +191,7 @@ const WithdrawMoney = () => {
                       }
                       required
                       placeholder="Thêm số tài khoản ngân hàng!"
-                      className={`${styles.input} mt-2`}
+                      className="w-full border p-1 rounded-[5px] mt-2"
                     />
                   </div>
                   <div className="pt-2">
@@ -252,7 +211,7 @@ const WithdrawMoney = () => {
                       }
                       id=""
                       placeholder="Thêm tên chủ tài khoản ngân hàng!"
-                      className={`${styles.input} mt-2`}
+                      className="w-full border p-1 rounded-[5px] mt-2"
                     />
                   </div>
 
@@ -274,16 +233,9 @@ const WithdrawMoney = () => {
                         })
                       }
                       placeholder="Địa chỉ chi nhánh đăng ký thẻ ngân hàng!"
-                      className={`${styles.input} mt-2`}
+                      className="w-full border p-1 rounded-[5px] mt-2"
                     />
                   </div>
-
-                  {/* <button
-                    type="submit"
-                    className={`${styles.button} mb-3 text-white`}
-                  >
-                    Thêm
-                  </button> */}
                   <button
                     type="submit"
                     className="btn btn-success font-bold uppercase text-white my-4"
@@ -336,14 +288,6 @@ const WithdrawMoney = () => {
                         className="800px:w-[100px] w-[full] border 800px:mr-3 p-1 rounded"
                       />
                       <span className="mr-4">VND </span>
-
-                      {/* <div
-                        className={`${styles.button} !h-[42px] text-white`}
-                        onClick={withdrawHandler}
-                      >
-                        Rút tiền
-                      </div> */}
-
                       <div>
                         <button
                           className="btn btn-success font-bold uppercase"
@@ -352,14 +296,6 @@ const WithdrawMoney = () => {
                           Rút tiền
                         </button>
                       </div>
-                      {/* {availableBalance && availableBalance > 50 ? (
-                        <div
-                          className={`${styles.button} !h-[42px] text-white`}
-                          onClick={withdrawHandler}
-                        >
-                          Rút tiền
-                        </div>
-                      ) : null} */}
                     </div>
                   </div>
                 ) : (

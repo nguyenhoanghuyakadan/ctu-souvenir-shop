@@ -15,11 +15,13 @@ const CreatePurchaseInvoice = () => {
   const [selectedItemsData, setSelectedItemsData] = useState([
     { id: 1, product: "", quantity: "", price: "" },
   ]);
+  const [selectedItem, setSelectedItem] = useState();
 
   const [rowsToDelete, setRowsToDelete] = useState([]);
   const [isDeleteButtonVisible, setIsDeleteButtonVisible] = useState(false);
   const { seller } = useSelector((state) => state.seller);
   const { products } = useSelector((state) => state.products);
+  const { allSuppliers } = useSelector((state) => state.suppliers);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -62,11 +64,18 @@ const CreatePurchaseInvoice = () => {
   // console.log(products);
 
   const handleAddRow = () => {
-    const newId = selectedItemsData[selectedItemsData.length - 1].id + 1;
-    setSelectedItemsData([
-      ...selectedItemsData,
-      { id: newId, product: "", quantity: "", price: "" },
-    ]);
+    if (
+      selectedItemsData[selectedItemsData.length - 1].price <
+      originalPriceSeletedItem
+    ) {
+      const newId = selectedItemsData[selectedItemsData.length - 1].id + 1;
+      setSelectedItemsData([
+        ...selectedItemsData,
+        { id: newId, product: "", quantity: "", price: "" },
+      ]);
+    } else {
+      toast.error("Giá nhập phải nhỏ hơn giá bán.");
+    }
   };
 
   const handleDeleteRow = (id) => {
@@ -98,6 +107,10 @@ const CreatePurchaseInvoice = () => {
   const handleSupplierChange = (value) => {
     setSupplier(value);
   };
+
+  const originalPriceSeletedItem =
+    products &&
+    products?.find((product) => product._id === selectedItem)?.price;
 
   const handleSave = () => {
     if (
@@ -156,11 +169,12 @@ const CreatePurchaseInvoice = () => {
           onChange={(e) => handleSupplierChange(e.target.value)}
         >
           <option value="">-- Chọn một mục --</option>
-          {suppliersData.map((supplier) => (
-            <option key={supplier.id} value={supplier.name}>
-              {supplier.name}
-            </option>
-          ))}
+          {allSuppliers &&
+            allSuppliers?.map((supplier) => (
+              <option key={supplier.id} value={supplier.name}>
+                {supplier.name}
+              </option>
+            ))}
         </select>
       </div>
       <table className="w-full border-collapse mb-4">
@@ -183,6 +197,7 @@ const CreatePurchaseInvoice = () => {
                     handleInputChange(product.id, "product", e.target.value)
                   }
                   className="w-full p-2 border rounded"
+                  onClick={() => setSelectedItem(product.product)}
                 >
                   <option value="">Chọn sản phẩm</option>
                   {products &&

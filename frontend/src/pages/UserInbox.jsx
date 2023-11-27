@@ -32,7 +32,6 @@ const UserInbox = () => {
       });
     });
   }, []);
-
   useEffect(() => {
     arrivalMessage &&
       currentChat?.members.includes(arrivalMessage.sender) &&
@@ -152,7 +151,6 @@ const UserInbox = () => {
 
   const imageSendingHandler = async (e) => {
     const formData = new FormData();
-
     formData.append("images", e);
     formData.append("sender", user._id);
     formData.append("text", newMessage);
@@ -198,8 +196,6 @@ const UserInbox = () => {
   useEffect(() => {
     scrollRef.current?.scrollIntoView({ beahaviour: "smooth" });
   }, [messages]);
-
-  console.log(messages);
 
   return (
     <div className="w-full">
@@ -375,41 +371,6 @@ const SellerInbox = ({
         {messages &&
           messages.map((item, index) => {
             return (
-              // <div
-              //   className={`chat ${
-              //     item.sender === sellerId ? "chat-end" : "chat-start"
-              //   }`}
-              //   ref={scrollRef}
-              // >
-              //   <div className="flex">
-              //     {item.sender !== sellerId && (
-              //       <div className="chat-image avatar mr-2">
-              //         <div className="w-10 rounded-full">
-              //           <img src={`${backend_url}${userData?.avatar}`} />
-              //         </div>
-              //       </div>
-              //     )}
-              //     {item.text !== "" && (
-              //       <div
-              //         className={`chat-bubble font-bold ${
-              //           item.sender === sellerId
-              //             ? "chat-bubble-info"
-              //             : "chat-bubble chat-bubble-secondary text-white"
-              //         }`}
-              //       >
-              //         {item.text}
-              //       </div>
-              //     )}
-              //     {item.images && (
-              //       <div>
-              //         <img
-              //           src={`${backend_url}${item.images}`}
-              //           className="object-cover h-96 rounded"
-              //         />
-              //       </div>
-              //     )}
-              //   </div>
-              // </div>
               <div
                 ref={scrollRef}
                 className={`chat ${

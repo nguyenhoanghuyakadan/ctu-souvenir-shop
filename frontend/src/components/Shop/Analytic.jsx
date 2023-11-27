@@ -226,7 +226,7 @@ const Analytic = () => {
               onChange={(value) => handleOptionChange(value)}
               className="select select-info w-full max-w-xs font-bold text-info"
             >
-              <option disabled selected>
+              <option selected>
                 Pick your choice
               </option>
 
@@ -540,7 +540,7 @@ const Analytic = () => {
               onChange={(value) => handleOptionChange(value)}
               className="select select-success w-full max-w-xs font-bold text-success"
             >
-              <option disabled selected>
+              <option selected>
                 Pick your choice
               </option>
               <option value="dayComparison">

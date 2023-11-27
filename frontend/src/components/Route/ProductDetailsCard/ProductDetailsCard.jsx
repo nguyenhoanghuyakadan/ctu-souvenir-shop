@@ -1,11 +1,5 @@
 import React, { useEffect, useState } from "react";
 import {
-  AiFillHeart,
-  AiOutlineHeart,
-  AiOutlineMessage,
-  AiOutlineShoppingCart,
-} from "react-icons/ai";
-import {
   FaCartShopping,
   FaHeart,
   FaStar,
@@ -13,10 +7,7 @@ import {
   FaRegMessage,
   FaX,
 } from "react-icons/fa6";
-import { RxCross1 } from "react-icons/rx";
 import { Link, useNavigate } from "react-router-dom";
-// import { backend_url } from "../../../server";
-import styles from "../../../styles/styles";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { addTocart } from "../../../redux/actions/cart";

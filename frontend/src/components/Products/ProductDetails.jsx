@@ -3,7 +3,6 @@ import currency from "currency-formatter";
 import {
   AiFillHeart,
   AiOutlineHeart,
-  AiOutlineMessage,
   AiOutlineShoppingCart,
 } from "react-icons/ai";
 import { FaRegMessage } from "react-icons/fa6";
@@ -12,7 +11,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { getAllProductsShop } from "../../redux/actions/product";
 import { backend_url, server } from "../../server";
-import styles from "../../styles/styles";
 import {
   addToWishlist,
   removeFromWishlist,
@@ -92,9 +90,13 @@ const ProductDetails = ({ data }) => {
 
   const averageRating = avg.toFixed(2);
 
+  console.log(data);
+
   const handleMessageSubmit = async () => {
     if (isAuthenticated) {
-      const groupTitle = data._id + user._id;
+      // const groupTitle = data._id + user._id;
+      const groupTitle = data.shop._id + user._id;
+
       const userId = user._id;
       const sellerId = data.shop._id;
       await axios
@@ -114,11 +116,13 @@ const ProductDetails = ({ data }) => {
     }
   };
 
+  console.log(data);
+
   return (
     <div className="bg-white">
       {data ? (
-        <div className={`${styles.section} w-[90%] 800px:w-[80%]`}>
-          <div className="w-full py-5">
+        <div className="mx-24">
+          <div className="w-full my-4">
             <div className="block w-full 800px:flex">
               <div className="w-full 800px:w-[50%]">
                 <img

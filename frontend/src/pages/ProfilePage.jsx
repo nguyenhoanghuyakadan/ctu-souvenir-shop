@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import Header from "../components/Layout/Header";
-import styles from "../styles/styles";
 import Loader from "../components/Layout/Loader";
 import ProfileSideBar from "../components/Profile/ProfileSidebar";
 import ProfileContent from "../components/Profile/ProfileContent";
@@ -17,7 +16,7 @@ const ProfilePage = () => {
       ) : (
         <>
           <Header />
-          <div className="flex my-4">
+          <div className="flex my-4 mx-24">
             <div className="w-[15%] 800px:w-[20%]">
               <ProfileSideBar active={active} setActive={setActive} />
             </div>

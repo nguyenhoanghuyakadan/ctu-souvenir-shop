@@ -1,11 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
-import styles from "../../styles/styles";
-import {
-  AiOutlineHeart,
-  AiOutlineSearch,
-  AiOutlineShoppingCart,
-} from "react-icons/ai";
 import {
   FaShopify,
   FaSearchengin,
@@ -38,6 +32,26 @@ const Header = ({ activeHeading }) => {
   const [openCart, setOpenCart] = useState(false);
   const [openWishlist, setOpenWishlist] = useState(false);
   const [open, setOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
+
+  const inputRef = useRef(null);
+
+  useEffect(() => {
+    const handleOutsideClick = (event) => {
+      if (inputRef.current && !inputRef.current.contains(event.target)) {
+        setIsOpen(false);
+      }
+    };
+    document.addEventListener("click", handleOutsideClick);
+    return () => {
+      document.removeEventListener("click", handleOutsideClick);
+    };
+  }, []);
+
+  const handleInputClick = () => {
+    // Đặt trạng thái isOpen về true khi input được click
+    setIsOpen(true);
+  };
 
   const handleSearchChange = (e) => {
     const term = e.target.value;
@@ -73,28 +87,30 @@ const Header = ({ activeHeading }) => {
           <div className="w-[50%] relative">
             <input
               type="text"
-              placeholder="Tìm sản phẩm..."
+              placeholder="Tìm sản  phẩm..."
               value={searchTerm}
               onChange={handleSearchChange}
               className="h-[40px] w-full px-2 border-[#0bb4ff] border-[2px] rounded-md"
+              ref={inputRef}
+              onClick={handleInputClick}
             />
             <FaSearchengin
               size={24}
               className="absolute right-2 top-1.5 cursor-pointer"
             />
-            {searchData && searchData.length !== 0 ? (
-              <div className="absolute bg-slate-50 shadow-sm-2 z-[9] p-4 w-full">
+            {isOpen && searchData && searchData.length !== 0 ? (
+              <div className="absolute bg-white shadow z-[9] p-4 w-full rounded">
                 {searchData &&
                   searchData.map((i, index) => {
                     return (
                       <Link to={`/product/${i._id}`}>
-                        <div className="w-full flex items-start-py-3">
+                        <div className="w-full flex items-start py-2">
                           <img
                             src={`${backend_url}${i.images[0]}`}
                             alt=""
-                            className="w-[40px] h-[40px] mr-[10px]"
+                            className="w-12 h-12 object-cover rounded"
                           />
-                          <h1>{i.name}</h1>
+                          <h1 className="ml-2 font-bold">{i.name}</h1>
                         </div>
                       </Link>
                     );
@@ -122,16 +138,8 @@ const Header = ({ activeHeading }) => {
           </div>
         </div>
       </div>
-      <div
-        // className={`${
-        //   active === true ? "shadow-sm fixed top-0 left-0 z-10" : null
-        // } transition hidden 800px:flex items-center justify-between w-full h-[70px]`}
-        className="bg-[#50e991]"
-      >
-        <div
-          // className={`${styles.section} relative ${styles.noramlFlex} justify-between`}
-          className="mx-24 hidden 800px:flex justify-between"
-        >
+      <div className="bg-[#50e991]">
+        <div className="mx-24 hidden 800px:flex justify-between">
           {/* navitems */}
           <div>
             <Navbar active={activeHeading} />
@@ -173,7 +181,7 @@ const Header = ({ activeHeading }) => {
                   </Link>
                 ) : (
                   <Link to="/login">
-                    <FaUserAstronaut size={35} color="#de650a" />
+                    <FaUserAstronaut size={35} color="#0bb4ff" />
                   </Link>
                 )}
               </div>
@@ -257,8 +265,10 @@ const Header = ({ activeHeading }) => {
                   className="h-[40px] w-full px-2 border-blue border-[2px] rounded-md"
                   value={searchTerm}
                   onChange={handleSearchChange}
+                  ref={inputRef}
+                  onClick={handleInputClick}
                 />
-                {searchData && searchData.length !== 0 ? (
+                {isOpen && searchData && searchData.length !== 0 ? (
                   <div className="absolute bg-slate-50 shadow-sm-2 z-[9] p-4 w-full">
                     {searchData &&
                       searchData.map((i, index) => {
@@ -279,13 +289,11 @@ const Header = ({ activeHeading }) => {
                 ) : null}
               </div>
               <Navbar active={activeHeading} />
-              <div className={`${styles.button} ml-4 !rounded-[4px]`}>
-                <Link to="/shop-create">
-                  <h1 className="text-dark-gray flex items-center hover:text-blue">
-                    Seller <IoIosArrowForward className="ml-1" />
-                  </h1>
-                </Link>
-              </div>
+              <Link to="/shop-create">
+                <button className="btn btn-outline btn-accent font-bold ml-4">
+                  Seller
+                </button>
+              </Link>
               <br />
               <br />
               <br />

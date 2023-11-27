@@ -1,7 +1,5 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import styles from "../../styles/styles";
-import { Link } from "react-router-dom";
 
 const DropDown = ({ categoriesData, setDropDown }) => {
   const navigate = useNavigate();
@@ -20,7 +18,7 @@ const DropDown = ({ categoriesData, setDropDown }) => {
     
      <div
             
-            className={`${styles.noramlFlex}`}
+            className="flex items-center"
             onClick={() => submitAllProduct()}
           >
             <h3 className="m-3 cursor-pointer select-none font-medium">🌟 Tất cả sản phẩm ✨✨✨</h3>
@@ -31,7 +29,7 @@ const DropDown = ({ categoriesData, setDropDown }) => {
         categoriesData.map((i, index) => (
           <div
             key={index}
-            className={`${styles.noramlFlex}`}
+            className="flex items-center"
             onClick={() => submitHandle(i)}
           >
             <img

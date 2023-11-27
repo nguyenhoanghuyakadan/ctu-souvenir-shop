@@ -71,7 +71,7 @@ export const navItems = [
     icon: (
       <svg
         xmlns="http://www.w3.org/2000/svg"
-        class="icon icon-tabler icon-tabler-calendar-event"
+        class="icon icon-tabler icon-tabler-help-hexagon"
         width="24"
         height="24"
         viewBox="0 0 24 24"
@@ -82,15 +82,13 @@ export const navItems = [
         stroke-linejoin="round"
       >
         <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-        <path d="M4 5m0 2a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2z"></path>
-        <path d="M16 3l0 4"></path>
-        <path d="M8 3l0 4"></path>
-        <path d="M4 11l16 0"></path>
-        <path d="M8 15h2v2h-2z"></path>
+        <path d="M19.875 6.27c.7 .398 1.13 1.143 1.125 1.948v7.284c0 .809 -.443 1.555 -1.158 1.948l-6.75 4.27a2.269 2.269 0 0 1 -2.184 0l-6.75 -4.27a2.225 2.225 0 0 1 -1.158 -1.948v-7.285c0 -.809 .443 -1.554 1.158 -1.947l6.75 -3.98a2.33 2.33 0 0 1 2.25 0l6.75 3.98h-.033z"></path>
+        <path d="M12 16v.01"></path>
+        <path d="M12 13a2 2 0 0 0 .914 -3.782a1.98 1.98 0 0 0 -2.414 .483"></path>
       </svg>
     ),
-    title: "Sự kiện",
-    url: "/events",
+    title: "FAQ",
+    url: "/faq",
   },
   {
     icon: (
@@ -112,8 +110,8 @@ export const navItems = [
         <path d="M12 13a2 2 0 0 0 .914 -3.782a1.98 1.98 0 0 0 -2.414 .483"></path>
       </svg>
     ),
-    title: "FAQ",
-    url: "/faq",
+    title: "Về chúng tôi",
+    url: "/about-me",
   },
 ];
 

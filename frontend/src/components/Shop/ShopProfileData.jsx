@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useParams } from "react-router-dom";
 import { getAllProductsShop } from "../../redux/actions/product";
-import styles from "../../styles/styles";
 import ProductCard from "../Route/ProductCard/ProductCard";
 import { backend_url } from "../../server";
 import Ratings from "../Products/Ratings";
@@ -15,7 +14,10 @@ const ShopProfileData = ({ isOwner }) => {
   const { id } = useParams();
   const dispatch = useDispatch();
 
-  
+  const activeProducts = products?.filter(
+    (product) => product.isActive === true
+  );
+
   const defaultOptions = {
     loop: false,
     autoplay: true,
@@ -47,17 +49,8 @@ const ShopProfileData = ({ isOwner }) => {
               Sản phẩm
             </h5>
           </div>
-          <div className="flex items-center" onClick={() => setActive(2)}>
-            <h5
-              className={`font-[600] text-[20px] ${
-                active === 2 ? "text-red-500 font-[650]" : "text-[#333]"
-              } cursor-pointer pr-[20px]`}
-            >
-              Sự kiện của cửa hàng
-            </h5>
-          </div>
 
-          <div className="flex items-center" onClick={() => setActive(3)}>
+          <div className="flex items-center" onClick={() => setActive(2)}>
             <h5
               className={`font-[600] text-[20px] ${
                 active === 3 ? "text-red-500 font-[650]" : "text-[#333]"
@@ -71,9 +64,7 @@ const ShopProfileData = ({ isOwner }) => {
           {isOwner && (
             <div>
               <Link to="/dashboard">
-                <div className={`${styles.button} !rounded-[8px] h-[42px]`}>
-                  <span className="text-[#fff]">Trang chủ</span>
-                </div>
+                <button className="btn btn-accent font-bold text-white">Trang quản lý bán hàng</button>
               </Link>
             </div>
           )}
@@ -83,16 +74,14 @@ const ShopProfileData = ({ isOwner }) => {
       <br />
       {active === 1 && (
         <div className="grid grid-cols-1 gap-[20px] md:grid-cols-2 md:gap-[25px] lg:grid-cols-3 lg:gap-[25px] xl:grid-cols-4 xl:gap-[20px] mb-12 border-0">
-          {products &&
-            products.map((i, index) => (
+          {activeProducts &&
+            activeProducts.map((i, index) => (
               <ProductCard data={i} key={index} isShop={true} />
             ))}
         </div>
       )}
 
-  
-
-      {active === 3 && (
+      {active === 2 && (
         <div className="w-full">
           {allReviews &&
             allReviews.map((item, index) => (
@@ -117,13 +106,13 @@ const ShopProfileData = ({ isOwner }) => {
             //   Chưa có đánh giá cho cửa hàng này!
             // </h5>
             <div>
-           <Lottie options={defaultOptions} width={300} height={300} />
-           <h5 className="text-center mb-14 text-[25px] text-[#000000a1]">
-             Chưa có đánh giá cho cửa hàng này 🥲
-           </h5>
-           <br />
-           <br />
-         </div>
+              <Lottie options={defaultOptions} width={300} height={300} />
+              <h5 className="text-center mb-14 text-[25px] text-[#000000a1]">
+                Chưa có đánh giá cho cửa hàng này 🥲
+              </h5>
+              <br />
+              <br />
+            </div>
           )}
         </div>
       )}

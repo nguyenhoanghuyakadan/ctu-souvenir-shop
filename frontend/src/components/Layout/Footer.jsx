@@ -21,8 +21,8 @@ const Footer = () => {
       </aside>
       <nav>
         <div className="grid grid-flow-col gap-4">
-          <Link>
-            <FaFacebook size={36} />
+          <Link to={"https://www.facebook.com/CTUDHCT"}>
+            <FaFacebook color="#3B5998" size={36} />
           </Link>
         </div>
       </nav>

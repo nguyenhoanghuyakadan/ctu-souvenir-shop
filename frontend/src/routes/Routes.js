@@ -16,26 +16,28 @@ import ShopLoginPage from "../pages/ShopLoginPage";
 import OrderDetailsPage from "../pages/OrderDetailsPage";
 import TrackOrderPage from "../pages/TrackOrderPage";
 import UserInboxPage from "../pages/UserInboxPage";
-import PageNotfound from "../pages/PageNotfound"
+import PageNotfound from "../pages/PageNotfound";
+import AboutMePage from "../pages/AboutMePage";
 
-export { 
-    LoginPage,
-    SignupPage,
-    ActivationPage,
-    HomePage,
-    ProductsPage,
-    BestSellingPage,
-    FAQPage,
-    CheckoutPage,
-    PaymentPage,
-    OrderSuccessPage,
-    ProductDetailsPage,
-    ProfilePage,
-    ShopCreatePage,
-    SellerActivationPage,
-    ShopLoginPage,
-    OrderDetailsPage,
-    TrackOrderPage,
-    UserInboxPage,
-    PageNotfound
+export {
+  LoginPage,
+  SignupPage,
+  ActivationPage,
+  HomePage,
+  ProductsPage,
+  BestSellingPage,
+  FAQPage,
+  CheckoutPage,
+  PaymentPage,
+  OrderSuccessPage,
+  ProductDetailsPage,
+  ProfilePage,
+  ShopCreatePage,
+  SellerActivationPage,
+  ShopLoginPage,
+  OrderDetailsPage,
+  TrackOrderPage,
+  UserInboxPage,
+  PageNotfound,
+  AboutMePage,
 };

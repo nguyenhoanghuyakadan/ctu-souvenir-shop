@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import styles from "../../styles/styles";
 import { useEffect } from "react";
 import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 import { useSelector } from "react-redux";
@@ -168,12 +167,12 @@ const PaymentInfo = ({
         {/* pay with payement */}
         {select === 2 ? (
           <div className="w-full flex border-b">
-            <div
-              className={`${styles.button} !bg-[#f63b60] text-white h-[45px] rounded-[5px] cursor-pointer text-[18px] font-[600]`}
+            <button
               onClick={() => setOpen(true)}
+              className="btn btn-error font-bold text-white"
             >
               Thanh toán ngay
-            </div>
+            </button>
             {open && (
               <div className="w-full fixed top-0 left-0 bg-[#00000039] h-screen flex items-center justify-center z-[99999]">
                 <div className="w-full 800px:w-[40%] h-screen 800px:h-[80vh] bg-white rounded-[5px] shadow flex flex-col justify-center p-8 relative overflow-y-scroll">
@@ -224,11 +223,12 @@ const PaymentInfo = ({
         {select === 3 ? (
           <div className="w-full flex">
             <form className="w-full" onSubmit={cashOnDeliveryHandler}>
-              <input
+              <button
                 type="submit"
-                value="Xác nhận"
-                className={`${styles.button} !bg-[#f63b60] text-[#fff] h-[45px] rounded-[5px] cursor-pointer text-[18px] font-[600]`}
-              />
+                className="btn btn-error font-bold text-white"
+              >
+                Xác nhận
+              </button>
             </form>
           </div>
         ) : null}

@@ -1,17 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { AiOutlineArrowRight, AiOutlineMoneyCollect } from "react-icons/ai";
-import { GiMoneyStack } from "react-icons/gi";
-import { RiBillLine } from "react-icons/ri";
-import { IoFileTrayStackedOutline } from "react-icons/io5";
-import styles from "../../styles/styles";
+import { AiOutlineArrowRight } from "react-icons/ai";
 import { Link } from "react-router-dom";
-import { MdBorderClear } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllOrdersOfShop } from "../../redux/actions/order";
 import { getAllProductsShop } from "../../redux/actions/product";
 import { Button } from "@material-ui/core";
 import { DataGrid } from "@material-ui/data-grid";
 import currency from "currency-formatter";
+import { FaBox, FaMoneyBill, FaProductHunt } from "react-icons/fa6";
 
 const DashboardHero = () => {
   const dispatch = useDispatch();
@@ -96,15 +92,13 @@ const DashboardHero = () => {
       <div className="w-full block 800px:flex items-center justify-between">
         <div className="w-full mb-4 800px:w-[30%] min-h-[20vh] bg-white shadow rounded px-2 py-5">
           <div className="flex items-center">
-            <GiMoneyStack size={30} className="mr-2" fill="#00000085" />
-            <h3
-              className={`${styles.productTitle} !text-[18px] leading-5 !font-[400] text-[#00000085]`}
-            >
+            <FaMoneyBill size={36} color="#50e991" />
+            <h3 className="text-xl ml-2">
               Thu nhập (Với 10% phí dich vụ){" "}
               <span className="text-[16px]"></span>
             </h3>
           </div>
-          <h5 className="pt-2 pl-[36px] text-[22px] font-[500]">
+          <h5 className="text-xl font-bold pt-2 pl-10">
             {currency.format(availableBalance, { code: "VND" })}
           </h5>
           <Link to="/dashboard-withdraw-money">
@@ -114,14 +108,10 @@ const DashboardHero = () => {
 
         <div className="w-full mb-4 800px:w-[30%] min-h-[20vh] bg-white shadow rounded px-2 py-5">
           <div className="flex items-center">
-            <RiBillLine size={30} className="mr-2" fill="#00000085" />
-            <h3
-              className={`${styles.productTitle} !text-[18px] leading-5 !font-[400] text-[#00000085]`}
-            >
-              Đơn hàng
-            </h3>
+            <FaBox size={36} color="#e6d800" />
+            <h3 className="text-xl ml-2">Đơn hàng</h3>
           </div>
-          <h5 className="pt-2 pl-[36px] text-[22px] font-[500]">
+          <h5 className="text-xl font-bold pt-2 pl-10">
             {orders && orders.length}
           </h5>
           <Link to="/dashboard-orders">
@@ -131,18 +121,13 @@ const DashboardHero = () => {
 
         <div className="w-full mb-4 800px:w-[30%] min-h-[20vh] bg-white shadow rounded px-2 py-5">
           <div className="flex items-center">
-            <IoFileTrayStackedOutline
-              size={30}
-              className="mr-2"
-              fill="#00000085"
+            <FaProductHunt
+              size={36}
+              color="#0bb4ff"
             />
-            <h3
-              className={`${styles.productTitle} !text-[18px] leading-5 !font-[400] text-[#00000085]`}
-            >
-              Sản phẩm
-            </h3>
+            <h3 className="text-xl ml-2">Sản phẩm</h3>
           </div>
-          <h5 className="pt-2 pl-[36px] text-[22px] font-[500]">
+          <h5 className="text-xl font-bold pt-2 pl-10">
             {products && products.length}
           </h5>
           <Link to="/dashboard-products">

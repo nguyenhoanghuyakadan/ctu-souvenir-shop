@@ -64,10 +64,10 @@ router.put(
             new ErrorHandler("Không tìm thấy sản phẩm với ID này!", 404)
           );
         }
-        existingProduct.price = price;
+        if (price !== null) {
+          existingProduct.price = price;
+        }
         existingProduct.isActive = isActive;
-
-        console.log(existingProduct);
         await existingProduct.save();
 
         res.status(200).json({

@@ -44,11 +44,11 @@ const AllProducts = () => {
   };
 
   const handleUpdate = () => {
+    console.log(selectedProduct._id, updateData);
     dispatch(updateProduct(selectedProduct._id, updateData));
     setSelectedProduct(null);
     toast.success("Sản phẩm đã được cập nhật thành công!");
-    navigate(`/product/${selectedProduct._id}`);
-    window.location.reload();
+    setTimeout(() => window.location.reload(), 3000);
   };
 
   const columns = [

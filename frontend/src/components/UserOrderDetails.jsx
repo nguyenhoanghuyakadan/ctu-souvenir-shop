@@ -1,11 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import styles from "../styles/styles";
 import { getAllOrdersOfUser } from "../redux/actions/order";
 import { backend_url, server } from "../server";
 import { RxCross1 } from "react-icons/rx";
-import { FaBagShopping, FaMotorcycle, FaCashRegister } from "react-icons/fa6";
+import {
+  FaBagShopping,
+  FaMotorcycle,
+  FaCashRegister,
+  FaRegMessage,
+} from "react-icons/fa6";
 import { AiFillStar, AiOutlineStar } from "react-icons/ai";
 import axios from "axios";
 import { toast } from "react-toastify";
@@ -13,13 +17,12 @@ import currency from "currency-formatter";
 
 const UserOrderDetails = () => {
   const { orders } = useSelector((state) => state.order);
-  const { user } = useSelector((state) => state.user);
+  const { user, isAuthenticated } = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
   const [comment, setComment] = useState("");
   const [selectedItem, setSelectedItem] = useState(null);
   const [rating, setRating] = useState(1);
-  const [conversations, setConversations] = useState([]);
   const navigate = useNavigate();
   const { id } = useParams();
 
@@ -27,26 +30,26 @@ const UserOrderDetails = () => {
     dispatch(getAllOrdersOfUser(user._id));
   }, [dispatch]);
 
-  useEffect(() => {
-    const getConversation = async () => {
-      try {
-        const resonse = await axios.get(
-          `${server}/conversation/get-all-conversation-user/${user?._id}`,
-          {
-            withCredentials: true,
-          }
-        );
+  // useEffect(() => {
+  //   const getConversation = async () => {
+  //     try {
+  //       const resonse = await axios.get(
+  //         `${server}/conversation/get-all-conversation-user/${user?._id}`,
+  //         {
+  //           withCredentials: true,
+  //         }
+  //       );
 
-        setConversations(resonse.data.conversations);
-      } catch (error) {
-        // console.log(error);
-      }
-    };
-    getConversation();
-  }, [user]);
-  const conversation = conversations.find((conversation) => {
-    return conversation.members.includes(user._id);
-  });
+  //       setConversations(resonse.data.conversations);
+  //     } catch (error) {
+  //       // console.log(error);
+  //     }
+  //   };
+  //   getConversation();
+  // }, [user]);
+  // const conversation = conversations.find((conversation) => {
+  //   return conversation.members.includes(user._id);
+  // });
 
   const data = orders && orders.find((item) => item._id === id);
   const totalPriceWithoutShippingFee =
@@ -96,8 +99,33 @@ const UserOrderDetails = () => {
       });
   };
 
+  const handleMessageSubmit = async () => {
+    if (isAuthenticated) {
+      // const groupTitle = data._id + user._id;
+      const groupTitle = data.shop + user._id;
+      const userId = user._id;
+      const sellerId = data.shop;
+      await axios
+        .post(`${server}/conversation/create-new-conversation`, {
+          groupTitle,
+          userId,
+          sellerId,
+        })
+        .then((res) => {
+          navigate(`/inbox?${res.data.conversation._id}`);
+        })
+        .catch((error) => {
+          toast.error(error.response.data.message);
+        });
+    } else {
+      toast.error("Vui lòng đăng nhập để nhắn tin");
+    }
+  };
+
+  console.log(data);
+
   return (
-    <div className={`py-4 min-h-screen ${styles.section}`}>
+    <div className="py-4 min-h-screen">
       <div className="w-full flex items-center justify-between">
         <div className="flex items-center">
           <FaBagShopping size={30} />
@@ -130,8 +158,7 @@ const UserOrderDetails = () => {
               <div className="w-full mx-2">
                 <h5 className="font-bold text-xl">{item.name}</h5>
                 <h5 className="text-xl">
-                  {currency.format(item.price, { code: "VND" })} x{" "}
-                  {item.qty}
+                  {currency.format(item.price, { code: "VND" })} x {item.qty}
                 </h5>
               </div>
               {!item.isReviewed && data?.status === "Delivered" ? (
@@ -152,7 +179,7 @@ const UserOrderDetails = () => {
           <div className="w-[50%] h-min bg-[#fff] shadow rounded-md p-3">
             <div className="w-full flex justify-end">
               <RxCross1
-                size={30}
+                size={36}
                 onClick={() => setOpen(false)}
                 className="cursor-pointer"
               />
@@ -187,7 +214,7 @@ const UserOrderDetails = () => {
                     key={i}
                     className="mr-1 cursor-pointer"
                     color="rgb(255,255,0)"
-                    size={25}
+                    size={24}
                     onClick={() => setRating(i)}
                   />
                 ) : (
@@ -195,7 +222,7 @@ const UserOrderDetails = () => {
                     key={i}
                     className="mr-1 cursor-pointer"
                     color="rgb(255,255,0)"
-                    size={25}
+                    size={24}
                     onClick={() => setRating(i)}
                   />
                 )
@@ -252,7 +279,7 @@ const UserOrderDetails = () => {
       <div className="w-full 800px:flex">
         <div className="w-full">
           <div className="my-4 flex">
-            <FaMotorcycle size={30} />
+            <FaMotorcycle size={36} />
             <span className="font-bold text-xl uppercase text-accent mx-2">
               Thông tin giao hàng
             </span>
@@ -274,9 +301,9 @@ const UserOrderDetails = () => {
             </span>
           </h4>
         </div>
-        <div className="w-full">
+        <div className="w-full flex flex-col">
           <div className="my-4 flex">
-            <FaCashRegister size={30} />
+            <FaCashRegister size={36} />
             <span className="font-bold text-xl uppercase text-accent mx-2">
               Thông tin thanh toán
             </span>
@@ -290,13 +317,23 @@ const UserOrderDetails = () => {
             </span>
           </h4>
           {data?.status === "Delivered" && (
-            <button
-              onClick={refundHandler}
-              className="btn btn-warning font-bold text-white uppercase"
-            >
-              Yêu cầu trả hàng
-            </button>
+            <div>
+              <button
+                onClick={refundHandler}
+                className="btn btn-warning font-bold text-white uppercase my-2"
+              >
+                Yêu cầu trả hàng
+              </button>
+            </div>
           )}
+          <div>
+            <button
+              onClick={handleMessageSubmit}
+              className="btn btn-info text-white font-bold my-2"
+            >
+              Gửi tin nhắn <FaRegMessage size={24} />
+            </button>
+          </div>
         </div>
       </div>
     </div>

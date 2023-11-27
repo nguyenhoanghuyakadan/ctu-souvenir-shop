@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import styles from "../../styles/styles";
 import { Country, State } from "country-state-city";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
@@ -181,7 +180,7 @@ const ShippingInfo = ({
               type="text"
               value={user && user.name}
               required
-              className={`${styles.input} !w-[95%]`}
+              className="w-full border p-1 rounded-[5px] !w-[95%]"
             />
           </div>
           <div className="w-[50%]">
@@ -190,7 +189,7 @@ const ShippingInfo = ({
               type="email"
               value={user && user.email}
               required
-              className={`${styles.input}`}
+              className="w-full border p-1 rounded-[5px]"
             />
           </div>
         </div>
@@ -203,19 +202,9 @@ const ShippingInfo = ({
               required
               value={phoneNumber}
               onChange={(e) => setPhoneNumber(e.target.value)}
-              className={`${styles.input} !w-[95%]`}
+              className="w-full border p-1 rounded-[5px] !w-[95%]"
             />
           </div>
-          {/* <div className="w-[50%]">
-            <label className="block pb-2">Zip Code</label>
-            <input
-              type="number"
-              value={zipCode}
-              onChange={(e) => setZipCode(e.target.value)}
-              required
-              className={`${styles.input}`}
-            />
-          </div> */}
           <div className="w-[50%]">
             <label className="block pb-2">Tỉnh, thành phố:</label>
             <select
@@ -255,24 +244,6 @@ const ShippingInfo = ({
                 ))}
             </select>
           </div>
-          {/* <div className="w-[50%]">
-           <label className="block pb-2">Tỉnh, thành phố:</label>
-            <select
-              className="w-[95%] border h-[40px] rounded-[5px]"
-              value={city}
-              onChange={(e) => setCity(e.target.value)}
-            >
-              <option className="block pb-2" value="">
-                Chọn tỉnh, thành phố
-              </option>
-              {State &&
-                State.getStatesOfCountry(country).map((item) => (
-                  <option key={item.isoCode} value={item.isoCode}>
-                    {item.name}
-                  </option>
-                ))}
-            </select>
-          </div> */}
         </div>
 
         <div className="w-full flex pb-3">
@@ -283,19 +254,9 @@ const ShippingInfo = ({
               required
               value={address1}
               onChange={(e) => setAddress1(e.target.value)}
-              className={`${styles.input} !w-[95%]`}
+              className="w-full border p-1 rounded-[5px] !w-[95%]"
             />
           </div>
-          {/* <div className="w-[50%]">
-            <label className="block pb-2">Address2</label>
-            <input
-              type="address"
-              value={address2}
-              onChange={(e) => setAddress2(e.target.value)}
-              required
-              className={`${styles.input}`}
-            />
-          </div> */}
         </div>
 
         <div></div>

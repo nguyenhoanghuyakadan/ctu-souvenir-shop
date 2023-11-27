@@ -4,7 +4,7 @@ import { navItems } from "../../static/data";
 
 const Navbar = ({ active }) => {
   return (
-    <div className="hidden block 800px:flex">
+    <div className="block 800px:flex">
       {navItems &&
         navItems.map((i, index) => (
           <div className="flex">
