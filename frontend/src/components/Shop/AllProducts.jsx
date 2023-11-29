@@ -1,7 +1,13 @@
 import { Button } from "@material-ui/core";
 import { DataGrid } from "@material-ui/data-grid";
 import React, { useEffect, useState } from "react";
-import { FaFilePen, FaLink, FaTrash, FaEye } from "react-icons/fa6";
+import {
+  FaFilePen,
+  FaLink,
+  FaTrash,
+  FaEye,
+  FaCircleCheck,
+} from "react-icons/fa6";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { getAllProductsShop } from "../../redux/actions/product";
@@ -13,9 +19,7 @@ import { toast } from "react-toastify";
 import { AiOutlinePlusCircle } from "react-icons/ai";
 
 const AllProducts = () => {
-  const { products, isLoading, success, error } = useSelector(
-    (state) => state.products
-  );
+  const { products, isLoading } = useSelector((state) => state.products);
   const { seller } = useSelector((state) => state.seller);
 
   const [selectedProduct, setSelectedProduct] = useState(null);
@@ -44,18 +48,23 @@ const AllProducts = () => {
   };
 
   const handleSubmit = (e) => {
-    e.preventDefault();
-    const newForm = new FormData();
-    images.forEach((image) => {
-      newForm.append("images", image);
-    });
-    newForm.append("name", name);
-    newForm.append("description", description);
-    newForm.append("price", price);
-    newForm.append("shopId", seller._id);
-    dispatch(updateProduct(selectedProduct._id, newForm));
-    toast.success("Cập nhật sản phẩm thành công!");
+    try {
+      e.preventDefault();
+      const newForm = new FormData();
+      images.forEach((image) => {
+        newForm.append("images", image);
+      });
+      newForm.append("name", name);
+      newForm.append("description", description);
+      newForm.append("price", price);
+      newForm.append("shopId", seller._id);
+      dispatch(updateProduct(selectedProduct._id, newForm));
+      setSelectedProduct(null);
+      toast.success("Cập nhật sản phẩm thành công!");
+      setTimeout(() => window.location.reload(), 3000);
+    } catch (error) {}
   };
+
 
   const columns = [
     { field: "id", headerName: "ID SP", hide: true },
@@ -152,7 +161,15 @@ const AllProducts = () => {
       align: "left",
       sortable: false,
       renderCell: (params) => {
-        return <>{params.row.isActive ? <FaEye size={20} /> : null}</>;
+        return (
+          <>
+            {params.row.isActive ? (
+              <FaCircleCheck color="#50e991" size={24} />
+            ) : (
+              <FaCircleCheck color="#e60049" size={24} />
+            )}
+          </>
+        );
       },
     },
   ];
@@ -169,7 +186,7 @@ const AllProducts = () => {
         })}`,
         stock: item.stock,
         sold: item?.sold_out,
-        isActive: item.isActive,
+        isActive: item?.isActive,
       });
     });
 
@@ -192,12 +209,11 @@ const AllProducts = () => {
 
           {selectedProduct && (
             <div className="fixed top-0 left-0 w-full h-full bg-gray-700 bg-opacity-50 flex items-center justify-center z-[9999]">
-              <div className="bg-white p-4 rounded-md">
+              <div className="bg-white p-4 rounded w-1/2">
                 <h2 className="text-xl font-bold uppercase text-center">
                   Cập nhật sản phẩm
                 </h2>
                 <form onSubmit={handleSubmit}>
-                  <br />
                   <div>
                     <label className="pb-2">
                       Tên sản phẩm <span className="text-red-500">*</span>
@@ -211,8 +227,7 @@ const AllProducts = () => {
                       placeholder={selectedProduct.name}
                     />
                   </div>
-                  <br />
-                  <div>
+                  <div className="mt-2">
                     <label className="pb-2">
                       Mô tả <span className="text-red-500">*</span>
                     </label>
@@ -228,8 +243,7 @@ const AllProducts = () => {
                       placeholder={selectedProduct.description}
                     ></textarea>
                   </div>
-                  <br />
-                  <div>
+                  <div className="mt-2">
                     <label className="pb-2">Giá</label>
                     <input
                       type="number"
@@ -240,8 +254,7 @@ const AllProducts = () => {
                       placeholder={selectedProduct.price}
                     />
                   </div>
-                  <br />
-                  <div>
+                  <div className="mt-2">
                     <label className="pb-2">
                       Hình ảnh <span className="text-red-500">*</span>
                     </label>
@@ -253,7 +266,7 @@ const AllProducts = () => {
                       multiple
                       onChange={handleImageChange}
                     />
-                    <div className="w-full flex items-center flex-wrap">
+                    <div className="w-full flex items-center flex-wrap mb-2">
                       <label htmlFor="upload">
                         <AiOutlinePlusCircle
                           size={30}
@@ -271,13 +284,18 @@ const AllProducts = () => {
                           />
                         ))}
                     </div>
-                    <br />
-                    <div>
+                    <div className="flex flex-col mt-2">
                       <button
                         type="submit"
-                        className="btn btn-outline btn-accent font-bold w-full text-white"
+                        className="btn btn-accent font-bold w-full text-white"
                       >
                         Cập nhật sản phẩm
+                      </button>
+                      <button
+                        onClick={() => setSelectedProduct(null)}
+                        className="btn btn-error text-white font-bold mt-2"
+                      >
+                        Hủy
                       </button>
                     </div>
                   </div>

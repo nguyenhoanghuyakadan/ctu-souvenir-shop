@@ -55,7 +55,7 @@ const InvoiceDetail = () => {
                 <div className="text-sm">
                   {invoice?.type === "Sale"
                     ? `Địa chỉ: ${invoice?.shop.address}`
-                    : `Địa chỉ: ${supplier?.address}, Email: ${supplier.email}, Số điện thoại: ${supplier?.phoneNumber}`}
+                    : `Địa chỉ: ${supplier?.address}, Email: ${supplier?.email}, Số điện thoại: ${supplier?.phoneNumber}`}
                 </div>
               </div>
               <div className="w-full h-0.5 bg-indigo-500"></div>

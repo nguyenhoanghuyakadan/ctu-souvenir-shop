@@ -154,7 +154,7 @@ const CreateProduct = () => {
           <div>
             <button
               type="submit"
-              className="btn btn-outline btn-accent font-bold w-full text-white"
+              className="btn btn-accent font-bold w-full text-white"
             >
               Thêm sản phẩm
             </button>

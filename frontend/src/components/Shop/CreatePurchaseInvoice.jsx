@@ -112,13 +112,24 @@ const CreatePurchaseInvoice = () => {
     products &&
     products?.find((product) => product._id === selectedItem)?.price;
 
+  const checkPrice = (item) => {
+    const product = products.find((product) => product._id === item.product);
+    const priceBetweenInAndSell = item.price - product.price;
+    if (priceBetweenInAndSell < 0) {
+      return true;
+    } else {
+      return false;
+    }
+  };
+
   const handleSave = () => {
     if (
       date &&
       invoiceNumber &&
       supplier &&
       selectedItemsData.every(
-        (item) => item.product && item.quantity && item.price
+        (item) =>
+          item.product && item.quantity && item.price && checkPrice(item)
       )
     ) {
       const isoDate = formatDateToISOString(date);
@@ -136,7 +147,9 @@ const CreatePurchaseInvoice = () => {
       navigate("/dashboard-invoices");
       window.location.reload();
     } else {
-      toast.error("Vui lòng điền đầy đủ thông tin.");
+      toast.error(
+        "Vui lòng điền đầy đủ thông tin hoặc kiểm tra giữa giá nhập và giá bán"
+      );
     }
   };
 
