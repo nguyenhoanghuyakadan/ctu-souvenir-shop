@@ -10,6 +10,7 @@ import { updateProduct } from "../../redux/actions/product";
 import Loader from "../Layout/Loader";
 import currency from "currency-formatter";
 import { toast } from "react-toastify";
+import { AiOutlinePlusCircle } from "react-icons/ai";
 
 const AllProducts = () => {
   const { products, isLoading, success, error } = useSelector(
@@ -18,11 +19,10 @@ const AllProducts = () => {
   const { seller } = useSelector((state) => state.seller);
 
   const [selectedProduct, setSelectedProduct] = useState(null);
-  const [updateData, setUpdateData] = useState({
-    price: null,
-    isActive: null,
-    shopId: seller._id,
-  });
+  const [images, setImages] = useState([]);
+  const [name, setName] = useState("");
+  const [description, setDescription] = useState("");
+  const [price, setPrice] = useState();
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -31,11 +31,11 @@ const AllProducts = () => {
     dispatch(getAllProductsShop(seller._id));
   }, [dispatch]);
 
-  const handleChangeCheckbox = (e) => {
-    setUpdateData({
-      ...updateData,
-      isActive: e.target.checked,
-    });
+  const handleImageChange = (e) => {
+    e.preventDefault();
+
+    let files = Array.from(e.target.files);
+    setImages((prevImages) => [...prevImages, ...files]);
   };
 
   const handleDelete = (id) => {
@@ -43,12 +43,18 @@ const AllProducts = () => {
     window.location.reload();
   };
 
-  const handleUpdate = () => {
-    console.log(selectedProduct._id, updateData);
-    dispatch(updateProduct(selectedProduct._id, updateData));
-    setSelectedProduct(null);
-    toast.success("Sản phẩm đã được cập nhật thành công!");
-    setTimeout(() => window.location.reload(), 3000);
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const newForm = new FormData();
+    images.forEach((image) => {
+      newForm.append("images", image);
+    });
+    newForm.append("name", name);
+    newForm.append("description", description);
+    newForm.append("price", price);
+    newForm.append("shopId", seller._id);
+    dispatch(updateProduct(selectedProduct._id, newForm));
+    toast.success("Cập nhật sản phẩm thành công!");
   };
 
   const columns = [
@@ -190,51 +196,92 @@ const AllProducts = () => {
                 <h2 className="text-xl font-bold uppercase text-center">
                   Cập nhật sản phẩm
                 </h2>
-                <div className="my-4">
-                  <label htmlFor="productPrice" className="font-bold">
-                    Giá:
-                  </label>
-                  <input
-                    type="number"
-                    id="productPrice"
-                    value={updateData.price}
-                    onChange={(e) =>
-                      setUpdateData({
-                        ...updateData,
-                        price: e.target.value,
-                      })
-                    }
-                    className="input input-bordered input-warning w-full max-w block"
-                    placeholder={selectedProduct.price}
-                  />
-                </div>
-                <div className="my-4">
-                  {/* Thêm input checkbox và kết nối với hàm handleChangeCheckbox */}
-                  <label htmlFor="isActive" className="font-bold">
-                    Trạng thái:
-                  </label>
-                  <input
-                    type="checkbox"
-                    id="isActive"
-                    checked={updateData.isActive}
-                    onChange={handleChangeCheckbox}
-                    className="checkbox checkbox-success block"
-                  />
-                </div>
-                <div className="mt-4 flex justify-between">
-                  <button
-                    onClick={handleUpdate}
-                    className="btn btn-success font-bold text-white uppercase"
-                  >
-                    Cập nhật
-                  </button>
-                  <button
-                    onClick={() => setSelectedProduct(null)}
-                    className="btn btn-error font-bold text-white uppercase"
-                  >
-                    Hủy
-                  </button>
-                </div>
+                <form onSubmit={handleSubmit}>
+                  <br />
+                  <div>
+                    <label className="pb-2">
+                      Tên sản phẩm <span className="text-red-500">*</span>
+                    </label>
+                    <input
+                      type="text"
+                      name="name"
+                      value={name}
+                      className="mt-2 appearance-none block w-full px-3 h-[35px] border border-gray-300 rounded-[3px] placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                      onChange={(e) => setName(e.target.value)}
+                      placeholder={selectedProduct.name}
+                    />
+                  </div>
+                  <br />
+                  <div>
+                    <label className="pb-2">
+                      Mô tả <span className="text-red-500">*</span>
+                    </label>
+                    <textarea
+                      cols="30"
+                      required
+                      rows="8"
+                      type="text"
+                      name="description"
+                      value={description}
+                      className="mt-2 appearance-none block w-full pt-2 px-3 border border-gray-300 rounded-[3px] placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                      onChange={(e) => setDescription(e.target.value)}
+                      placeholder={selectedProduct.description}
+                    ></textarea>
+                  </div>
+                  <br />
+                  <div>
+                    <label className="pb-2">Giá</label>
+                    <input
+                      type="number"
+                      name="price"
+                      value={price}
+                      className="mt-2 appearance-none block w-full px-3 h-[35px] border border-gray-300 rounded-[3px] placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                      onChange={(e) => setPrice(e.target.value)}
+                      placeholder={selectedProduct.price}
+                    />
+                  </div>
+                  <br />
+                  <div>
+                    <label className="pb-2">
+                      Hình ảnh <span className="text-red-500">*</span>
+                    </label>
+                    <input
+                      type="file"
+                      name=""
+                      id="upload"
+                      className="hidden"
+                      multiple
+                      onChange={handleImageChange}
+                    />
+                    <div className="w-full flex items-center flex-wrap">
+                      <label htmlFor="upload">
+                        <AiOutlinePlusCircle
+                          size={30}
+                          className="mt-3"
+                          color="#555"
+                        />
+                      </label>
+                      {images &&
+                        images.map((i) => (
+                          <img
+                            src={URL.createObjectURL(i)}
+                            key={i}
+                            alt=""
+                            className="h-[120px] w-[120px] object-cover m-2"
+                          />
+                        ))}
+                    </div>
+                    <br />
+                    <div>
+                      <button
+                        type="submit"
+                        className="btn btn-outline btn-accent font-bold w-full text-white"
+                      >
+                        Cập nhật sản phẩm
+                      </button>
+                    </div>
+                  </div>
+                </form>
               </div>
             </div>
           )}

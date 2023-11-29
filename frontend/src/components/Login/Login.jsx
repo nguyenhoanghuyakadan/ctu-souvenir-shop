@@ -36,7 +36,6 @@ const Login = () => {
 
   const handleForgotPasswordSubmit = async (e) => {
     e.preventDefault();
-    console.log(email);
     await axios
       .post(`${server}/user/forgot-password`, {
         email,

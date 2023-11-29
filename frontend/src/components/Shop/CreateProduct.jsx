@@ -16,7 +16,7 @@ const CreateProduct = () => {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [category, setCategory] = useState("");
-  const [price, setOriginalPrice] = useState();
+  const [price, setPrice] = useState();
 
   useEffect(() => {
     if (error) {
@@ -119,7 +119,7 @@ const CreateProduct = () => {
             name="price"
             value={price}
             className="mt-2 appearance-none block w-full px-3 h-[35px] border border-gray-300 rounded-[3px] placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-            onChange={(e) => setOriginalPrice(e.target.value)}
+            onChange={(e) => setPrice(e.target.value)}
             placeholder="Thêm giá của sản phẩm"
           />
         </div>

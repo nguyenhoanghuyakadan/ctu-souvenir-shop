@@ -49,7 +49,6 @@ const Header = ({ activeHeading }) => {
   }, []);
 
   const handleInputClick = () => {
-    // Đặt trạng thái isOpen về true khi input được click
     setIsOpen(true);
   };
 

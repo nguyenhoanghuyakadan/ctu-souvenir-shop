@@ -40,42 +40,46 @@ router.post(
   })
 );
 
-// update product
 router.put(
-  "/update-product/:id",
+  "/update-product/:productId",
+  upload.array("images"),
   catchAsyncErrors(async (req, res, next) => {
     try {
-      const shopId = req.body.shopId;
-      const shop = await Shop.findById(shopId);
-      if (!shop) {
-        return next(new ErrorHandler("Id cửa hàng không hợp lệ!", 400));
-      } else {
-        const productId = req.params.id;
-        const { price, isActive } = req.body;
-        if (!productId) {
-          return next(
-            new ErrorHandler("ID sản phẩm hoặc ID cửa hàng không hợp lệ!", 400)
-          );
-        }
+      const productId = req.params.productId;
+      console.log(productId);
+      const product = await Product.findById(productId);
 
-        const existingProduct = await Product.findById(productId);
-        if (!existingProduct) {
-          return next(
-            new ErrorHandler("Không tìm thấy sản phẩm với ID này!", 404)
-          );
-        }
-        if (price !== null) {
-          existingProduct.price = price;
-        }
-        existingProduct.isActive = isActive;
-        await existingProduct.save();
+      if (!product) {
+        return next(new ErrorHandler("Sản phẩm không tồn tại!", 404));
+      }
 
-        res.status(200).json({
-          message: "Cập nhật sản phẩm thành công!",
+      for (const oldImage of product.images) {
+        fs.unlink(`uploads/${oldImage}`, (err) => {
+          if (err) {
+            console.log(err);
+            res.status(500).json({ message: "Error deleting file" });
+          }
         });
       }
+
+      const files = req.files;
+      const imageUrls = files.map((file) => `${file.filename}`);
+
+      const updatedProductData = req.body;
+      updatedProductData.images = imageUrls;
+
+      const updatedProduct = await Product.findByIdAndUpdate(
+        productId,
+        updatedProductData,
+        { new: true, runValidators: true }
+      );
+
+      res.status(200).json({
+        success: true,
+        updatedProduct,
+      });
     } catch (error) {
-      return next(new ErrorHandler("Cập nhật sản phẩm thất bại!", 400));
+      return next(new ErrorHandler(error, 400));
     }
   })
 );
@@ -229,4 +233,38 @@ router.get(
     }
   })
 );
+
+router.put(
+  "/admin-set-isactive-product",
+  isAuthenticated,
+  isAdmin("Admin"),
+  catchAsyncErrors(async (req, res, next) => {
+    try {
+      const { productId, isActive } = req.body;
+      const product = await Product.findById(productId);
+      if (!product) {
+        return next(
+          new ErrorHandler("Không tìm thấy sản phẩm với ID này!", 500)
+        );
+      }
+
+      product.isActive = isActive;
+
+      const updatedProduct = await Product.findByIdAndUpdate(
+        productId,
+        product,
+        { new: true, runValidators: true }
+      );
+
+      res.status(200).json({
+        success: true,
+        updatedProduct,
+        message: "Duyệt sản phẩm thành công!"
+      });
+    } catch (error) {
+      return next(new ErrorHandler(error.message, 500));
+    }
+  })
+);
+
 module.exports = router;
