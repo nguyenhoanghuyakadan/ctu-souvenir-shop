@@ -18,9 +18,11 @@ import TrackOrderPage from "../pages/TrackOrderPage";
 import UserInboxPage from "../pages/UserInboxPage";
 import PageNotfound from "../pages/PageNotfound";
 import AboutMePage from "../pages/AboutMePage";
+import ResetPasswordPage from "../pages/ResetPasswordPage";
 
 export {
   LoginPage,
+  ResetPasswordPage,
   SignupPage,
   ActivationPage,
   HomePage,

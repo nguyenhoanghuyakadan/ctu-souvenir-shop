@@ -10,6 +10,7 @@ const jwt = require("jsonwebtoken");
 const sendMail = require("../utils/sendMail");
 const sendToken = require("../utils/jwtToken");
 const { isAuthenticated, isAdmin } = require("../middleware/auth");
+const CryptoJS = require("crypto-js");
 
 router.post("/create-user", upload.single("file"), async (req, res, next) => {
   try {
@@ -406,6 +407,72 @@ router.delete(
     } catch (error) {
       return next(new ErrorHandler(error.message, 500));
     }
+  })
+);
+
+router.post(
+  "/forgot-password",
+  catchAsyncErrors(async (req, res, next) => {
+    const { email } = req.body;
+    const user = await User.findOne({ email });
+    if (!user) {
+      return next(new ErrorHandler("Người dùng không tồn tại!", 404));
+    }
+
+    // Tạo token để đặt lại mật khẩu
+    const resetToken = CryptoJS.lib.WordArray.random(128 / 8).toString();
+    const resetPasswordToken = CryptoJS.SHA256(resetToken).toString();
+
+    // Thời gian hết hạn của token (ví dụ: 30 phút)
+    const resetPasswordTime = Date.now() + 30 * 60 * 1000;
+
+    // Lưu thông tin token vào database
+    user.resetPasswordToken = resetPasswordToken;
+    user.resetPasswordTime = resetPasswordTime;
+    await user.save();
+
+    // Gửi email chứa liên kết đặt lại mật khẩu
+    const resetUrl = `http://localhost:3000/reset-password/${resetToken}`;
+    await sendMail({
+      email: user.email,
+      subject: "Reset Your Password",
+      message: `Đến link này để reset lại mật khẩu của bạn: ${resetUrl}`,
+    });
+
+    res.status(200).json({
+      success: true,
+      message:
+        "Đã gửi email để đặt lại mật khẩu. Vui lòng kiểm tra hộp thư đến của bạn!",
+    });
+  })
+);
+
+// ... các đoạn code khác
+
+// Đặt lại mật khẩu
+router.post(
+  "/reset-password/:resetToken",
+  catchAsyncErrors(async (req, res, next) => {
+    const resetToken = req.params.resetToken;
+
+    // Tìm người dùng với token trong database
+    const user = await User.findOne({
+      resetPasswordToken: CryptoJS.SHA256(resetToken).toString(),
+      resetPasswordTime: { $gt: Date.now() },
+    });
+
+    if (!user) {
+      return next(new ErrorHandler("Token không hợp lệ hoặc đã hết hạn!", 400));
+    }
+
+    // Thiết lập mật khẩu mới
+    user.password = req.body.newPassword;
+    user.resetPasswordToken = undefined;
+    user.resetPasswordTime = undefined;
+    await user.save();
+
+    // Gửi lại token và thông tin đăng nhập
+    sendToken(user, 201, res);
   })
 );
 

@@ -21,8 +21,8 @@ import {
   TrackOrderPage,
   UserInboxPage,
   PageNotfound,
-  // UserInbox,
   AboutMePage,
+  ResetPasswordPage,
 } from "./routes/Routes.js";
 import {
   ShopDashboardPage,
@@ -82,6 +82,10 @@ const App = () => {
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/login" element={<LoginPage />} />
+        <Route
+          path="/reset-password/:resetToken"
+          element={<ResetPasswordPage />}
+        />
         <Route path="/sign-up" element={<SignupPage />} />
         <Route
           path="/activation/:activation_token"

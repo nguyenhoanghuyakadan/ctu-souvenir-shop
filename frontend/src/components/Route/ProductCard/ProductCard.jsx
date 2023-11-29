@@ -93,6 +93,11 @@ const ProductCard = ({ data }) => {
             Đã bán {data?.sold_out}
           </span>
         </div>
+        {data?.stock === 0 && (
+          <p className="font-bold text-error">
+            Hết hàng
+          </p>
+        )}
       </Link>
 
       {/* side options */}

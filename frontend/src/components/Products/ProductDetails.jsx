@@ -186,14 +186,20 @@ const ProductDetails = ({ data }) => {
                     <span className="m-auto text-2xl font-bold">+</span>
                   </button>
                 </div>
-                <div className="flex items-center my-4">
-                  <button
-                    onClick={() => addToCartHandler(data._id)}
-                    className="btn btn-outline btn-info text-white font-bold text-xl rounded"
-                  >
-                    Thêm vào giỏ <AiOutlineShoppingCart size={24} />
-                  </button>
-                  <div className="flex items-center ">
+                <div className="flex flex-col items-start my-4">
+                  {data?.stock === 0 ? (
+                    <p className="text-xl font-bold text-error">
+                      Sản phẩm hiện đang hết hàng
+                    </p>
+                  ) : (
+                    <button
+                      onClick={() => addToCartHandler(data._id)}
+                      className="btn btn-outline btn-info text-white font-bold text-xl rounded"
+                    >
+                      Thêm vào giỏ hàng <AiOutlineShoppingCart size={24} />
+                    </button>
+                  )}
+                  <div className="flex items-center mt-2">
                     {click ? (
                       <>
                         <AiFillHeart
@@ -203,7 +209,7 @@ const ProductDetails = ({ data }) => {
                           color={click ? "red" : "#333"}
                           title="Xóa khỏi mục yêu thích"
                         />
-                        <span className="text-xl font-semibold">Đã thích </span>
+                        <span className="text-xl font-semibold ml-2">Đã thích </span>
                       </>
                     ) : (
                       <>
