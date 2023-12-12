@@ -114,7 +114,7 @@ router.put(
       if (req.body.status === "Delivered") {
         order.deliveredAt = Date.now();
         order.paymentInfo.status = "Succeeded";
-        console.log(order)
+        console.log(order);
 
         const serviceCharge = order.totalPrice * 0.1;
         await updateSellerInfo(order.totalPrice - serviceCharge);
@@ -132,6 +132,7 @@ router.put(
         });
 
         await newInvoice.save({ validateBeforeSave: false });
+        order.invoice = newInvoice._id;
       }
 
       await order.save({ validateBeforeSave: false });
@@ -206,8 +207,12 @@ router.put(
       }
 
       order.status = req.body.status;
-
       await order.save();
+
+      await Invoice.findByIdAndUpdate(
+        { _id: order.invoice },
+        { $set: { type: "Refund" } }
+      );
 
       res.status(200).json({
         success: true,

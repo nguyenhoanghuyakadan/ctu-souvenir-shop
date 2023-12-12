@@ -22,6 +22,10 @@ const orderSchema = new mongoose.Schema({
     ref: "Shop",
     required: true,
   },
+  invoice: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Invoice", // Tham chiếu đến model 'Invoice'
+  },
   status: {
     type: String,
     default: "Processing",

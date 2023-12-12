@@ -28,13 +28,9 @@ const InvoiceDetail = () => {
       return total + product.quantity * product.price;
     }, 0);
 
-  console.log(invoice);
-
   const supplier =
     invoice &&
     allSuppliers.find((supplier) => supplier.name === invoice.supplier);
-
-  console.log(supplier);
 
   return (
     <>
@@ -47,15 +43,18 @@ const InvoiceDetail = () => {
               <div className="flex flex-col justify-between text-center">
                 <div>
                   <h1 className="text-3xl italic font-bold tracking-widest">
-                    {invoice?.type === "Sale"
-                      ? invoice?.shop.name
-                      : supplier?.name}
+                    {invoice?.type === "Sale" && invoice?.shop.name}
+                    {invoice?.type === "Purchase" && supplier?.name}
+                    {invoice?.type === "Refund" && invoice?.shop.name}
                   </h1>
                 </div>
                 <div className="text-sm">
-                  {invoice?.type === "Sale"
-                    ? `Địa chỉ: ${invoice?.shop.address}`
-                    : `Địa chỉ: ${supplier?.address}, Email: ${supplier?.email}, Số điện thoại: ${supplier?.phoneNumber}`}
+                  {invoice?.type === "Sale" &&
+                    `Địa chỉ: ${invoice?.shop?.address}`}
+                  {invoice?.type === "Purchase" &&
+                    `Địa chỉ: ${supplier?.address}, Email: ${supplier?.email}, Số điện thoại: ${supplier?.phoneNumber}`}
+                  {invoice?.type === "Refund" &&
+                    `Địa chỉ: ${invoice?.shop?.address}`}
                 </div>
               </div>
               <div className="w-full h-0.5 bg-indigo-500"></div>
@@ -82,43 +81,63 @@ const InvoiceDetail = () => {
                           )} Năm ${invoice?.date.slice(0, 4)}`}
                       </span>
                     </div>
-                    {invoice?.type === "Sale" ? (
+                    {invoice?.type === "Sale" && (
                       <>
                         <div className="text-sm">
                           <span className="font-bold">Khách hàng: </span>
-                          {invoice?.customer.name}
+                          {invoice?.customer?.name}
                         </div>
                         <div className="text-sm">
                           <span className="font-bold">Email: </span>
-                          {invoice?.customer.email}
+                          {invoice?.customer?.email}
                         </div>
                       </>
-                    ) : (
+                    )}
+                    {invoice?.type === "Purchase" && (
                       <>
                         <div className="text-sm">
                           <span className="font-bold">Khách hàng: </span>
-                          {invoice?.shop.name}
+                          {invoice?.shop?.name}
                         </div>
                         <div className="text-sm">
                           <span className="font-bold">Email: </span>
-                          {invoice?.shop.email}
+                          {invoice?.shop?.email}
                         </div>
                         <div className="text-sm">
                           <span className="font-bold">Địa chỉ: </span>
-                          {invoice?.shop.address}
+                          {invoice?.shop?.address}
+                        </div>
+                      </>
+                    )}
+                    {invoice?.type === "Refund" && (
+                      <>
+                        <div className="text-sm">
+                          <span className="font-bold">Khách hàng: </span>
+                          {invoice?.customer?.name}
+                        </div>
+                        <div className="text-sm">
+                          <span className="font-bold">Email: </span>
+                          {invoice?.customer?.email}
                         </div>
                       </>
                     )}
                   </div>
                   <div>
-                    {invoice?.type === "Sale" ? (
+                    {invoice?.type === "Sale" && (
                       <img
-                        src={`${backend_url}${invoice?.shop.image}`}
+                        src={`${backend_url}${invoice?.shop?.avatar}`}
                         className="h-40 w-40 object-cover rounded"
                       />
-                    ) : (
+                    )}
+                    {invoice?.type === "Purchase" && (
                       <img
                         src={`${backend_url}${supplier?.image}`}
+                        className="h-40 w-40 object-cover rounded"
+                      />
+                    )}
+                    {invoice?.type === "Refund" && (
+                      <img
+                        src={`${backend_url}${invoice?.shop?.avatar}`}
                         className="h-40 w-40 object-cover rounded"
                       />
                     )}
@@ -127,7 +146,6 @@ const InvoiceDetail = () => {
               </div>
               <div className="overflow-x-auto">
                 <table className="table">
-                  {/* head */}
                   <thead>
                     <tr>
                       <th></th>
@@ -165,17 +183,17 @@ const InvoiceDetail = () => {
                 <div className="w-1/2">
                   <h3>Khách hàng</h3>
                   <div className="italic">
-                    {invoice?.type === "Sale"
-                      ? invoice?.customer.name
-                      : invoice?.shop.name}
+                    {invoice?.type === "Sale" && invoice?.customer?.name}
+                    {invoice?.type === "Purchase" && invoice?.shop?.name}
+                    {invoice?.type === "Refund" && invoice?.customer?.name}
                   </div>
                 </div>
                 <div className="w-1/2">
                   <h3>Người bán hàng</h3>
                   <div>
-                    {invoice?.type === "Sale"
-                      ? invoice?.shop.name
-                      : invoice?.supplier}
+                    {invoice?.type === "Sale" && invoice?.shop?.name}
+                    {invoice?.type === "Purchase" && invoice?.supplier}
+                    {invoice?.type === "Refund" && invoice?.shop?.name}
                   </div>
                 </div>
               </div>

@@ -24,9 +24,9 @@ router.get("/invoices-two-months", async (req, res) => {
     const shopId = req.query.shopId;
 
     const startDate1 = new Date(time1.getFullYear(), time1.getMonth(), 1);
-    const endDate1 = new Date(time1.getFullYear(), time1.getMonth() + 1, 0);
+    const endDate1 = new Date(time1.getFullYear(), time1.getMonth() + 1, 1);
     const startDate2 = new Date(time2.getFullYear(), time2.getMonth(), 1);
-    const endDate2 = new Date(time2.getFullYear(), time2.getMonth() + 1, 0);
+    const endDate2 = new Date(time2.getFullYear(), time2.getMonth() + 1, 1);
 
     // Tìm cửa hàng dựa trên shopId
     const shop = await Shop.findById(shopId);

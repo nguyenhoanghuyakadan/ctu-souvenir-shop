@@ -87,7 +87,7 @@ const WithdrawMoney = () => {
   };
 
   const withdrawHandler = async () => {
-    if (withdrawAmount < 50 || withdrawAmount > seller?.availableBalance) {
+    if (withdrawAmount < 50000 || withdrawAmount > seller?.availableBalance) {
       toast.error("Bạn không thể rút số tiền này!");
     } else {
       const amount = withdrawAmount;
@@ -120,7 +120,7 @@ const WithdrawMoney = () => {
             {`${currency.format(availableBalance, { code: "VND" })}`}
           </h4>
         </h5>
-        {availableBalance < 50 ? (
+        {availableBalance < 50000 ? (
           <p className="font-bold text-center uppercase">
             Vui lòng lưu ý rằng để thực hiện giao dịch rút tiền, số dư tài khoản
             của bạn cần phải đủ lớn, ít nhất là 50,000 VND. Hãy đảm bảo rằng bạn
@@ -290,7 +290,7 @@ const WithdrawMoney = () => {
                       <span className="mr-4">VND </span>
                       <div>
                         <button
-                          className="btn btn-success font-bold uppercase"
+                          className="btn btn-success font-bold uppercase text-white"
                           onClick={withdrawHandler}
                         >
                           Rút tiền

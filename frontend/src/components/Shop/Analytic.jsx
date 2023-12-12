@@ -201,6 +201,8 @@ const Analytic = () => {
     }
   };
 
+  console.log(data)
+
   return (
     <div className="bg-white mx-4 w-full">
       <div className="flex w-full">

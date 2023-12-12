@@ -20,10 +20,7 @@ const Cart = ({ setOpenCart }) => {
     dispatch(removeFromCart(data));
   };
 
-  const totalPrice = cart.reduce(
-    (acc, item) => acc + item.qty * item.price,
-    0
-  );
+  const totalPrice = cart.reduce((acc, item) => acc + item.qty * item.price, 0);
 
   const quantityChangeHandler = (data) => {
     dispatch(addTocart(data));
@@ -96,7 +93,7 @@ const CartSingle = ({ data, quantityChangeHandler, removeFromCartHandler }) => {
   const totalPrice = data.price * value;
 
   const increment = (data) => {
-    if (data.stock < value) {
+    if (data.stock < value + 1) {
       toast.error("Số lượng sản phẩm có hạn!");
     } else {
       setValue(value + 1);
@@ -136,8 +133,7 @@ const CartSingle = ({ data, quantityChangeHandler, removeFromCartHandler }) => {
           <div className="pl-[5px]">
             <h1>{data.name}</h1>
             <h4 className="font-[400] text-[15px] text-[#00000082]">
-              {`${currency.format(data.price, { code: "VND" })}`} *{" "}
-              {value}
+              {`${currency.format(data.price, { code: "VND" })}`} * {value}
             </h4>
             <h4 className="font-[600] text-[17px] pt-[3px] text-[#d02222] font-Roboto">
               {/* US${totalPrice} */}

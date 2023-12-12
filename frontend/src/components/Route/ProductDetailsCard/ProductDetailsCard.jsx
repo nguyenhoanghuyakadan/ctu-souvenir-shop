@@ -93,9 +93,6 @@ const ProductDetailsCard = ({ setOpen, data }) => {
     setClick(!click);
     dispatch(addToWishlist(data));
   };
-
-  console.log(data);
-
   return (
     <div className="bg-white rounded">
       {data ? (

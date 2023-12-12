@@ -125,7 +125,7 @@ const UserOrderDetails = () => {
   console.log(data);
 
   return (
-    <div className="py-4 min-h-screen">
+    <div className="py-4 min-h-screen mx-24">
       <div className="w-full flex items-center justify-between">
         <div className="flex items-center">
           <FaBagShopping size={30} />

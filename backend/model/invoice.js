@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const invoiceSchema = new mongoose.Schema({
   type: {
     type: String,
-    enum: ["Purchase", "Sale"], // Define values for type as needed
+    enum: ["Purchase", "Sale", "Refund"],
     required: true,
   },
   invoiceNumber: {

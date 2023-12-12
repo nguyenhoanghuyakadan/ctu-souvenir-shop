@@ -66,12 +66,16 @@ const ProductDetails = ({ data }) => {
     } else {
       if (data.stock < 1) {
         toast.error("Sản phẩm có số lượng giới hạn!");
+      } else if (data.stock < count) {
+        toast.error("Sản phẩm có số lượng giới hạn!");
       } else {
         const cartData = { ...data, qty: count };
         dispatch(addTocart(cartData));
         toast.success("Sản phẩm đã thêm vào giỏ hàng!");
       }
     }
+    console.log(data);
+    console.log(count);
   };
 
   const totalReviewsLength =
@@ -209,7 +213,9 @@ const ProductDetails = ({ data }) => {
                           color={click ? "red" : "#333"}
                           title="Xóa khỏi mục yêu thích"
                         />
-                        <span className="text-xl font-semibold ml-2">Đã thích </span>
+                        <span className="text-xl font-semibold ml-2">
+                          Đã thích{" "}
+                        </span>
                       </>
                     ) : (
                       <>
@@ -238,14 +244,16 @@ const ProductDetails = ({ data }) => {
                       <div className="font-bold text-lg">{data.shop.name}</div>
                     </Link>
                   </div>
-                  <div>
-                    <button
-                      onClick={handleMessageSubmit}
-                      className="btn btn-info text-white font-bold"
-                    >
-                      Gửi tin nhắn <FaRegMessage size={24} />
-                    </button>
-                  </div>
+                  {isAuthenticated && (
+                    <div>
+                      <button
+                        onClick={handleMessageSubmit}
+                        className="btn btn-info text-white font-bold"
+                      >
+                        Gửi tin nhắn <FaRegMessage size={24} />
+                      </button>
+                    </div>
+                  )}
                 </div>
               </div>
             </div>

@@ -10,13 +10,10 @@ const ProductDetailsPage = () => {
   const { allProducts } = useSelector((state) => state.products);
   const { id } = useParams();
   const [data, setData] = useState(null);
-  console.log(id)
   useEffect(() => {
     const product = allProducts && allProducts.find((i) => i._id === id);
     setData(product);
   }, [allProducts]);
-
-  console.log(data)
   return (
     <div>
       <Header />

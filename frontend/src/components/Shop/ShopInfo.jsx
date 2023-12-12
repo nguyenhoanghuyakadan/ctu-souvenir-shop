@@ -101,7 +101,7 @@ const ShopInfo = ({ isOwner }) => {
               </Link>
               <button
                 onClick={logoutHandler}
-                className="btn btn-error text-white"
+                className="btn btn-error text-white ml-2"
               >
                 Đăng xuất
               </button>
