@@ -4,6 +4,7 @@ import {
   FaCashRegister,
   FaUserAstronaut,
   FaDna,
+  FaRegMessage,
 } from "react-icons/fa6";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -69,6 +70,25 @@ const OrderDetails = () => {
       });
   };
 
+  const handleMessageSubmit = async () => {
+    const groupTitle = seller._id + data.user._id;
+    const userId = data.user._id;
+    const sellerId = seller._id;
+    await axios
+      .post(`${server}/conversation/create-new-conversation`, {
+        groupTitle,
+        userId,
+        sellerId,
+      })
+      .then((res) => {
+        navigate(`/dashboard-messages?${res.data.conversation._id}`);
+      })
+      .catch((error) => {
+        toast.error(error.response.data.message);
+      });
+  };
+
+  console.log(data);
   return (
     <div className="py-4 min-h-screen mx-24">
       <div className="w-full flex items-center justify-between">
@@ -107,8 +127,7 @@ const OrderDetails = () => {
             <div className="w-full mx-2">
               <h5 className="font-bold text-xl">{item.name}</h5>
               <h5 className="text-xl">
-                {currency.format(item.price, { code: "VND" })} x{" "}
-                {item.qty}
+                {currency.format(item.price, { code: "VND" })} x {item.qty}
               </h5>
             </div>
           </div>
@@ -230,6 +249,15 @@ const OrderDetails = () => {
             ))}
         </select>
       ) : null}
+
+      <div className="mx-2">
+        <button
+          onClick={handleMessageSubmit}
+          className="btn btn-info text-white font-bold my-2"
+        >
+          Gửi tin nhắn <FaRegMessage size={24} />
+        </button>
+      </div>
 
       <button
         className="btn btn-accent font-bold text-white uppercase mx-2"

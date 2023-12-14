@@ -206,6 +206,12 @@ router.put(
         );
       }
 
+      const seller = await Shop.findById(order.shop);
+
+      if (!seller) {
+        return next(new ErrorHandler("Không tìm thấy người bán", 400));
+      }
+
       order.status = req.body.status;
       await order.save();
 
@@ -223,6 +229,8 @@ router.put(
         order.cart.forEach(async (o) => {
           await updateOrder(o._id, o.qty);
         });
+        seller.availableBalance -= order.totalPrice * 0.98;
+        await seller.save();
       }
 
       async function updateOrder(id, qty) {

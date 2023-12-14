@@ -24,7 +24,7 @@ router.post(
         await sendMail({
           email: req.seller.email,
           subject: "Withdraw Request",
-          message: `Xin chào ${req.seller.name},Yêu cầu rút tiền của bạn ${amount}$ đang được xử lý. Sẽ mất 1 khoảng thời gian cho việc rút tiền, vui lòng đợi từ 3 - 5 ngày! `,
+          message: `Xin chào ${req.seller.name},Yêu cầu rút tiền của bạn ${amount}VND đang được xử lý. Sẽ mất 1 khoảng thời gian cho việc rút tiền, vui lòng đợi từ 3 - 5 ngày! `,
         });
         res.status(201).json({
           success: true,

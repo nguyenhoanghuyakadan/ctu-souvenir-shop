@@ -190,6 +190,9 @@ const CreatePurchaseInvoice = () => {
             ))}
         </select>
       </div>
+      <div className="mb-4 text-lg text-error">
+        Giá gốc hiện tại của sản phẩm là: {originalPriceSeletedItem}
+      </div>
       <table className="w-full border-collapse mb-4">
         <thead>
           <tr>

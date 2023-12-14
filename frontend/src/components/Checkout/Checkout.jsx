@@ -103,7 +103,6 @@ const Checkout = () => {
     ? (subTotalPrice + shipping - discountPercentenge).toFixed(2)
     : (subTotalPrice + shipping).toFixed(2);
 
-  console.log(discountPercentenge);
 
   return (
     <div className="w-full flex flex-col items-center py-8">
