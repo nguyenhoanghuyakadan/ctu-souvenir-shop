@@ -47,9 +47,18 @@ const AllProducts = () => {
     window.location.reload();
   };
 
+  const averagePriceIn =
+    selectedProduct &&
+    selectedProduct.invoices.reduce((sum, i) => sum + i.price, 0) /
+      selectedProduct.invoices.length;
+
   const handleSubmit = (e) => {
     try {
       e.preventDefault();
+      if (price < 0 || price < averagePriceIn) {
+        toast.error("Cập nhật sản phẩm thất bại!");
+        return;
+      }
       const newForm = new FormData();
       images.forEach((image) => {
         newForm.append("images", image);
@@ -64,8 +73,6 @@ const AllProducts = () => {
       setTimeout(() => window.location.reload(), 3000);
     } catch (error) {}
   };
-
-
   const columns = [
     { field: "id", headerName: "ID SP", hide: true },
     {
@@ -244,7 +251,12 @@ const AllProducts = () => {
                     ></textarea>
                   </div>
                   <div className="mt-2">
-                    <label className="pb-2">Giá</label>
+                    <label className="pb-2">
+                      Giá{" "}
+                      <span className="text-error">
+                        Giá nhập trung bình hiện tại là {averagePriceIn}
+                      </span>
+                    </label>
                     <input
                       type="number"
                       name="price"

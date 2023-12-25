@@ -28,6 +28,7 @@ const UserInbox = () => {
       setArrivalMessage({
         sender: data.senderId,
         text: data.text,
+        images: data.images,
         createdAt: Date.now(),
       });
     });
@@ -37,6 +38,8 @@ const UserInbox = () => {
       currentChat?.members.includes(arrivalMessage.sender) &&
       setMessages((prev) => [...prev, arrivalMessage]);
   }, [arrivalMessage, currentChat]);
+
+  console.log(arrivalMessage)
 
   useEffect(() => {
     const getConversation = async () => {
@@ -163,7 +166,7 @@ const UserInbox = () => {
     socketId.emit("sendMessage", {
       senderId: user._id,
       receiverId,
-      images: e,
+      images: e.name.replace(/\s/g, "").split(".")[0] + ".png",
     });
 
     try {
@@ -394,7 +397,7 @@ const SellerInbox = ({
                         .slice(0, 10)}`}
                   </time>
                 </div>
-                {item.text !== "" && (
+                {item.text !== "" && !item.images && (
                   <div className="chat-bubble">{item.text}</div>
                 )}
                 {item.images && (

@@ -29,6 +29,7 @@ const DashboardMessages = () => {
       setArrivalMessage({
         sender: data.senderId,
         text: data.text,
+        images: data.images,
         createdAt: Date.now(),
       });
     });
@@ -168,7 +169,7 @@ const DashboardMessages = () => {
     socketId.emit("sendMessage", {
       senderId: seller._id,
       receiverId,
-      images: e,
+      images: e.name.replace(/\s/g, "").split(".")[0] + ".png",
     });
 
     try {
@@ -382,7 +383,7 @@ const SellerInbox = ({
                         .slice(0, 10)}`}
                   </time>
                 </div>
-                {item.text !== "" && (
+                {item.text !== "" && !item.images && (
                   <div className="chat-bubble">{item.text}</div>
                 )}
                 {item.images && (

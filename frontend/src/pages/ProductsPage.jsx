@@ -18,6 +18,7 @@ const ProductsPage = () => {
   const [searchParams] = useSearchParams();
   const categoryData = searchParams.get("category");
   const { allProducts, isLoading } = useSelector((state) => state.products);
+  const { allCategories } = useSelector((state) => state.categories);
   const [data, setData] = useState([]);
 
   const [dropDown, setDropDown] = useState(false);
@@ -46,6 +47,8 @@ const ProductsPage = () => {
     }
   }, [allProducts]);
 
+  console.log(allCategories)
+
   return (
     <>
       {isLoading ? (
@@ -72,7 +75,7 @@ const ProductsPage = () => {
                   {dropDown ? (
                     <>
                       <DropDown
-                        categoriesData={categoriesData}
+                        categoriesData={allCategories}
                         setDropDown={setDropDown}
                       />
                     </>

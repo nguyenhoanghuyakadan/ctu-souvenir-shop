@@ -129,7 +129,7 @@ const CreatePurchaseInvoice = () => {
       supplier &&
       selectedItemsData.every(
         (item) =>
-          item.product && item.quantity && item.price && checkPrice(item)
+          item.product && item.quantity > 0 && item.price && checkPrice(item)
       )
     ) {
       const isoDate = formatDateToISOString(date);
@@ -152,6 +152,9 @@ const CreatePurchaseInvoice = () => {
       );
     }
   };
+
+  const availableProducts =
+    products && products.filter((p) => p.isActive === true);
 
   return (
     <div className="container mx-4">
@@ -216,8 +219,14 @@ const CreatePurchaseInvoice = () => {
                   onClick={() => setSelectedItem(product.product)}
                 >
                   <option value="">Chọn sản phẩm</option>
-                  {products &&
+                  {/* {products &&
                     products.map((p) => (
+                      <option key={p._id} value={p._id}>
+                        {p.name}
+                      </option>
+                    ))} */}
+                  {availableProducts &&
+                    availableProducts.map((p) => (
                       <option key={p._id} value={p._id}>
                         {p.name}
                       </option>

@@ -464,7 +464,7 @@ const Analytic = () => {
                     Số lượng sản phẩm đã bán được trong tháng{" "}
                     {time1.slice(5, 7)}
                   </div>
-                  <PieChart width={730} height={250}>
+                  <PieChart width={730} height={450}>
                     <Pie
                       data={data.soldProductCount}
                       dataKey="quantity1"
@@ -505,8 +505,7 @@ const Analytic = () => {
                     Số lượng sản phẩm đã được nhập trong tháng{" "}
                     {time1.slice(5, 7)}
                   </div>
-
-                  <PieChart width={730} height={250}>
+                  <PieChart width={730} height={450}>
                     <Pie
                       data={data.purchasedProductCount}
                       dataKey="quantity1"

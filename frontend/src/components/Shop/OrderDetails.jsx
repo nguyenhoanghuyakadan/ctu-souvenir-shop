@@ -44,7 +44,7 @@ const OrderDetails = () => {
         { withCredentials: true }
       )
       .then((res) => {
-        toast.success("Order updated!");
+        toast.success("Cập nhật đơn hàng thành công!");
         window.location.reload();
       })
       .catch((error) => {
@@ -62,7 +62,7 @@ const OrderDetails = () => {
         { withCredentials: true }
       )
       .then((res) => {
-        toast.success("Order updated!");
+        toast.success("Cập nhật đơn hàng thành công!");
         dispatch(getAllOrdersOfShop(seller._id));
       })
       .catch((error) => {

@@ -8,7 +8,7 @@ import {
 import { FaRegMessage } from "react-icons/fa6";
 
 import { useDispatch, useSelector } from "react-redux";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { getAllProductsShop } from "../../redux/actions/product";
 import { backend_url, server } from "../../server";
 import {
@@ -21,6 +21,7 @@ import Ratings from "./Ratings";
 import axios from "axios";
 
 const ProductDetails = ({ data }) => {
+  const { id } = useParams();
   const { wishlist } = useSelector((state) => state.wishlist);
   const { cart } = useSelector((state) => state.cart);
   const { user, isAuthenticated } = useSelector((state) => state.user);
@@ -38,6 +39,7 @@ const ProductDetails = ({ data }) => {
       setClick(false);
     }
   }, [data, wishlist]);
+
 
   const incrementCount = () => {
     setCount(count + 1);
@@ -58,7 +60,6 @@ const ProductDetails = ({ data }) => {
     setClick(!click);
     dispatch(addToWishlist(data));
   };
-
   const addToCartHandler = (id) => {
     const isItemExists = cart && cart.find((i) => i._id === id);
     if (isItemExists) {
@@ -74,8 +75,6 @@ const ProductDetails = ({ data }) => {
         toast.success("Sản phẩm đã thêm vào giỏ hàng!");
       }
     }
-    console.log(data);
-    console.log(count);
   };
 
   const totalReviewsLength =
@@ -93,9 +92,6 @@ const ProductDetails = ({ data }) => {
   const avg = totalRatings / totalReviewsLength || 0;
 
   const averageRating = avg.toFixed(2);
-
-  console.log(data);
-
   const handleMessageSubmit = async () => {
     if (isAuthenticated) {
       // const groupTitle = data._id + user._id;
@@ -119,9 +115,6 @@ const ProductDetails = ({ data }) => {
       toast.error("Vui lòng đăng nhập để nhắn tin");
     }
   };
-
-  console.log(data);
-
   return (
     <div className="bg-white">
       {data ? (
@@ -167,6 +160,9 @@ const ProductDetails = ({ data }) => {
                 </span>
                 <div className="text-xl font-bold">
                   {currency.format(data.price, { code: "VND" })}
+                </div>
+                <div className="font-bold text-warning">
+                  Còn lại {data?.stock} sản phẩm
                 </div>
 
                 <div className="flex flex-row h-10 w-32 rounded-lg relative bg-transparent my-4">

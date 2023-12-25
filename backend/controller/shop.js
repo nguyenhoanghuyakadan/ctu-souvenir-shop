@@ -99,7 +99,6 @@ router.post(
         email,
         avatar,
         password,
-
         address,
         phoneNumber,
       });

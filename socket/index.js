@@ -66,6 +66,8 @@ io.on("connection", (socket) => {
       messages[receiverId].push(message);
     }
 
+    console.log(images)
+
     // send the message to the recevier
     io.to(user?.socketId).emit("getMessage", message);
   });

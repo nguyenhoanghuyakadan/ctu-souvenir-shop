@@ -23,7 +23,7 @@ const CreateProduct = () => {
       toast.error(error);
     }
     if (success) {
-      toast.success("Product created successfully!");
+      toast.success("Sản phẩm được tạo thành công");
       navigate("/dashboard");
       window.location.reload();
     }
@@ -38,6 +38,10 @@ const CreateProduct = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    if (price < 0) {
+      toast.error("Tạo sản phẩm thất bại!");
+      return;
+    }
 
     const newForm = new FormData();
 
@@ -135,6 +139,7 @@ const CreateProduct = () => {
             className="hidden"
             multiple
             onChange={handleImageChange}
+            required
           />
           <div className="w-full flex items-center flex-wrap">
             <label htmlFor="upload">
